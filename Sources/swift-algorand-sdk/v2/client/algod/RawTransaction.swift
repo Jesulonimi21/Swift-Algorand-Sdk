@@ -33,7 +33,7 @@ public class RawTransaction{
         return self;
     }
 
-    internal func execute( callback: @escaping (_:Response<PostTransactionsResponse>) ->Void){
+    public func execute( callback: @escaping (_:Response<PostTransactionsResponse>) ->Void){
         let headers:HTTPHeaders=[client.apiKey:client.token]
         var request=AF.request(getRequestString(),method: .post, parameters: nil, encoding: ByteEncoding(data:Data(CustomEncoder.convertToUInt8Array(input: self.rawTransaction!))), headers: headers,requestModifier: { $0.timeoutInterval = 120 })
   print("Afetre request")

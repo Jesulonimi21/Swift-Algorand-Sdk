@@ -6,9 +6,9 @@
 //
 
 import Foundation
-extension StringProtocol {
-    var data: Data { .init(utf8) }
-    var bytes: [UInt8] { .init(utf8) }
+public extension StringProtocol {
+    public var data: Data { .init(utf8) }
+    public var bytes: [UInt8] { .init(utf8) }
 }
 public  class TransactionBuilder<T>{
     var type:String?=nil;
@@ -30,7 +30,7 @@ public  class TransactionBuilder<T>{
 
      func  applyTo(_ var1: Transaction) throws{};
 
-     func build() ->Transaction{
+     public func build() ->Transaction{
         if (self.lastValid == nil && self.firstValid != nil) {
             self.lastValid = self.firstValid!+1000;
         }
@@ -108,7 +108,7 @@ public  class TransactionBuilder<T>{
         return self as! T;
     }
 //
-    internal func   setSender (_ sender:Address) -> T {
+    public func   setSender (_ sender:Address) -> T {
         self.sender = sender;
         return self as! T;
     }

@@ -55,7 +55,7 @@ public class PaymentTransactionBuilder : TransactionBuilder<PaymentTransactionBu
             return self;
     }
 
-        internal func receiver(_ receiver:Address) -> PaymentTransactionBuilder{
+        public func receiver(_ receiver:Address) -> PaymentTransactionBuilder{
         self.receiver = receiver;
         return self;
     }

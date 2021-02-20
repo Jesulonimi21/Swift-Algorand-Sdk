@@ -12,9 +12,9 @@ public class Response<T>{
         self.isSuccessful=false
     }
     
-    var isSuccessful:Bool
-    var data:T?
-    var errorDescription:String?
+  public  var isSuccessful:Bool
+   public var data:T?
+   public var errorDescription:String?
 
     func setIsSuccessful(value:Bool){
         self.isSuccessful=value
