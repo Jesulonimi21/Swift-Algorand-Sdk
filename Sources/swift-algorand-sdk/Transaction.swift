@@ -116,7 +116,7 @@ extension Transaction.type:Codable{
 }
 
 
-class Transaction : Codable{
+public class Transaction : Codable{
     enum onCompletion: String {
         case  NoOpOC="NoOpOC"
         case  OptInOC="OptInOC"

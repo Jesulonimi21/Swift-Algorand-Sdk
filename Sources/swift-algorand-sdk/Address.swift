@@ -18,7 +18,7 @@ extension Array where Element: Comparable {
         return self.count == other.count && self.sorted() == other.sorted()
     }
 }
-class Address: Codable{
+public class Address: Codable{
     
    
     var bytes:[Int8]?=Array(repeating:0,count:32)

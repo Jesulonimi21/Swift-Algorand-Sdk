@@ -11,7 +11,7 @@ import Foundation
 
 
 
-class Account{
+public class Account{
     var address:Address
     var keyPair:KeyPair
     var seed:Seed?

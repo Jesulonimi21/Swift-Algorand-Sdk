@@ -6,7 +6,7 @@
 //
 import MessagePacker
 import Foundation
-class CustomEncoder{
+public class CustomEncoder{
     
     public static func encodeToMsgPack <T: Encodable>(_ obj:T)-> [Int8]{
         let encoder =  MessagePackEncoder()
