@@ -13,7 +13,7 @@ public class TransactionParams  {
         self.client=client
     }
 //
-    internal func execute( callback: @escaping (_:Response<TransactionParametersResponse>)->Void) {
+    public func execute( callback: @escaping (_:Response<TransactionParametersResponse>)->Void) {
         
         let group=DispatchGroup()
         let headers:HTTPHeaders=[client.apiKey:client.token]

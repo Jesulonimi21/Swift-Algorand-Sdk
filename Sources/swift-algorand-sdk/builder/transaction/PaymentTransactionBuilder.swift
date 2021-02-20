@@ -15,7 +15,7 @@ public class PaymentTransactionBuilder : TransactionBuilder<PaymentTransactionBu
         return  PaymentTransactionBuilder();
     }
 
-       convenience init() {
+    public convenience init() {
             self.init(Transaction.type.Payment);
             }
 
@@ -66,7 +66,7 @@ public class PaymentTransactionBuilder : TransactionBuilder<PaymentTransactionBu
         return self;
     }
 
-     func  closeRemainderTo (_ closeRemainderTo:Address) -> PaymentTransactionBuilder {
+    public  func  closeRemainderTo (_ closeRemainderTo:Address) -> PaymentTransactionBuilder {
         self.closeRemainderTo = closeRemainderTo;
             return self ;
     }

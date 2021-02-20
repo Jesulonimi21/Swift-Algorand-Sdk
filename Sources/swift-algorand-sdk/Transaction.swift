@@ -368,35 +368,35 @@ public class Transaction : Codable{
             self.fee = nil;
         }
     
-    static func paymentTransactionBuilder() -> PaymentTransactionBuilder{
+   public static func paymentTransactionBuilder() -> PaymentTransactionBuilder{
         return PaymentTransactionBuilder()
     }
-    static func assetCreateTransactionBuilder()->AssetCreateTransactionBuilder{
+  public  static func assetCreateTransactionBuilder()->AssetCreateTransactionBuilder{
         return AssetCreateTransactionBuilder()
     }
     
     
-    static func assetConfigureTransactionBuilder()-> AssetConfigureTransactionBuilder {
+    public  static func assetConfigureTransactionBuilder()-> AssetConfigureTransactionBuilder {
         return AssetConfigureTransactionBuilder()
     
     }
 
-    static func assetDestroyTransactionBuilder()-> AssetDestroyTransactionBuilder {
+    public static func assetDestroyTransactionBuilder()-> AssetDestroyTransactionBuilder {
         return AssetDestroyTransactionBuilder()
     }
 
-    static func assetAcceptTransactionBuilder()-> AssetAcceptTransactionBuilder {
+    public  static func assetAcceptTransactionBuilder()-> AssetAcceptTransactionBuilder {
         return AssetAcceptTransactionBuilder()
     }
  
-    static func assetTransferTransactionBuilder()->AssetTransferTransactionBuilder{
+    public  static func assetTransferTransactionBuilder()->AssetTransferTransactionBuilder{
         return AssetTransferTransactionBuilder()
     }
     
-    static func assetFreezeTransactionBuilder()->AssetFreezeTransactionBuilder{
+    public  static func assetFreezeTransactionBuilder()->AssetFreezeTransactionBuilder{
         return AssetFreezeTransactionBuilder()
     }
-    static func assetClawbackTransactionBuilder()->AssetClawbackTransactionBuilder{
+    public  static func assetClawbackTransactionBuilder()->AssetClawbackTransactionBuilder{
         return AssetClawbackTransactionBuilder()
     }
    public func encode(to encoder: Encoder) throws {
