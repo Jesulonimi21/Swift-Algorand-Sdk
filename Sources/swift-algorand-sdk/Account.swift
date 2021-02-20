@@ -43,11 +43,11 @@ public class Account{
     
     
     
-    func getAddress() -> Address{
+  public  func getAddress() -> Address{
         return self.address
     }
     
-    func toMnemonic() ->String{
+  public  func toMnemonic() ->String{
         if let Useed=seed{
             var int8Bytes=Useed.bytes.map{(uint8Byts) in
                 return unsafeBitCast(uint8Byts, to: Int8.self)}
@@ -57,7 +57,7 @@ public class Account{
       
     }
     
-    func signTransaction(tx:Transaction) -> SignedTransaction{
+  public  func signTransaction(tx:Transaction) -> SignedTransaction{
         var txBytes = tx.bytesToSign()
         var testVal:[Int8]=[
             84,88,-120,-93,97,109,116,10,-93,102,101,101,-51,3,-24,-94,102,118,-51,3,-24,-94,103,104,-60,32,72,99,-75,24,-92,-77,-56,78,-56,16,-14,45,79,16,-127,-53,15,113,-16,89,-89,-84,32,-34,-58,47,127,112,-27,9,58,34,-94,108,118,-51,7,-48,-93,114,99,118,-60,32,-81,-32,-93,27,-19,-45,117,112,16,-1,44,-106,114,88,-119,-42,48,-59,74,106,-127,52,13,89,15,102,-126,-8,-71,66,68,27,-93,115,110,100,-60,32,-81,-32,-93,27,-19,-45,117,112,16,-1,44,-106,114,88,-119,-42,48,-59,74,106,-127,52,13,89,15,102,-126,-8,-71,66,68,27,-92,116,121,112,101,-93,112,97,121]

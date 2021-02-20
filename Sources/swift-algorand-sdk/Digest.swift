@@ -11,7 +11,7 @@ public class Digest: Codable {
 var bytes:[Int8]?=nil;
 
   
-init(_ bytes:[Int8]?) {
+    public init(_ bytes:[Int8]?) {
         self.bytes = Array(repeating: 0, count: 32);
         if  let uBytes = bytes{
             if (uBytes.count != 32) {

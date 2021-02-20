@@ -26,7 +26,7 @@ public class Address: Codable{
         case bytes
     }
     
-    var description:String{
+  public  var description:String{
         return try! self.encodeAsString()
     }
     init(_ bytes:[Int8]) throws{
@@ -37,11 +37,11 @@ public class Address: Codable{
         
     }
     
-    init(){
+    public init(){
         
     }
     
-    init(_ encodedAddress:String) throws {
+    public init(_ encodedAddress:String) throws {
         var checksumAddr=CustomEncoder.convertToInt8Array(input: Array(Base32Decode(data:encodedAddress)!))
        if (checksumAddr.count != 36) {
         throw AddressError.illegalArgumentException("Input string is an invalid address. Wrong length")

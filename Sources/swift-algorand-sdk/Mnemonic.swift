@@ -7,7 +7,7 @@
 
 import Foundation
 public class Mnemonic{
-static    func toKey( _ mnemonicStr: String) throws ->[Int8] {
+static  public  func toKey( _ mnemonicStr: String) throws ->[Int8] {
   
         var mnemonic:[String] = mnemonicStr.split{$0 == " "}.map(String.init)
     
