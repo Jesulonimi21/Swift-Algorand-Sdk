@@ -8,12 +8,12 @@
 import Foundation
 public class PostTransactionsResponse:Codable{
  
-    var txId:String;
+    public var txId:String;
     
    
     
 
-    init(_ txId : String) {
+    public   init(_ txId : String) {
     self.txId=txId
     }
 

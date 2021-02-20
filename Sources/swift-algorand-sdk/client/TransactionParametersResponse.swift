@@ -28,7 +28,7 @@ public class TransactionParametersResponse:Codable {
     
     init() {
     }
-    init(fee:Int64,genesisHash:[Int8],genesisId:String,lastRound:Int64){
+    public  init(fee:Int64,genesisHash:[Int8],genesisId:String,lastRound:Int64){
         self.genesisHash=genesisHash
         self.fee=fee
         self.lastRound=lastRound
