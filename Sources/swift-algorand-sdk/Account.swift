@@ -16,11 +16,11 @@ public class Account{
     var keyPair:KeyPair
     var seed:Seed?
     static var MIN_TX_FEE_UALGOS:Int64 = 1000
-    convenience init() throws{
+    public  convenience init() throws{
       try  self.init(nil)
     }
     
-    init(_ bytes:[Int8]?) throws {
+   public init(_ bytes:[Int8]?) throws {
    
         if  let Ubytes = bytes{
              seed = try Seed(bytes:Ubytes.map{Int8val -> UInt8 in
@@ -37,7 +37,7 @@ public class Account{
         }
         self.address=try! Address(ed25519PubKey)
     }
-    convenience init( _ mnemonic:String) throws{
+    public   convenience init( _ mnemonic:String) throws{
       try  self.init(Mnemonic.toKey(mnemonic))
     }
     
