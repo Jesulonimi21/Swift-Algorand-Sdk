@@ -399,7 +399,7 @@ public class Transaction : Codable{
     static func assetClawbackTransactionBuilder()->AssetClawbackTransactionBuilder{
         return AssetClawbackTransactionBuilder()
     }
-    func encode(to encoder: Encoder) throws {
+   public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         if let assetAmount=self.assetAmount{

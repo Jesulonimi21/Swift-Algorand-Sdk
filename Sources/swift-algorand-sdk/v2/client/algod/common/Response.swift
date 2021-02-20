@@ -6,7 +6,7 @@
 //
 
 import Foundation
-class Response<T>{
+public class Response<T>{
         
     init() {
         self.isSuccessful=false
