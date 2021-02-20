@@ -22,8 +22,8 @@ let package = Package(
         // .package(url: /* package url */, from: "1.0.0"),
 //        .package(url:  "https://github.com/vzsg/ed25519.git", .upToNextMajor(from: "0.1.0"))
 //        .package(url: "https://github.com/AndrewBarba/ed25519.git", .upToNextMajor(from: "1.1.0")),
-        .package(name:"Ed25519",url: "https://github.com/AndrewBarba/ed25519.git", .branch("master")),
-        .package(name:"swift-crypto", url: "https://github.com/apple/swift-crypto.git", .branch("main")),
+        .package(name:"Ed25519",url: "https://github.com/AndrewBarba/ed25519.git",  from: "1.0.0"),
+//        .package(name:"swift-crypto", url: "https://github.com/apple/swift-crypto.git", .branch("main")),
         .package(
             url: "https://github.com/Flight-School/MessagePack",
             from: "1.2.3"
