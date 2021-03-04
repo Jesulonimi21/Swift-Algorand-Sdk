@@ -39,14 +39,7 @@ public class TransactionParams  {
         
     }
 
-//    }
-//
-//    public Response<TransactionParametersResponse> execute(String[] headers, String[] values) throws Exception {
-//        Response<TransactionParametersResponse> resp = this.baseExecute(headers, values);
-//        resp.setValueType(TransactionParametersResponse.class);
-//        return resp;
-//    }
-//
+
     internal func getRequestString() ->String{
         var component=client.connectString()
         component.path = component.path + "/v2/transactions/params"

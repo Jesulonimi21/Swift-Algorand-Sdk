@@ -47,14 +47,6 @@ public class SearchForAccounts  {
 
     }
 
-//    }
-//
-//    public Response<HealthCheck> execute(String[] headers, String[] values) throws Exception {
-//        Response<HealthCheck> resp = self.baseExecute(headers, values);
-//        resp.setValueType(HealthCheck.class);
-//        return resp;
-//    }
-//
 
     public func applicationId(applicationId:Int64)->SearchForAccounts {
            self.queryItems["application-id"] = "\(applicationId)"
