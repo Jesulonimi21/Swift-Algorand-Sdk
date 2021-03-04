@@ -18,6 +18,7 @@ public class PendingTransactionInformation{
     }
 
     internal func execute( callback: @escaping (_:Response<PendingTransactionResponse>) ->Void){
+        print(getRequestString(parameter: self.txId))
         let headers:HTTPHeaders=[client.apiKey:client.token]
         var request=AF.request(getRequestString(parameter: self.txId),method: .get, parameters: nil, headers: headers,requestModifier: { $0.timeoutInterval = 120 })
   print("Afetre request")
@@ -46,7 +47,7 @@ public class PendingTransactionInformation{
 
     internal func getRequestString(parameter:String)->String {
         var component=client.connectString()
-        component.path = "/v2/transactions/pending/\(parameter)"
+        component.path = component.path+"/v2/transactions/pending/\(parameter)"
         return component.url!.absoluteString;
         
     }

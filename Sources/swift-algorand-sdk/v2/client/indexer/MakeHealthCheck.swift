@@ -2,25 +2,24 @@
 //  File.swift
 //  
 //
-//  Created by Jesulonimi on 2/9/21.
+//  Created by Jesulonimi on 2/26/21.
 //
 
 import Foundation
 import Alamofire
-public class TransactionParams  {
-    var client:AlgodClient
-    init(client:AlgodClient) {
+public class MakeHealthCheck  {
+    var client:IndexerClient
+    init(client:IndexerClient) {
         self.client=client
     }
 //
-    public func execute( callback: @escaping (_:Response<TransactionParametersResponse>)->Void) {
-        
-        let group=DispatchGroup()
+    public func execute( callback: @escaping (_:Response<HealthCheck>)->Void) {
+    
         let headers:HTTPHeaders=[client.apiKey:client.token]
         print(getRequestString())
         var request=AF.request(getRequestString(), method: .get, headers: headers,requestModifier: { $0.timeoutInterval = 120 })
-        var customResponse:Response<TransactionParametersResponse>=Response()
-      request.responseDecodable(of: TransactionParametersResponse.self){ (response) in
+        var customResponse:Response<HealthCheck>=Response()
+      request.responseDecodable(of: HealthCheck.self){ (response) in
         if(response.error != nil){
             customResponse.setIsSuccessful(value:false)
             var errorDescription=String(data:response.data ?? Data(response.error!.errorDescription!.utf8),encoding: .utf8)
@@ -29,8 +28,8 @@ public class TransactionParams  {
             return
         }
                         let data=response.value
-                        var transactionParameterResponse:TransactionParametersResponse=data!
-                        customResponse.setData(data:transactionParameterResponse)
+                        var healthCheck:HealthCheck=data!
+                        customResponse.setData(data:healthCheck)
                         customResponse.setIsSuccessful(value:true)
                         callback(customResponse)
              
@@ -39,17 +38,11 @@ public class TransactionParams  {
         
     }
 
-//    }
-//
-//    public Response<TransactionParametersResponse> execute(String[] headers, String[] values) throws Exception {
-//        Response<TransactionParametersResponse> resp = this.baseExecute(headers, values);
-//        resp.setValueType(TransactionParametersResponse.class);
-//        return resp;
-//    }
-//
+
     internal func getRequestString() ->String{
         var component=client.connectString()
-        component.path = component.path + "/v2/transactions/params"
+        component.path = component.path + "/health"
+      
 
         return component.url!.absoluteString;
     }

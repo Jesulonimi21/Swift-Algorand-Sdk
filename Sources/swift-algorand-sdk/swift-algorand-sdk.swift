@@ -82,7 +82,7 @@ class TL{
         var encodedTrans:[Int8]=CustomEncoder.encodeToMsgPack(sig)
         print(encodedTrans)
        
-        var HACKATHON_API_PORT=9100;
+        var HACKATHON_API_PORT="9100";
         var HACKATHON_API_ADDRESS="hackathon.algodev.network";
         var HACKATHON_API_TOKEN="ef920e2e7e002953f4b29a8af720efe8e4ecc75ff102b165e0472834b25832c1";
         var algodClient=AlgodClient(host: HACKATHON_API_ADDRESS, port: HACKATHON_API_PORT, token: HACKATHON_API_TOKEN)

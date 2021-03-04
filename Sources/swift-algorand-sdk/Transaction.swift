@@ -470,7 +470,7 @@ public class Transaction : Codable{
     }
 
     
-    func   txID() -> String {
+   public func   txID() -> String {
         let digest=SHA512_256().hash(self.bytesToSign())
         return CustomEncoder.encodeToBase32StripPad(digest)     
     }

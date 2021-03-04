@@ -41,7 +41,7 @@ public class GetStatus{
 
     internal func getRequestString()->String {
         var component=client.connectString()
-        component.path = "/v2/status/"
+        component.path = component.path + "/v2/status/"
         return component.url!.absoluteString;
         
     }

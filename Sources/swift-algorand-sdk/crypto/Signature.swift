@@ -12,7 +12,7 @@ public class Signature: Codable {
     
     var ED25519_SIG_SIZE = 64;
  
-    var bytes:[Int8]?;
+   public var bytes:[Int8]?;
 
     
     enum CodingKeys:CodingKey{

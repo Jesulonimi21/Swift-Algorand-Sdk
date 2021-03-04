@@ -7,16 +7,24 @@
 
 import Foundation
 public class SignedTransaction: Codable {
-    var  tx:Transaction;
-    var sig:Signature?;
-    var transactionID:String?
-    var mSig:MultisigSignature?
+   public var  tx:Transaction;
+    public var sig:Signature?;
+    public var transactionID:String?
+    public  var mSig:MultisigSignature?
 
     enum CodingKeys:String, CodingKey{
         case tx = "txn"
         case sig = "sig"
         case mSig="msig"
     }
+    
+//    public required init(from decoder: Decoder) throws {
+//        var container = try! decoder.container(keyedBy: CodingKeys.self);
+//        self.tx =  try! container.decode(Transaction.self, forKey: .tx)
+//        self.sig = try! container.decode(Signature.self, forKey: .sig)
+//        self.mSig = try! container.decode(MultisigSignature.self, forKey: .mSig)
+//    }
+    
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         if let sig=self.sig{

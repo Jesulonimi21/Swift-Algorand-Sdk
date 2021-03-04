@@ -12,13 +12,14 @@ import Foundation
 
 
 public class Account{
-    var address:Address
-    var keyPair:KeyPair
-    var seed:Seed?
+    public var address:Address
+   public var keyPair:KeyPair
+   public var seed:Seed?
     static var MIN_TX_FEE_UALGOS:Int64 = 1000
     public  convenience init() throws{
       try  self.init(nil)
     }
+    
     
    public init(_ bytes:[Int8]?) throws {
    

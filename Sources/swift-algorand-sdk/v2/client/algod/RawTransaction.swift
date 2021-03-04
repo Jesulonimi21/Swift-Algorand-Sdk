@@ -34,13 +34,14 @@ public class RawTransaction{
     }
 
     public func execute( callback: @escaping (_:Response<PostTransactionsResponse>) ->Void){
-        let headers:HTTPHeaders=[client.apiKey:client.token]
+        print(getRequestString())
+        let headers:HTTPHeaders=[client.apiKey:client.token,"Content-type":"application/x-binary"]
         var request=AF.request(getRequestString(),method: .post, parameters: nil, encoding: ByteEncoding(data:Data(CustomEncoder.convertToUInt8Array(input: self.rawTransaction!))), headers: headers,requestModifier: { $0.timeoutInterval = 120 })
   print("Afetre request")
         request.validate()
         var customResponse:Response<PostTransactionsResponse>=Response()
+             
   request.responseDecodable(of: PostTransactionsResponse.self){  (response) in
-
     if(response.error != nil){
         customResponse.setIsSuccessful(value:false)
         var errorDescription=String(data:response.data ?? Data(response.error!.errorDescription!.utf8),encoding: .utf8)
@@ -60,7 +61,7 @@ public class RawTransaction{
 
     internal func getRequestString()->String {
         var component=client.connectString()
-        component.path = "/v2/transactions/"
+        component.path = component.path+"/v2/transactions/"
         return component.url!.absoluteString;
         
     }
