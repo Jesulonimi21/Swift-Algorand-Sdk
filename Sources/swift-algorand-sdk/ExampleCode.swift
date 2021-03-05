@@ -11,7 +11,7 @@
 //var PURESTAKE_ALGOD_API_TESTNET_ADDRESS="https://testnet-algorand.api.purestake.io/ps2";
 //var PURESTAKE_ALGOD_API_MAINNET_ADDRESS="https://mainnet-algorand.api.purestake.io/ps2";
 //var PURESTAKE_INDEXER_API_ADDRESS="https://testnet-algorand.api.purestake.io/idx2";
-//var PURESTAKE_API_KEY="";
+//var PURESTAKE_API_KEY="ADRySlL0NK5trzqZGAE3q1xxIqlQdSfk1nbHxTNe";
 //var PURESTAKE_API_PORT="443";
 //var HACKATHON_API_PORT="9100";
 //var HACKATHON_API_ADDRESS="http://hackathon.algodev.network";
@@ -41,14 +41,25 @@
 //
 ////try! testPayment(mnemonic:mnemonic)
 ////testMultisigCreationAndTransaction()
-//algodClient.pendingTransactionInformation(txId: "XROWUBWK6FTT7RDQKDONLJED4WJ2H563MNNGRYQP544GSNFSKKTA").execute(){ pendingTransactionResponse in
-//        if(pendingTransactionResponse.isSuccessful){
-//            print(pendingTransactionResponse.data!.confirmedRound)
-//        }else{
-//            print(pendingTransactionResponse.errorDescription!)
-//            print("Errir")
-//        }
-//}
+////algodClient.pendingTransactionInformation(txId: "XROWUBWK6FTT7RDQKDONLJED4WJ2H563MNNGRYQP544GSNFSKKTA").execute(){ pendingTransactionResponse in
+////        if(pendingTransactionResponse.isSuccessful){
+////            print(pendingTransactionResponse.data!.confirmedRound)
+////        }else{
+////            print(pendingTransactionResponse.errorDescription!)
+////            print("Errir")
+////        }
+////}
+//
+////var a:[Int8]=[1,2,3,4]
+////var b:[Int8]=[5,6,7,8]
+////
+////var c = a+b
+////print(c)
+//
+//testAtomicTransfer()
+//
+////var account =  try Account(mnemonic)
+//
 //dispatchMain()
 //
 //
@@ -89,7 +100,7 @@
 //
 //                }else{
 //                    print(response.errorDescription)
-//                    print("Fialed")
+//                    print("Faled")
 //                }
 //
 //            }
@@ -577,4 +588,94 @@
 //            print(response.errorDescription)
 //        }
 //    }
+//}
+//
+//public func testAtomicTransfer(){
+//    var senderAddress = account.getAddress()
+//    var receiverAddress = try! Address("FMBQKMGDE7LYNDHCSUPJBXNMMT3HC2TXMIFAJKGBYJQDZN4R3M554N4QTY")
+//
+//
+//        var trans =  algodClient.transactionParams().execute(){ paramResponse in
+//            if(!(paramResponse.isSuccessful)){
+//            print(paramResponse.errorDescription);
+//            return;
+//        }
+//
+//
+//           var tx1 = Transaction.paymentTransactionBuilder().setSender(senderAddress)
+//            .amount(8)
+//            .receiver(receiverAddress)
+//            .note("Swift Algo sdk is cool".bytes)
+//            .suggestedParams(params: paramResponse.data!)
+//            .build()
+//
+//            var tx2 = Transaction.paymentTransactionBuilder().setSender(senderAddress)
+//             .amount(9)
+//             .receiver(receiverAddress)
+//             .note("Swift Algo sdk is cool".bytes)
+//             .suggestedParams(params: paramResponse.data!)
+//             .build()
+//
+//            var tx3 = Transaction.paymentTransactionBuilder().setSender(senderAddress)
+//             .amount(10)
+//             .receiver(receiverAddress)
+//             .note("Swift Algo sdk is cool".bytes)
+//             .suggestedParams(params: paramResponse.data!)
+//             .build()
+//
+//
+//            var tx4 = Transaction.paymentTransactionBuilder().setSender(senderAddress)
+//             .amount(11)
+//             .receiver(receiverAddress)
+//             .note("Swift Algo sdk is cool".bytes)
+//             .suggestedParams(params: paramResponse.data!)
+//             .build()
+//
+//            print(tx1.txID())
+//            print(tx2.txID())
+//            var transactions=[tx1,tx2,tx3,tx4]
+//            var gid = try! TxGroup.computeGroupID(txns: transactions)
+//            print( CustomEncoder.encodeToBase32StripPad(gid.bytes!))
+//            var signedTransactions:[SignedTransaction]=Array(repeating: SignedTransaction(), count: transactions.count)
+//
+//            for i in 0..<transactions.count{
+//                transactions[i].assignGroupID(gid: gid)
+//
+//                signedTransactions[i]=account.signTransaction(tx: transactions[i])
+//
+//
+//            }
+//
+//            for i in 0..<transactions.count{
+//                print( CustomEncoder.encodeToBase32StripPad((signedTransactions[i].tx?.group?.bytes)!))
+//
+//
+//            }
+//            var transactionss=[tx1,tx2]
+//            var gidd = try! TxGroup.computeGroupID(txns: transactions)
+//
+//            print( CustomEncoder.encodeToBase32StripPad(gidd.bytes!))
+//    //
+//    //
+//    //        var signedTransaction=account.signTransaction(tx: tx)
+//
+//    //        var signedTransaction=signedTransactions[0]+signedTransactions[1]+signedTransactions[2]
+//            var encodedTrans:[Int8]=CustomEncoder.encodeToMsgPack(signedTransactions[0])+CustomEncoder.encodeToMsgPack(signedTransactions[1])
+//            + CustomEncoder.encodeToMsgPack(signedTransactions[2])+CustomEncoder.encodeToMsgPack(signedTransactions[3])
+//
+//
+//
+//            algodClient.rawTransaction().rawtxn(rawtaxn: encodedTrans).execute(){
+//               response in
+//                if(response.isSuccessful){
+//                    print(response.data!.txId)
+//
+//                }else{
+//                    print(response.errorDescription)
+//                    print("Failed")
+//                }
+//
+//            }
+//    }
+//
 //}

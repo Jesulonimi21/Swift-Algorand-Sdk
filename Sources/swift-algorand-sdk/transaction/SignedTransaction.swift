@@ -7,7 +7,7 @@
 
 import Foundation
 public class SignedTransaction: Codable {
-   public var  tx:Transaction;
+   public var  tx:Transaction?;
     public var sig:Signature?;
     public var transactionID:String?
     public  var mSig:MultisigSignature?
@@ -16,6 +16,10 @@ public class SignedTransaction: Codable {
         case tx = "txn"
         case sig = "sig"
         case mSig="msig"
+    }
+    
+    init(){
+        
     }
     
 //    public required init(from decoder: Decoder) throws {
@@ -34,7 +38,10 @@ public class SignedTransaction: Codable {
             try! container.encode(mSig, forKey: .mSig)
         }
        
-        try! container.encode(self.tx, forKey: .tx)
+        if let tx=self.tx{
+            try! container.encode(tx, forKey: .tx)
+        }
+       
     }
     
     init(sig:Signature,tx:Transaction){

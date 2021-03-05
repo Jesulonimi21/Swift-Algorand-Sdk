@@ -130,7 +130,7 @@ public class Account{
       }
 
     public func appendMultisigTransaction(from:MultisigAddress, signedTx:SignedTransaction) throws ->SignedTransaction {
-        var sTx:SignedTransaction = try! self.signMultisigTransaction(from: from, tx: signedTx.tx);
+        var sTx:SignedTransaction = try! self.signMultisigTransaction(from: from, tx: signedTx.tx!);
         return try! mergeMultisigTransactions(txs:[sTx, signedTx]);
       }
     

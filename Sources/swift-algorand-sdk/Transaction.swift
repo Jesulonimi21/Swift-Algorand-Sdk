@@ -448,6 +448,10 @@ public class Transaction : Codable{
         if let genesisHash=self.genesisHash{
             try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: genesisHash.getBytes()!)), forKey: .genesisHash)
         }
+    
+        if let group=self.group{
+            try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: group.getBytes()!)), forKey: .group)
+        }
         if let lastValid=self.lastValid{
             try! container.encode(lastValid, forKey: .lastValid)
         }
@@ -474,4 +478,15 @@ public class Transaction : Codable{
         let digest=SHA512_256().hash(self.bytesToSign())
         return CustomEncoder.encodeToBase32StripPad(digest)     
     }
+    
+    public func rawTxID()->Digest{
+        return Digest(SHA512_256().hash(self.bytesToSign()))
+    }
+    
+    public func assignGroupID(gid:Digest) {
+            self.group = gid;
+        }
+
 }
+
+

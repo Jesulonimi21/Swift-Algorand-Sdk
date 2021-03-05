@@ -41,4 +41,9 @@ var bytes:[Int8]?=nil;
     private enum CodingKeys:CodingKey{
         case bytes
     }
+    
+//    public func encode(to encoder: Encoder) throws {
+//        var container = encoder.container(keyedBy: CodingKeys.self)
+//        try! container.encode( Data(CustomEncoder.convertToUInt8Array(input:self.bytes!)), forKey: .bytes)
+//    }
 }
