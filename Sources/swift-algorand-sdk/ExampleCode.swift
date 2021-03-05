@@ -11,7 +11,7 @@
 //var PURESTAKE_ALGOD_API_TESTNET_ADDRESS="https://testnet-algorand.api.purestake.io/ps2";
 //var PURESTAKE_ALGOD_API_MAINNET_ADDRESS="https://mainnet-algorand.api.purestake.io/ps2";
 //var PURESTAKE_INDEXER_API_ADDRESS="https://testnet-algorand.api.purestake.io/idx2";
-//var PURESTAKE_API_KEY="ADRySlL0NK5trzqZGAE3q1xxIqlQdSfk1nbHxTNe";
+//var PURESTAKE_API_KEY="";
 //var PURESTAKE_API_PORT="443";
 //var HACKATHON_API_PORT="9100";
 //var HACKATHON_API_ADDRESS="http://hackathon.algodev.network";
