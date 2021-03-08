@@ -1,0 +1,313 @@
+//
+//  File.swift
+//  
+//
+//  Created by Jesulonimi on 3/7/21.
+//
+
+import Foundation
+public class AlgoLogic{
+    
+    private var MAX_COST = 20000;
+       private var MAX_LENGTH = 1000;
+       private var INTCBLOCK_OPCODE = 32;
+       private var BYTECBLOCK_OPCODE = 38;
+    private static var langSpec:LangSpec?
+    private static var opcodes:[Operation?]?
+    
+ 
+    public static func putUVarint( value:Int)throws -> [Int8]  {
+        if value <= 0{
+            throw Errors.illegalArgumentError("putUVarint expects non-negative values.")
+        }
+        var funcValue=value
+
+        var buffer:[Int8]=Array()
+
+        
+        while funcValue>=128 {
+            buffer.append(Int8(value)&unsafeBitCast(UInt8(255), to:Int8.self)|unsafeBitCast(UInt8(128), to:Int8.self))
+            funcValue>>=7
+        }
+
+        buffer.append(unsafeBitCast(UInt8(value), to:Int8.self)&unsafeBitCast(UInt8(255), to: Int8.self))
+  
+        var out:[Int8]=Array()
+
+        for i in 0..<buffer.count{
+            out.append(buffer[i])
+        }
+        
+           return out;
+       }
+ 
+    public static func getUVarint(buffer:[Int8],  bufferOffset:Int)->VarintResult {
+          var x = 0;
+          var s = 0;
+        for i in 0..<buffer.count{
+            var b:Int = Int(unsafeBitCast(buffer[bufferOffset + i], to: UInt8.self)  & 255)
+            if b<128{
+                if i<=9 && (i != 9 || b<=1){
+                    return VarintResult(value: x | (Int(b) & 255) << s, length:  i + 1)
+                }
+            return VarintResult(value: 0, length: -(i + 1))
+                
+            }
+            x |= (Int(b) & 127 & 255) << s;
+            s += 7;
+        }
+
+          return VarintResult();
+      }
+    
+    public static func loadLangSpec()   {
+        let configURL = Bundle.module.path(forResource: "Langspec", ofType: "txt")
+        let contensts = try! String(contentsOfFile: configURL!.description)
+        let jsonData = contensts.data(using: .utf8)!
+        let langspec = try! JSONDecoder().decode(LangSpec.self, from: jsonData)
+        self.langSpec=langspec
+       }
+    
+    
+    public static func getLogicSigVersion() throws -> Int {
+        if (langSpec == nil) {
+            loadLangSpec();
+        }
+
+        return langSpec!.LogicSigVersion!;
+    }
+
+    public static func getEvalMaxVersion() throws ->Int {
+           if (langSpec == nil) {
+               loadLangSpec();
+           }
+
+           return langSpec!.EvalMaxVersion!;
+       }
+    
+    
+    
+    public static func readByteConstBlock(program:[Int8], pc:Int)throws -> ByteConstBlock {
+        var results:[[Int8]] = Array();
+           var size = 1;
+        var result:VarintResult = getUVarint(buffer: program, bufferOffset: pc + size);
+           if (result.length <= 0) {
+            throw Errors.illegalArgumentError("could not decode byte[] const block at \(pc)");
+           } else {
+                size = size + result.length;
+               var numInts = result.value;
+
+            for  i in 0..<numInts{
+                if (pc+size) >= program.count{
+                    throw Errors.illegalArgumentError("byte[] const block exceeds program length")
+                }
+                result = getUVarint(buffer: program, bufferOffset: pc+size)
+                if result.length <= 0{
+                    throw Errors.illegalArgumentError("could not decode int const \(i) block at \( pc + size)")
+                }
+                size = size + result.length
+                if (pc+size) >= program.count{
+                    throw Errors.illegalArgumentError("byte const block exceeds program length")
+                }
+                
+                var buff:[Int8] = Array(repeating: 0, count: result.value)
+                for i in 0..<result.value{
+                    buff[i]=program[pc + size+i]
+                }
+                results.append(buff)
+                size=size+result.value
+            }
+
+            return ByteConstBlock(size: size, results: results);
+           }
+       }
+    
+    public static func readIntConstBlock(program:[Int8],  pc:Int)throws->IntConstBlock {
+        var results:[Int64] = Array()
+          var size = 1;
+        var result:VarintResult = getUVarint(buffer: program, bufferOffset: pc + size);
+        
+          if (result.length <= 0) {
+            throw Errors.illegalArgumentError("could not decode int const block at \( pc)")
+          } else {
+            size = size + result.length
+              var numInts = result.value;
+            for i in 0..<numInts{
+                if (pc+size) >= program.count{
+                    throw Errors.illegalArgumentError("int const block exceeds program length")
+                }
+                result = getUVarint(buffer: program, bufferOffset: pc+size)
+                if result.length<=0{
+                    throw Errors.illegalArgumentError("could not decode int const \(i) block at \( pc + size)")
+                }
+                size = size + result.length
+                
+                results.append(Int64(result.value))
+            }
+
+            return IntConstBlock(size: size, results: results);
+          }
+      }
+    
+    public static func readProgram(program:[Int8],  args:[[Int8]]?) throws -> ProgramData {
+        var ints:[Int64] = Array();
+        var bytes:[[Int8]] = Array();
+        var funcArgs=args
+            if langSpec == nil {
+                loadLangSpec();
+            }
+
+        var result:VarintResult = getUVarint(buffer: program, bufferOffset: 0);
+            var vlen = result.length;
+            if vlen <= 0 {
+                throw Errors.illegalArgumentError("version parsing error");
+            } else {
+                var version = result.value;
+                if (version > langSpec!.EvalMaxVersion!) {
+                    throw Errors.illegalArgumentError("unsupported version");
+                } else {
+                    if (funcArgs == nil) {
+                        funcArgs = Array();
+                        }
+
+
+                    var cost = 0;
+                    var length = program.count;
+
+                    var pc:Int=0;
+                    while pc<funcArgs!.count{
+                        length += funcArgs![pc].count
+                      pc=pc+1
+                    }
+
+                    if (length > 1000) {
+                        throw Errors.illegalArgumentError("program too long");
+                    } else {
+                        if opcodes == nil {
+                            opcodes = Array(repeating: nil, count: 256);
+                            pc=0
+                            while pc<langSpec!.Ops!.count{
+                                var op=langSpec?.Ops![pc]
+                                opcodes![op!.Opcode!] = op!
+                                pc=pc+1
+                               
+                            }
+                           
+                        }
+                        pc=vlen
+                        var size:Int=0;
+                        while pc<program.count{
+                            var opcode:Int=Int(program[pc] & unsafeBitCast(UInt8(255), to:Int8.self))
+                            var op=opcodes![opcode]
+                            if(op==nil){
+                                throw Errors.illegalArgumentError("invalid instruction: \(opcode)")
+                            }
+                            cost = cost+op!.Cost!
+                            size = op!.Size!
+                            if size == 0{
+                                switch(op!.Opcode){
+                                case 32 : var intsBlock=try! readIntConstBlock(program: program, pc: pc)
+                                    size = size + intsBlock.size
+                                    ints.append(contentsOf: intsBlock.results)
+                                case 38 : var bytesBlock=try! readByteConstBlock(program: program, pc: pc)
+                                    size = size + bytesBlock.size
+                                    bytes.append(contentsOf: bytesBlock.results)
+                                default: throw Errors.illegalArgumentError("invalid instruction: ")
+                                }
+                            }
+                            pc=pc+size
+                        
+                        }
+
+                        if cost > 20000 {
+                            throw Errors.illegalArgumentError("program too costly to run");
+                        } else {
+                            return ProgramData(good: true, intBlock: ints, byteBlock: bytes);
+                        }
+                    }
+                }
+            }
+    }
+    
+    
+    public static func checkProgram(program:[Int8],  args:[[Int8]]?) throws -> Bool {
+       var programData = try! readProgram(program: program, args: args)
+        return programData.good
+       }
+    
+    public  class VarintResult {
+        public  var value:Int;
+        public var length:Int;
+
+        init(value:Int,length:Int) {
+                self.value = value;
+                self.length = length;
+            }
+
+            init() {
+                self.value = 0;
+                self.length = 0;
+            }
+        }
+
+        public  class ProgramData {
+            public  var good:Bool;
+            public  var intBlock:[Int64];
+            public  var byteBlock:[[Int8]];
+
+            init(good:Bool,intBlock:[Int64],  byteBlock:[[Int8]]) {
+                self.good = good;
+                self.intBlock = intBlock;
+                self.byteBlock = byteBlock;
+            }
+        }
+
+    
+    
+    
+    private class LangSpec:Codable {
+        public var EvalMaxVersion:Int?
+        public var LogicSigVersion:Int?
+        public var Ops:[Operation]?
+
+          init() {
+           }
+       }
+
+    private class Operation:Codable {
+        var Opcode:Int?
+        var Name:String?
+        var Cost:Int?
+        var Size:Int?
+        var Returns:String?
+        var ArgEnum:[String]?
+        var ArgEnumTypes:String?
+        var Doc:String?
+        var ImmediateNote:String?
+        var Group:[String]?
+
+          init() {
+           }
+       }
+
+    
+  public class IntConstBlock {
+    public var size:Int
+    public var results:[Int64];
+
+    init(size:Int, results:[Int64]) {
+            self.size = size;
+            self.results = results;
+        }
+    }
+
+ public  class ByteConstBlock {
+    public var size:Int;
+    public var results:[[Int8]];
+
+    init(size:Int, results:[[Int8]]) {
+            self.size = size;
+            self.results = results;
+        }
+    }
+}
