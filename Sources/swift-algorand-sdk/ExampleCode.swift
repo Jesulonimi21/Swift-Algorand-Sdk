@@ -50,15 +50,12 @@
 ////        }
 ////}
 //
-////var a:[Int8]=[1,2,3,4]
-////var b:[Int8]=[5,6,7,8]
-////
-////var c = a+b
-////print(c)
 //
-//testAtomicTransfer()
+////testAtomicTransfer()
 //
 ////var account =  try Account(mnemonic)
+//
+//
 //
 //dispatchMain()
 //
@@ -589,7 +586,7 @@
 //        }
 //    }
 //}
-//
+////
 //public func testAtomicTransfer(){
 //    var senderAddress = account.getAddress()
 //    var receiverAddress = try! Address("FMBQKMGDE7LYNDHCSUPJBXNMMT3HC2TXMIFAJKGBYJQDZN4R3M554N4QTY")
@@ -676,6 +673,66 @@
 //                }
 //
 //            }
+//    }
+//
+//}
+//
+//public func testSplitProgram(){
+//
+//    var lsig=LogicsigSignature(logicsig: [1, 32, 8, 1, -48, 15, 2, 0, -64, -106, -79, 2, 7, 3, -72, 23, 38, 3, 32, -2, -68, -96, -69, 20, 74, 90, 78, -89, -76, 56, -92, 104, 26, -56, 14, 108, -95, 5, -68, -74, 7, -4, 86, 83, 37, -55, 86, -107, -10, -94, 19, 32, -103, -32, 115, 15, -121, 33, 36, -25, -55, 41, -58, 11, -66, 50, -54, 114, 59, -13, -36, 55, -27, -29, -19, -111, -31, 80, -84, -9, 36, -35, 85, 30, 32, 2, 90, -46, -63, -65, 28, -93, -8, 19, 31, -9, -85, -12, -116, -37, -21, -98, -50, -17, 50, 105, 126, 42, 107, -36, 5, -100, -22, 26, 89, 11, 22, 49, 16, 34, 18, 49, 1, 35, 12, 16, 50, 4, 36, 18, 64, 0, 25, 49, 9, 40, 18, 49, 7, 50, 3, 18, 16, 49, 8, 37, 18, 16, 49, 2, 33, 4, 13, 16, 34, 64, 0, 46, 51, 0, 0, 51, 1, 0, 18, 49, 9, 50, 3, 18, 16, 51, 0, 7, 41, 18, 16, 51, 1, 7, 42, 18, 16, 51, 0, 8, 33, 5, 11, 51, 1, 8, 33, 6, 11, 18, 16, 51, 0, 8, 33, 7, 15, 16, 16])
+//
+//
+//    var trans =  algodClient.transactionParams().execute(){ paramResponse in
+//        if(!(paramResponse.isSuccessful)){
+//        print(paramResponse.errorDescription);
+//        return;
+//    }
+//
+//
+//       var tx1 = Transaction.paymentTransactionBuilder().setSender(try! Address("FABHMDUB2ACZR657MK3ECLSQKD2ILD5CGWYYYOVPWL37RUROTNUY36FXMQ"))
+//        .amount(15000)
+//        .receiver(try! Address("THQHGD4HEESOPSJJYYF34MWKOI57HXBX4XR63EPBKCWPOJG5KUPDJ7QJCM"))
+//    //    .note("Swift Algo sdk is cool".bytes)
+//        .suggestedParams(params: paramResponse.data!)
+//        .build()
+//
+//        var tx2 = Transaction.paymentTransactionBuilder().setSender(try! Address("FABHMDUB2ACZR657MK3ECLSQKD2ILD5CGWYYYOVPWL37RUROTNUY36FXMQ"))
+//         .amount(35000)
+//         .receiver(try! Address("AJNNFQN7DSR7QEY766V7JDG35OPM53ZSNF7CU264AWOOUGSZBMLMSKCRIU"))
+//    //     .note("Swift Algo sdk is cool".bytes)
+//         .suggestedParams(params: paramResponse.data!)
+//         .build()
+//
+//        print(tx1.txID())
+//        print(tx2.txID())
+//        var transactions=[tx1,tx2]
+//        var gid = try! TxGroup.computeGroupID(txns: transactions)
+//        var signedTransactions:[SignedTransaction]=Array(repeating: SignedTransaction(), count: transactions.count)
+//
+//        for i in 0..<transactions.count{
+//            transactions[i].assignGroupID(gid: gid)
+//            signedTransactions[i]=SignedTransaction(tx: transactions[i], lSig: lsig, txId: transactions[i].txID())
+//        }
+//
+//
+//    //
+//    //        var signedTransaction=account.signTransaction(tx: tx)
+//
+//    //        var signedTransaction=signedTransactions[0]+signedTransactions[1]+signedTransactions[2]
+//        var encodedTrans:[Int8]=CustomEncoder.encodeToMsgPack(signedTransactions[0])+CustomEncoder.encodeToMsgPack(signedTransactions[1])
+//
+//    print(encodedTrans)
+//        algodClient.rawTransaction().rawtxn(rawtaxn: encodedTrans).execute(){
+//           response in
+//            if(response.isSuccessful){
+//                print(response.data!.txId)
+//
+//            }else{
+//                print(response.errorDescription)
+//                print("Failed")
+//            }
+//
+//        }
 //    }
 //
 //}

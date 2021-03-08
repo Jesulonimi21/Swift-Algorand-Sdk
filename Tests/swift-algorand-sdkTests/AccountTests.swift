@@ -30,8 +30,9 @@ public class AccountTests : XCTestCase{
         var account = try! Account(mnemonic)
         var stxBytes:[UInt8] = account.keyPair.sign(CustomEncoder.encodeToMsgPack(tx))
         var isVerified = try! account.keyPair.verify(signature: stxBytes, message: CustomEncoder.encodeToMsgPack(tx))
+      
+        AlgoLogic.loadLangSpec()
         XCTAssertEqual( isVerified, true)
-   
             
         
     }

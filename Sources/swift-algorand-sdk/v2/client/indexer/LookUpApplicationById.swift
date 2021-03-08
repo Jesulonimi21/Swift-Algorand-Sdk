@@ -20,7 +20,7 @@ public class LookUpApplicationsById{
         print(getRequestString(parameter: self.id))
         let headers:HTTPHeaders=[client.apiKey:client.token]
         var request=AF.request(getRequestString(parameter: self.id),method: .get, parameters: nil, headers: headers,requestModifier: { $0.timeoutInterval = 120 })
-  print("Afetre request")
+
         request.validate()
         var customResponse:Response<ApplicationResponse>=Response()
   request.responseDecodable(of: ApplicationResponse.self){  (response) in

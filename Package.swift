@@ -36,8 +36,16 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "swift-algorand-sdk",
-            
-            dependencies: ["Ed25519","MessagePack","MessagePacker","Alamofire"]),
+            dependencies: ["Ed25519","MessagePack","MessagePacker","Alamofire"],
+            resources:[
+                        .process("Resources/Langspec.txt")
+                    ]
+        ),
+//
+//        .target(name: "Resources",dependencies:[], resources:[
+//            .process("Langspec.txt")
+//        ]),
+      
         .testTarget(
             name: "swift-algorand-sdkTests",
             dependencies: ["swift-algorand-sdk"]),
