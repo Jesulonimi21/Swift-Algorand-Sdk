@@ -8,9 +8,9 @@
 import Foundation
 
 public class AccountStateDelta : Codable {
-    var address:Address?;
+    public var address:Address?;
  
-    var delta:[EvalDeltaKeyValue]?;
+    public  var delta:[EvalDeltaKeyValue]?;
 
     init() {
     }

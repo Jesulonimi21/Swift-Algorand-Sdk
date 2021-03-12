@@ -8,12 +8,12 @@
 import Foundation
 
 public class TransactionParametersResponse:Codable {
-    var consensusVersion:String?;
-    var fee:Int64?;
-    var genesisHash:[Int8]?;
-    var genesisId:String?;
-    var lastRound:Int64?;
-    var minFee:Int64?;
+    public  var consensusVersion:String?;
+    public  var fee:Int64?;
+    public  var genesisHash:[Int8]?;
+    public var genesisId:String?;
+    public    var lastRound:Int64?;
+    public   var minFee:Int64?;
 
     
     

@@ -10,33 +10,33 @@ import Foundation
 public class NodeStatusResponse : Codable {
     
    
-    var catchpoint:String?;
+    public    var catchpoint:String?;
 
-    var catchpointAcquiredBlocks:Int64?
+    public   var catchpointAcquiredBlocks:Int64?
 
-    var catchpointProcessedAccounts:Int64?
+    public  var catchpointProcessedAccounts:Int64?
 
-    var catchpointTotalAccounts:Int64?;
+    public   var catchpointTotalAccounts:Int64?;
   
-    var catchpointTotalBlocks:Int64?;
+    public  var catchpointTotalBlocks:Int64?;
    
-    var catchupTime:Int64?;
+    public  var catchupTime:Int64?;
  
-    var lastCatchpoint:String?;
+    public    var lastCatchpoint:String?;
   
-    var  lastRound:Int64?;
+    public  var  lastRound:Int64?;
   
-    var lastVersion:String?;
+    public  var lastVersion:String?;
    
-    var nextVersion:String?;
+    public    var nextVersion:String?;
    
-    var nextVersionRound:Int64?;
+    public    var nextVersionRound:Int64?;
   
-    var nextVersionSupported:Bool?;
+    public   var nextVersionSupported:Bool?;
 
-    var stoppedAtUnsupportedRound:Bool?;
+    public    var stoppedAtUnsupportedRound:Bool?;
     
-    var timeSinceLastRound:Int64?;
+    public   var timeSinceLastRound:Int64?;
 
 
     enum CodingKeys:String,CodingKey{

@@ -8,24 +8,24 @@
 import Foundation
 public class PendingTransactionResponse : Codable {
 
-    var  applicationIndex:Int64?;
-    var assetIndex:Int64?;
+    public  var  applicationIndex:Int64?;
+    public var assetIndex:Int64?;
    
-    var closeRewards:Int64?
+    public var closeRewards:Int64?
 
-    var closingAmount:Int64?
+    public   var closingAmount:Int64?
   
-    var confirmedRound:Int64?
+    public  var confirmedRound:Int64?
  
-   var globalStateDelta:[EvalDeltaKeyValue]?;
+    public  var globalStateDelta:[EvalDeltaKeyValue]?;
    
-   var localStateDelta:[AccountStateDelta]?
+    public  var localStateDelta:[AccountStateDelta]?
 
-    var poolError:String?;
+    public  var poolError:String?;
    
-    var receiverRewards:Int64?;
+    public var receiverRewards:Int64?;
   
-    var senderRewards:Int64?;
+    public var senderRewards:Int64?;
     
 //    var txn:SignedTransaction?;
 
