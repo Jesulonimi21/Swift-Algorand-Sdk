@@ -16,7 +16,7 @@ public class LookupBlocks{
         self.roundNumber=roundNumber
     }
 
-    internal func execute( callback: @escaping (_:Response<Block>) ->Void){
+    public func execute( callback: @escaping (_:Response<Block>) ->Void){
         print(getRequestString(parameter: self.roundNumber))
         let headers:HTTPHeaders=[client.apiKey:client.token]
         var request=AF.request(getRequestString(parameter: self.roundNumber),method: .get, parameters: nil, headers: headers,requestModifier: { $0.timeoutInterval = 120 })

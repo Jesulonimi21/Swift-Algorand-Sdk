@@ -17,7 +17,7 @@ public class PendingTransactionInformation{
         self.txId=txId
     }
 
-    internal func execute( callback: @escaping (_:Response<PendingTransactionResponse>) ->Void){
+    public func execute( callback: @escaping (_:Response<PendingTransactionResponse>) ->Void){
         print(getRequestString(parameter: self.txId))
         let headers:HTTPHeaders=[client.apiKey:client.token]
         var request=AF.request(getRequestString(parameter: self.txId),method: .get, parameters: nil, headers: headers,requestModifier: { $0.timeoutInterval = 120 })

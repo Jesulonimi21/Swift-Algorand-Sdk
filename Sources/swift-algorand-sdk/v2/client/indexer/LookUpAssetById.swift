@@ -16,7 +16,7 @@ public class LookUpAssetById{
         self.id=id
     }
 
-    internal func execute( callback: @escaping (_:Response<AssetResponse>) ->Void){
+    public func execute( callback: @escaping (_:Response<AssetResponse>) ->Void){
         print(getRequestString(parameter: self.id))
         let headers:HTTPHeaders=[client.apiKey:client.token]
         var request=AF.request(getRequestString(parameter: self.id),method: .get, parameters: nil, headers: headers,requestModifier: { $0.timeoutInterval = 120 })
