@@ -9,7 +9,7 @@ import Foundation
 public class VRFPublicKey : Codable {
    var  KEY_LEN_BYTES = 32
     var bytes:[Int8] = Array(repeating: 0, count: 32)
-
+public
     enum CodingKeys:String, CodingKey{
         case bytes
     }

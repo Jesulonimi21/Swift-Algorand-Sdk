@@ -8,7 +8,7 @@
 import Foundation
 public class Ed25519PublicKey : Codable {
     var  KEY_LEN_BYTES = 32;
-    var bytes:[Int8] = Array(repeating: 0, count: 32) ;
+    public var bytes:[Int8] = Array(repeating: 0, count: 32) ;
     
     enum  CodingKeys:String,CodingKey{
         case bytes="bytes"

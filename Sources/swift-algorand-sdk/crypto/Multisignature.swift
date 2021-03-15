@@ -9,10 +9,10 @@ import Foundation
 public class MultisigSignature : Codable {
     var SIGN_ALGO = "EdDSA";
     var  MULTISIG_VERSION:Int = 1;
-    var version:Int?;
-    var threshold:Int?;
-    var subsigs:[MultisigSubsig]?=[MultisigSubsig]();
-    var alphabetic=true
+  public  var version:Int?;
+  public  var threshold:Int?;
+public    var subsigs:[MultisigSubsig]?=[MultisigSubsig]();
+  public  var alphabetic=true
     
     enum CodingKeys:String,CodingKey{
         case subsigs="subsig"

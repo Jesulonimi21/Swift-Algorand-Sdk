@@ -21,7 +21,7 @@ public class MultisigAddress: Codable {
         case publicKeys="publicKeys"
     }
     
-    init (version:Int,  threshold:Int,publicKeys:[Ed25519PublicKey]) throws{
+   public init (version:Int,  threshold:Int,publicKeys:[Ed25519PublicKey]) throws{
         self.version = version;
         self.threshold = threshold;
         self.publicKeys=publicKeys;
@@ -45,7 +45,7 @@ public class MultisigAddress: Codable {
         return ret;
     }
 
-    internal func toAddress() throws  ->Address{
+    public func toAddress() throws  ->Address{
         var numPkBytes:Int = 32 * self.publicKeys.count;
         var hashable:[Int8] = Array(repeating: 0, count: PREFIX.count + 2 + numPkBytes)
         for i in 0..<PREFIX.count{
