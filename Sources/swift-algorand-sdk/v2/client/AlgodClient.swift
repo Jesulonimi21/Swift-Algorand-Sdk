@@ -46,6 +46,13 @@ public class AlgodClient {
         return PendingTransactionInformation(client: self, txId: txId)
     }
     
+    public func accountInformation(address:String) ->AccountInformation{
+        return AccountInformation(client: self, address: address)
+    }
+    
+    public func getBlock(round:Int64) ->GetBlock{
+        return GetBlock(client: self, round: round)
+    }
     public func set(key:String){
         self.apiKey=key
     }

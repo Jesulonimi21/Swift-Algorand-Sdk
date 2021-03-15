@@ -11,7 +11,7 @@
 //var PURESTAKE_ALGOD_API_TESTNET_ADDRESS="https://testnet-algorand.api.purestake.io/ps2";
 //var PURESTAKE_ALGOD_API_MAINNET_ADDRESS="https://mainnet-algorand.api.purestake.io/ps2";
 //var PURESTAKE_INDEXER_API_ADDRESS="https://testnet-algorand.api.purestake.io/idx2";
-//var PURESTAKE_API_KEY="";
+//var PURESTAKE_API_KEY="ADRySlL0NK5trzqZGAE3q1xxIqlQdSfk1nbHxTNe";
 //var PURESTAKE_API_PORT="443";
 //var HACKATHON_API_PORT="9100";
 //var HACKATHON_API_ADDRESS="http://hackathon.algodev.network";
@@ -37,7 +37,7 @@
 ////testSearchForApplications()
 ////testLookForApplication()
 ////testLookUpBlock()
-////testGetStatus()
+//testGetStatus()
 //
 ////try! testPayment(mnemonic:mnemonic)
 ////testMultisigCreationAndTransaction()
@@ -422,9 +422,9 @@
 //        }
 //
 //    }
-//    //try! testPayment(mnemonic:mnemonic)
+////    try! testPayment(mnemonic:mnemonic)
 //
-//    algodClient.pendingTransactionInformation(txId: "HPS2AQU26NNVTFIJVBYYZN2P2T73AONKWCS7HPT5JUQEQMXFHMJA").execute(){ pendingTransactionResponse in
+//    algodClient.pendingTransactionInformation(txId: "5X6U2VZASKBHBCM3QCAEA2QB3QQCITXKZHUTMCVFC4WACW2V5QSA").execute(){ pendingTransactionResponse in
 //            if(pendingTransactionResponse.isSuccessful){
 //                print(pendingTransactionResponse.data!.confirmedRound)
 //            }else{
@@ -735,4 +735,27 @@
 //        }
 //    }
 //
+//}
+//
+//func testGetAccountBalance(){
+//    algodClient.accountInformation(address: "FMBQKMGDE7LYNDHCSUPJBXNMMT3HC2TXMIFAJKGBYJQDZN4R3M554N4QTY").execute(){accountInformationResponse in
+//        if(accountInformationResponse.isSuccessful){
+//                  print(accountInformationResponse.data!.amount)
+//              }else{
+//                  print(accountInformationResponse.errorDescription!)
+//                  print("Error")
+//              }
+//    }
+//
+//}
+//func testGetBlock(){
+//    algodClient.getBlock(round: 12925166).execute(){ blockResponse in
+//        if(blockResponse.isSuccessful){
+//            print(blockResponse.data!.toJson()!)
+//
+//
+//        }else{
+//            print(blockResponse.errorDescription)
+//        }
+//    }
 //}
