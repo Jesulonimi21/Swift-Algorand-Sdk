@@ -14,7 +14,7 @@ public class Ed25519PublicKey : Codable {
         case bytes="bytes"
     }
  
-    init(bytes:[Int8]) {
+   public init(bytes:[Int8]) {
         self.bytes=bytes
     }
 

@@ -366,51 +366,51 @@
 //    }
 //}
 //
-//func testMultisigCreationAndTransaction(){
-//    var ed25519i=Ed25519PublicKey(bytes: CustomEncoder.convertToInt8Array(input: account.keyPair.publicKey.bytes))
-//    var ed25519ii=Ed25519PublicKey(bytes: CustomEncoder.convertToInt8Array(input: account1.keyPair.publicKey.bytes))
-//    var multisigAddress=try! MultisigAddress(version: 1, threshold: 2, publicKeys: [ed25519ii,ed25519i]);
-//    print(multisigAddress.toString())
-//    algodClient.transactionParams().execute(){ paramResponse in
-//        if(!(paramResponse.isSuccessful)){
-//            print(paramResponse.errorDescription);
-//            return;
-//        }
-//
-//        var tx = Transaction.paymentTransactionBuilder()
-//            .setSender( try! multisigAddress.toAddress())
-//            //            .suggestedParams(params: paramResponse.data!)
-//              .amount(10)
-//            .receiver(account.getAddress())
-//    //           .firstValid(1000)
-//    //                .genesisHash([72,99,-75,24,-92,-77,-56,78,-56,16,-14,45,79,16,-127,-53,15,113,-16, 89, -89,-84,32, -34,-58,47,127,112,-27, 9, 58,34,])
-//            .suggestedParams(params: paramResponse.data!)
-//                      .build();
-//
-//        var IsignedTrans = try! account.signMultisigTransaction(from: multisigAddress, tx: tx)
-//        var signedTrans=try!account1.appendMultisigTransaction(from: multisigAddress, signedTx: IsignedTrans)
-//        var signedTransmsgPack=CustomEncoder.convertToUInt8Array(input: CustomEncoder.encodeToMsgPack(signedTrans))
-//    var int8sT:[Int8] = CustomEncoder.encodeToMsgPack(signedTrans)
-//        print(int8sT)
-//        print(signedTransmsgPack.count)
-//    var jsonEncoder=JSONEncoder()
-//    var txData=try! jsonEncoder.encode(signedTrans)
-//    var txString=String(data: txData, encoding: .utf8)
-//    print(txString!)
-//
-//        algodClient.rawTransaction().rawtxn(rawtaxn: CustomEncoder.encodeToMsgPack(signedTrans)).execute(){
-//           response in
-//            if(response.isSuccessful){
-//                print(response.data!.txId)
-//
-//            }else{
-//                print(response.errorDescription)
-//            }
-//
-//        }
-//
-//
-//    }
+func testMultisigCreationAndTransaction(){
+    var ed25519i=Ed25519PublicKey(bytes: CustomEncoder.convertToInt8Array(input: account.keyPair.publicKey.bytes))
+    var ed25519ii=Ed25519PublicKey(bytes: CustomEncoder.convertToInt8Array(input: account1.keyPair.publicKey.bytes))
+    var multisigAddress=try! MultisigAddress(version: 1, threshold: 2, publicKeys: [ed25519ii,ed25519i]);
+    print(multisigAddress.toString())
+    algodClient.transactionParams().execute(){ paramResponse in
+        if(!(paramResponse.isSuccessful)){
+            print(paramResponse.errorDescription);
+            return;
+        }
+
+        var tx = Transaction.paymentTransactionBuilder()
+            .setSender( try! multisigAddress.toAddress())
+            //            .suggestedParams(params: paramResponse.data!)
+              .amount(10)
+            .receiver(account.getAddress())
+    //           .firstValid(1000)
+    //                .genesisHash([72,99,-75,24,-92,-77,-56,78,-56,16,-14,45,79,16,-127,-53,15,113,-16, 89, -89,-84,32, -34,-58,47,127,112,-27, 9, 58,34,])
+            .suggestedParams(params: paramResponse.data!)
+                      .build();
+
+        var IsignedTrans = try! account.signMultisigTransaction(from: multisigAddress, tx: tx)
+        var signedTrans=try!account1.appendMultisigTransaction(from: multisigAddress, signedTx: IsignedTrans)
+        var signedTransmsgPack=CustomEncoder.convertToUInt8Array(input: CustomEncoder.encodeToMsgPack(signedTrans))
+    var int8sT:[Int8] = CustomEncoder.encodeToMsgPack(signedTrans)
+        print(int8sT)
+        print(signedTransmsgPack.count)
+    var jsonEncoder=JSONEncoder()
+    var txData=try! jsonEncoder.encode(signedTrans)
+    var txString=String(data: txData, encoding: .utf8)
+    print(txString!)
+
+        algodClient.rawTransaction().rawtxn(rawtaxn: CustomEncoder.encodeToMsgPack(signedTrans)).execute(){
+           response in
+            if(response.isSuccessful){
+                print(response.data!.txId)
+
+            }else{
+                print(response.errorDescription)
+            }
+
+        }
+
+
+    }
 //
 //}
 //public func testGetStatus(){
