@@ -21,7 +21,7 @@ extension Array where Element: Comparable {
 public class Address: Codable{
     
    
-    var bytes:[Int8]?=Array(repeating:0,count:32)
+    public var bytes:[Int8]?=Array(repeating:0,count:32)
     enum CodingKeys:CodingKey{
         case bytes
     }
@@ -95,7 +95,7 @@ public class Address: Codable{
         return "";
     }
     
-    func getBytes()->[Int8]{
+   public func getBytes()->[Int8]{
         return self.bytes!
     }
     
