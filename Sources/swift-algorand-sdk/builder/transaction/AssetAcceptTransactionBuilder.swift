@@ -32,7 +32,7 @@ public class AssetAcceptTransactionBuilder: TransactionBuilder<AssetAcceptTransa
 //        txn.amount = 0;
     }
 
-    internal func acceptingAccount(acceptingAccount:Address)->AssetAcceptTransactionBuilder {
+    public func acceptingAccount(acceptingAccount:Address)->AssetAcceptTransactionBuilder {
         self.sender = acceptingAccount;
         return self;
     }
