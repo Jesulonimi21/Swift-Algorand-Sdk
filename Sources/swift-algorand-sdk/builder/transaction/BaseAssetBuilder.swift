@@ -104,7 +104,7 @@ public class  BaseAssetBuilder <T>: TransactionBuilder<BaseAssetBuilder> {
         return self as! T;
     }
 
-    internal func manager(manager:Address)->T {
+    public func manager(manager:Address)->T {
         self.manager = manager;
         return self as! T;
     }
@@ -121,7 +121,7 @@ public class  BaseAssetBuilder <T>: TransactionBuilder<BaseAssetBuilder> {
         return self as! T;
     }
 
-    internal func reserve(reserve:Address)->T {
+    public func reserve(reserve:Address)->T {
         self.reserve = reserve;
         return self as! T;
     }
@@ -138,7 +138,7 @@ public class  BaseAssetBuilder <T>: TransactionBuilder<BaseAssetBuilder> {
         return self as! T;
     }
 
-    internal func freeze(freeze:Address)->T {
+    public func freeze(freeze:Address)->T {
         self.freeze = freeze;
         return self as! T;
     }
@@ -154,7 +154,7 @@ public class  BaseAssetBuilder <T>: TransactionBuilder<BaseAssetBuilder> {
         return self as! T;
     }
 
-    internal func clawback(clawback:Address)->T {
+    public func clawback(clawback:Address)->T {
         self.clawback = clawback;
         return self as! T;
     }
