@@ -38,7 +38,7 @@ public class AssetTransferTransactionBuilder : TransactionBuilder<AssetTransferT
 
     }
 
-    internal func assetReceiver(assetReceiver:Address)->AssetTransferTransactionBuilder {
+    public func assetReceiver(assetReceiver:Address)->AssetTransferTransactionBuilder {
         self.assetReceiver = assetReceiver;
         return self;
     }

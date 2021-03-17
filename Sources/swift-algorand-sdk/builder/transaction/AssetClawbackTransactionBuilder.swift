@@ -71,7 +71,7 @@ public class AssetClawbackTransactionBuilder: TransactionBuilder<AssetClawbackTr
 //        return this;
 //    }
 
-    internal func assetReceiver(assetReceiver:Address)->AssetClawbackTransactionBuilder {
+    public func assetReceiver(assetReceiver:Address)->AssetClawbackTransactionBuilder {
         self.assetReceiver = assetReceiver;
         return self;
     }
@@ -109,7 +109,7 @@ public class AssetClawbackTransactionBuilder: TransactionBuilder<AssetClawbackTr
 //        return this;
 //    }
 
-    internal func assetIndex(assetIndex:Int64) ->AssetClawbackTransactionBuilder{
+    public func assetIndex(assetIndex:Int64) ->AssetClawbackTransactionBuilder{
         self.assetIndex = assetIndex;
         return self;
     }
@@ -132,7 +132,7 @@ public class AssetClawbackTransactionBuilder: TransactionBuilder<AssetClawbackTr
 //        }
 //    }
 
-    internal func assetAmount(assetAmount:Int64) ->AssetClawbackTransactionBuilder{
+    public func assetAmount(assetAmount:Int64) ->AssetClawbackTransactionBuilder{
         self.assetAmount = assetAmount;
         return self;
     }
