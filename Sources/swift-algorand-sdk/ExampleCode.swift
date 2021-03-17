@@ -37,7 +37,7 @@
 ////testSearchForApplications()
 ////testLookForApplication()
 ////testLookUpBlock()
-//testGetStatus()
+////testGetStatus()
 //
 ////try! testPayment(mnemonic:mnemonic)
 ////testMultisigCreationAndTransaction()
@@ -55,6 +55,8 @@
 //
 ////var account =  try Account(mnemonic)
 //
+//
+//testCreateASA(account.getAddress(),algodClient)
 //
 //
 //dispatchMain()
@@ -104,7 +106,7 @@
 //    }
 //}
 //
-//func testCreateASA(address:Address,algodClient:AlgodClient){
+//func testCreateASA(_ address:Address,_ algodClient:AlgodClient){
 //    algodClient.transactionParams().execute(){paramResponse in
 //        if(!(paramResponse.isSuccessful)){
 //            print(paramResponse.errorDescription);
@@ -114,10 +116,10 @@
 //                      .setSender(address)
 //                      .setAssetTotal(assetTotal: 10000)
 //                      .setAssetDecimals(assetDecimals:  0)
-//                      .assetUnitName(assetUnitName: "ssawttes")
-//                      .assetName(assetName:  "testssswt")
+//                      .assetUnitName(assetUnitName: "ssawljf")
+//                      .assetName(assetName:  "kfkkfkf")
 //                        .url(url: "http://nimi.com")
-//                        .metadataHashUTF8(metadataHash: "16efaa3924a6fd9d3a4824799a4ac65d")
+////                        .metadataHashUTF8(metadataHash: "16efaa3924a6fd9d3a4824799a4ac65d")
 //                        .manager(manager: address)
 //                        .reserve(reserve: address)
 //                        .freeze(freeze: address)
@@ -131,15 +133,14 @@
 //
 //        var txMessagePack:[Int8]=CustomEncoder.encodeToMsgPack(tx)
 //        print(txMessagePack)
-//
 //        var jsonencoder=JSONEncoder()
 //        var signedTransaction=account.signTransaction(tx: tx)
 //        var stxData=try! jsonencoder.encode(signedTransaction)
 //        var stxString=String(data: stxData, encoding: .utf8)
 //        print(stxString)
-//        print(tx.txID())
+////        print(tx.txID())
 //        var encodedTrans:[Int8]=CustomEncoder.encodeToMsgPack(signedTransaction)
-//        print(encodedTrans)
+////        print(encodedTrans)
 //        var dataToSend=Data(CustomEncoder.convertToUInt8Array(input: encodedTrans))
 //    //        let headers:HTTPHeaders=["X-Algo-API-Token":HACKATHON_API_TOKEN]
 //    //        AF.request("http://hackathon.algodev.network:9100/v2/transactions/",method: .post, parameters: nil, encoding: ByteEncoding(data: dataToSend), headers: headers).responseJSON(){ data in
@@ -147,19 +148,45 @@
 //    //
 //    //        }
 //
-//        print(try!account.keyPair.verify(signature: CustomEncoder.convertToUInt8Array(input: signedTransaction.sig!.bytes!), message: CustomEncoder.convertToUInt8Array(input: tx.bytesToSign())))
+////        print(try!account.keyPair.verify(signature: CustomEncoder.convertToUInt8Array(input: signedTransaction.sig!.bytes!), message: CustomEncoder.convertToUInt8Array(input: tx.bytesToSign())))
 //        algodClient.rawTransaction().rawtxn(rawtaxn: encodedTrans).execute(){
 //           response in
 //            if(response.isSuccessful){
 //                print(response.data!.txId)
+//
+//                waitForTransaction(txId:response.data!.txId){assetIndex in
+//                    print(assetIndex)
+//
+//                }
+//
 //            }else{
 //                print(response.errorDescription)
 //            }
-//
 //        }
 //
 //    }
 //
+//}
+//
+//func waitForTransaction(txId:String, funcToCall: @escaping (Int64?)->Void) {
+//    var confirmedRound: Int64?=0
+//    var assetIndex:Int64?=0
+//    algodClient.pendingTransactionInformation(txId:txId).execute(){
+//        pendingTransactionResponse in
+//            if(pendingTransactionResponse.isSuccessful){
+//                confirmedRound=pendingTransactionResponse.data!.confirmedRound
+//                assetIndex=pendingTransactionResponse.data!.assetIndex
+//                if(confirmedRound != nil && confirmedRound! > 0){
+//                   funcToCall(assetIndex)
+//                }else{
+//                  try!  waitForTransaction(txId: txId,funcToCall: funcToCall)
+//                }
+//            }else{
+//                print(pendingTransactionResponse.errorDescription!)
+//                funcToCall(nil)
+//                confirmedRound=12000;
+//            }
+//}
 //}
 //
 //func testChangeAsaManager(){
@@ -424,14 +451,7 @@
 //    }
 ////    try! testPayment(mnemonic:mnemonic)
 //
-//    algodClient.pendingTransactionInformation(txId: "5X6U2VZASKBHBCM3QCAEA2QB3QQCITXKZHUTMCVFC4WACW2V5QSA").execute(){ pendingTransactionResponse in
-//            if(pendingTransactionResponse.isSuccessful){
-//                print(pendingTransactionResponse.data!.confirmedRound)
-//            }else{
-//                print(pendingTransactionResponse.errorDescription!)
-//                print("Errir")
-//            }
-//    }
+//
 //
 //}
 //public func testGetHealth(){

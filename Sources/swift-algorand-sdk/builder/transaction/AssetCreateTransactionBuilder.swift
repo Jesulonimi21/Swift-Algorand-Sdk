@@ -114,7 +114,7 @@ public class AssetCreateTransactionBuilder: TransactionBuilder<AssetCreateTransa
         return self;
     }
 
-    internal func manager(manager:Address)->AssetCreateTransactionBuilder {
+    public func manager(manager:Address)->AssetCreateTransactionBuilder {
         self.manager = manager;
         return self;
     }
@@ -131,7 +131,7 @@ public class AssetCreateTransactionBuilder: TransactionBuilder<AssetCreateTransa
         return self;
     }
 
-    internal func reserve(reserve:Address)->AssetCreateTransactionBuilder {
+    public func reserve(reserve:Address)->AssetCreateTransactionBuilder {
         self.reserve = reserve;
         return self;
     }
@@ -148,7 +148,7 @@ public class AssetCreateTransactionBuilder: TransactionBuilder<AssetCreateTransa
         return self;
     }
 
-    internal func freeze(freeze:Address)->AssetCreateTransactionBuilder {
+    public func freeze(freeze:Address)->AssetCreateTransactionBuilder {
         self.freeze = freeze;
         return self;
     }
@@ -164,7 +164,7 @@ public class AssetCreateTransactionBuilder: TransactionBuilder<AssetCreateTransa
         return self;
     }
 
-    internal func clawback(clawback:Address)->AssetCreateTransactionBuilder {
+    public func clawback(clawback:Address)->AssetCreateTransactionBuilder {
         self.clawback = clawback;
         return self;
     }
