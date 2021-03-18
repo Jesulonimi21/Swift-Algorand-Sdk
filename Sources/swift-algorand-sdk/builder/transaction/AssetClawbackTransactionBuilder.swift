@@ -52,7 +52,7 @@ public class AssetClawbackTransactionBuilder: TransactionBuilder<AssetClawbackTr
 
     }
 
-    internal func assetClawbackFrom(assetClawbackFrom:Address)->AssetClawbackTransactionBuilder {
+    public func assetClawbackFrom(assetClawbackFrom:Address)->AssetClawbackTransactionBuilder {
         self.assetClawbackFrom = assetClawbackFrom;
         return self;
     }
