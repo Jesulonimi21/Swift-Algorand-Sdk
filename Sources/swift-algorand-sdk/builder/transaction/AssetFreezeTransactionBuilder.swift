@@ -35,7 +35,7 @@ public class AssetFreezeTransactionBuilder: TransactionBuilder<AssetFreezeTransa
         txn.freezeState = self.freezeState;
     }
 
-    internal func freezeTarget(freezeTarget:Address)->AssetFreezeTransactionBuilder {
+    public func freezeTarget(freezeTarget:Address)->AssetFreezeTransactionBuilder {
         self.freezeTarget = freezeTarget;
         return self;
     }
