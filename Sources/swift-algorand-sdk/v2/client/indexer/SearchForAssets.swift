@@ -29,7 +29,7 @@ public class SearchForAssets  {
     public func execute( callback: @escaping (_:Response<AssetsResponse>)->Void) {
     
         let headers:HTTPHeaders=[client.apiKey:client.token]
-        print(getRequestString())
+//        print(getRequestString())
         var request=AF.request(getRequestString(), method: .get, headers: headers,requestModifier: { $0.timeoutInterval = 120 })
 //        request.responseJSON(){response in
 //            debugPrint(response.value)

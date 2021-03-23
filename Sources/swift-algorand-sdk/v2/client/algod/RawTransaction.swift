@@ -34,7 +34,7 @@ public class RawTransaction{
     }
 
     public func execute( callback: @escaping (_:Response<PostTransactionsResponse>) ->Void){
-        print(getRequestString())
+//        print(getRequestString())
         let headers:HTTPHeaders=[client.apiKey:client.token,"Content-type":"application/x-binary"]
         var request=AF.request(getRequestString(),method: .post, parameters: nil, encoding: ByteEncoding(data:Data(CustomEncoder.convertToUInt8Array(input: self.rawTransaction!))), headers: headers,requestModifier: { $0.timeoutInterval = 120 })
         

@@ -17,7 +17,7 @@ public class TransactionParams  {
         
         let group=DispatchGroup()
         let headers:HTTPHeaders=[client.apiKey:client.token]
-        print(getRequestString())
+//        print(getRequestString())
         var request=AF.request(getRequestString(), method: .get, headers: headers,requestModifier: { $0.timeoutInterval = 120 })
         var customResponse:Response<TransactionParametersResponse>=Response()
       request.responseDecodable(of: TransactionParametersResponse.self){ (response) in

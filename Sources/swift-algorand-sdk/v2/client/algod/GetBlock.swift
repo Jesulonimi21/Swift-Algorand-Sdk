@@ -18,7 +18,7 @@ public class GetBlock{
     }
 
     public func execute( callback: @escaping (_:Response<BlockResponse>) ->Void){
-        print(getRequestString(parameter: self.round))
+//        print(getRequestString(parameter: self.round))
         let headers:HTTPHeaders=[client.apiKey:client.token]
         var request=AF.request(getRequestString(parameter: self.round),method: .get, parameters: nil, headers: headers,requestModifier: { $0.timeoutInterval = 120 })
 

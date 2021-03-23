@@ -18,7 +18,7 @@ public class AccountInformation{
     }
 
     public func execute( callback: @escaping (_:Response<AccountData>) ->Void){
-        print(getRequestString(parameter: self.address))
+//        print(getRequestString(parameter: self.address))
         let headers:HTTPHeaders=[client.apiKey:client.token]
         var request=AF.request(getRequestString(parameter: self.address),method: .get, parameters: nil, headers: headers,requestModifier: { $0.timeoutInterval = 120 })
 

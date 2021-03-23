@@ -16,7 +16,7 @@ public class MakeHealthCheck  {
     public func execute( callback: @escaping (_:Response<HealthCheck>)->Void) {
     
         let headers:HTTPHeaders=[client.apiKey:client.token]
-        print(getRequestString())
+//        print(getRequestString())
         var request=AF.request(getRequestString(), method: .get, headers: headers,requestModifier: { $0.timeoutInterval = 120 })
         var customResponse:Response<HealthCheck>=Response()
       request.responseDecodable(of: HealthCheck.self){ (response) in
