@@ -6,6 +6,28 @@
 //
 
 import Foundation
+extension BinaryInteger where Self: FixedWidthInteger {
+
+    /// Safely converts Float to BinaryInteger (Uint8, Uint16, Int8, and so on), truncate remains that do not fit in the instance of BinaryInteger range value.
+    /// For instance, if Float value is 300.934, and self is UInt8, it will be 255, or if Float value is -100.2342, self value will be 0
+    init(truncateToFit float: Float) {
+        switch float {
+        case _ where float < Float(Self.min): self.init(Self.min)
+        case _ where float > Float(Self.max): self.init(Self.max)
+        default: self.init(float)
+        }
+    }
+
+    /// Safely converts Double to BinaryInteger (Uint8, Uint16, Int8, and so on), truncate remains that do not fit in the instance of BinaryInteger range value.
+    /// For instance, if Double value is 300.934, and self is UInt8, it will be 255, or if Float value is -100.2342, self value will be 0
+    init(truncateToFit double: Double) {
+        switch double {
+        case _ where double < Double(Self.min): self.init(Self.min)
+        case _ where double > Double(Self.max): self.init(Self.max)
+        default: self.init(double)
+        }
+    }
+}
 public class AlgoLogic{
     
     private var MAX_COST = 20000;
@@ -26,14 +48,15 @@ public class AlgoLogic{
 
         
         while funcValue>=128 {
-            buffer.append(Int8(value)&unsafeBitCast(UInt8(255), to:Int8.self)|unsafeBitCast(UInt8(128), to:Int8.self))
-            funcValue>>=7
+            buffer.append(Int8(truncatingIfNeeded: funcValue)&unsafeBitCast(UInt8(255), to:Int8.self)|unsafeBitCast(UInt8(128), to:Int8.self))
+      
+                funcValue =   funcValue>>7
+      
+     
         }
-
-        buffer.append(unsafeBitCast(UInt8(value), to:Int8.self)&unsafeBitCast(UInt8(255), to: Int8.self))
+        buffer.append(Int8(truncatingIfNeeded: funcValue)&unsafeBitCast(UInt8(255), to: Int8.self))
   
         var out:[Int8]=Array()
-
         for i in 0..<buffer.count{
             out.append(buffer[i])
         }

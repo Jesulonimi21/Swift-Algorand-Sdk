@@ -21,7 +21,7 @@ public class PendingTransactionInformation{
         print(getRequestString(parameter: self.txId))
         let headers:HTTPHeaders=[client.apiKey:client.token]
         var request=AF.request(getRequestString(parameter: self.txId),method: .get, parameters: nil, headers: headers,requestModifier: { $0.timeoutInterval = 120 })
-  print("Afetre request")
+
         request.validate()
         var customResponse:Response<PendingTransactionResponse>=Response()
   request.responseDecodable(of: PendingTransactionResponse.self){  (response) in

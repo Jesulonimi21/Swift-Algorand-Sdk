@@ -24,9 +24,9 @@ public class LookUpAssetTransactions  {
         let headers:HTTPHeaders=[client.apiKey:client.token]
         print(getRequestString())
         var request=AF.request(getRequestString(), method: .get, headers: headers,requestModifier: { $0.timeoutInterval = 120 })
-        request.responseJSON(){response in
-            debugPrint(response.value)
-        }
+//        request.responseJSON(){response in
+//            debugPrint(response.value)
+//        }
         var customResponse:Response<TransactionsResponse>=Response()
       request.responseDecodable(of: TransactionsResponse.self){ (response) in
         if(response.error != nil){

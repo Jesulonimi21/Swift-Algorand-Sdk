@@ -22,9 +22,9 @@ public class SearchForAccounts  {
         let headers:HTTPHeaders=[client.apiKey:client.token]
         print(getRequestString())
         var request=AF.request(getRequestString(), method: .get, headers: headers,requestModifier: { $0.timeoutInterval = 120 })
-        request.responseJSON(){response in
-            debugPrint(response.value)
-        }
+//        request.responseJSON(){response in
+//            debugPrint(response.value)
+//        }
         var customResponse:Response<AccountsResponse>=Response()
       request.responseDecodable(of: AccountsResponse.self){ (response) in
         if(response.error != nil){

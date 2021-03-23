@@ -17,7 +17,7 @@ public class GetStatus{
     public func execute( callback: @escaping (_:Response<NodeStatusResponse>) ->Void){
         let headers:HTTPHeaders=[client.apiKey:client.token]
         var request=AF.request(getRequestString(),method: .get, parameters: nil, headers: headers,requestModifier: { $0.timeoutInterval = 120 })
-  print("Afetre request")
+
         request.validate()
         var customResponse:Response<NodeStatusResponse>=Response()
   request.responseDecodable(of: NodeStatusResponse.self){  (response) in

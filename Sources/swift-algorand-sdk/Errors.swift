@@ -12,4 +12,5 @@ enum Errors:Error{
     case generalSecurityError(String)
     case NetworkError(String)
     
+    
 }

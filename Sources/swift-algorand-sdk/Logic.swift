@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 infix operator >>> : BitwiseShiftPrecedence
 func >>> (lhs: Int64, rhs: Int64) -> Int64 {
    if lhs >= 0 {

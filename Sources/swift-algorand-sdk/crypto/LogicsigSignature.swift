@@ -65,17 +65,13 @@ public class LogicsigSignature:Codable {
     }
 
     public func bytesToSign()->[Int8] {
-//        byte[] prefixedEncoded = new byte[this.logic.length + LOGIC_PREFIX.length];
         var prefixedEncoded:[Int8]=Array(repeating: 0, count: self.logic!.count+LogicsigSignature.LOGIC_PREFIX.count)
         
-        //        System.arraycopy(LOGIC_PREFIX, 0, prefixedEncoded, 0, LOGIC_PREFIX.length);
         for i in 0..<LogicsigSignature.LOGIC_PREFIX.count{
             prefixedEncoded[i]=LogicsigSignature.LOGIC_PREFIX[i]
         }
 
-//        System.arraycopy(this.logic, 0, prefixedEncoded, LOGIC_PREFIX.length, this.logic.length);
-        
-        var counter=0;
+      var counter=0;
             for i in LogicsigSignature.LOGIC_PREFIX.count..<prefixedEncoded.count{
                 prefixedEncoded[i]=self.logic![counter]
             counter=counter+1
