@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class TransactionData:Decodable{
+public class TransactionData:Codable{
 
 public var applicationTransaction:TransactionApplication?
    

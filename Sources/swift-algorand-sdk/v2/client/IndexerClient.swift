@@ -62,8 +62,8 @@ public class IndexerClient {
         return SearchForAccounts(client: self)
     }
     
-    public func lookUpBlocks(roundNumber:Int64)->LookupBlocks{
-        return LookupBlocks(client: self, roundNumber: roundNumber)
+    public func lookUpBlock(roundNumber:Int64)->LookupBlock{
+        return LookupBlock(client: self, roundNumber: roundNumber)
     }
     
     public func lookUpAssetBalances(assetId:Int64)->LookUpAssetBalances{

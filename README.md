@@ -106,8 +106,7 @@ var indexerClient=IndexerClient(host: "INDEXER_API_ADDRESS", port: "API_PORT", t
   indexerClient.lookUpAssetBalances(assetId:14077815).execute(){response in
         if response.isSuccessful{
                 print("success")
-            print(response.data!.balances![0].amount)
-
+            print(response.data!.toJson()!)
         }else{
             print(response.errorDescription)
         }
@@ -117,13 +116,7 @@ indexerClient.lookUpBlocks(roundNumber: 12471917).execute(){response in
 
         if response.isSuccessful{
                 print("success")
-            print(response.data!.genesisHash)
-            print(response.data!.genesisId)
-            print(response.data!.rewards!.feeSink)
-            print(response.data!.round)
-            print(response.data!.upgradeVote?.upgradeApprove)
-            print(response.data!.upgradeState?.currentProtocol)
-
+            print(response.data!.toJson()!)
         }else{
             print(response.errorDescription)
         }
@@ -131,7 +124,7 @@ indexerClient.lookUpBlocks(roundNumber: 12471917).execute(){response in
 
 indexerClient.searchForAccounts().assetId(assetId: 14077815).execute(){ response in
         if response.isSuccessful{
-            print(response.data!.accounts!.count)
+            print(response.data!.toJson()!)
         }else{
             print(response.errorDescription)
         }
@@ -139,9 +132,7 @@ indexerClient.searchForAccounts().assetId(assetId: 14077815).execute(){ response
 
      indexerClient.searchForTransactions().txid(txid:"HPS2AQU26NNVTFIJVBYYZN2P2T73AONKWCS7HPT5JUQEQMXFHMJA").execute(){ response in
         if response.isSuccessful{
-            print(response.data!.transactions![0].confirmedRound)
-            print(response.data!.transactions![0].txType?.rawValue)
-            print("success")
+            print(response.data!.toJson()!)
         }else{
             print(response.errorDescription)
             print("failure")
@@ -154,7 +145,7 @@ indexerClient.searchForAccounts().assetId(assetId: 14077815).execute(){ response
 
         if response.isSuccessful{
                 print("success")
-            print(response.data!.asset!.params!.creator!)
+            print(response.data!..toJson()!)
         }else{
             print(response.errorDescription)
             print("Error");
@@ -164,7 +155,7 @@ indexerClient.searchForAccounts().assetId(assetId: 14077815).execute(){ response
 
       indexerClient.searchForAssets().assetId(assetId:14077815).execute(){ response in
         if response.isSuccessful{
-            print(response.data!.asset![0].params!.creator!)
+            print(response.data!..toJson()!)
         }else{
             print(response.errorDescription)
             print("Error");

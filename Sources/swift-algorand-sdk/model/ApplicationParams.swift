@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class ApplicationParams:Decodable{
+public class ApplicationParams:Codable{
     public var approvalProgram:[Int8]?
     public var clearStateProgram:[Int8]?
     public var creator:String?

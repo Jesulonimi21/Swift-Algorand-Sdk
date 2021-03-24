@@ -7,23 +7,25 @@
 
 import Foundation
 
-enum OnCompletionData{
-    case NOOP
-    case OPTIN
-    case CLOSEOUT
-    case CLEAR
-    case UPDATE
-    case DELETE
+enum OnCompletionData:String{
+    case NOOP="noop"
+    case OPTIN="optin"
+    case CLOSEOUT="closeout"
+    case CLEAR="clear"
+    case UPDATE="update"
+    case DELETE="delete"
 }
 
- extension OnCompletionData: Decodable {
+ extension OnCompletionData: Codable {
     enum Key:CodingKey{
         case rawValue
     }
+   
     
     public init(from decoder: Decoder) throws {
-        var container = try! decoder.container(keyedBy: Key.self)
-        var rawValue = try! container.decode(String.self, forKey: .rawValue)
+//        var container = try! decoder.container(keyedBy: Key.self)
+        var container = try! decoder.singleValueContainer()
+        var rawValue = try! container.decode(String.self)
         switch rawValue{
         case "noop": self = .NOOP
         case "optin":self = .OPTIN
@@ -72,7 +74,17 @@ public enum SigType{
     case LSIG
 }
 
-extension SigType : Decodable{
+extension SigType : Codable{
+    public func encode(to encoder: Encoder) throws {
+        var container = try! encoder.singleValueContainer()
+        switch self{
+        case .SIG: try! container.encode("sig")
+        case .MSIG:try! container.encode("msig")
+        case .LSIG:try! container.encode("LSIG")
+        default: try! container.encode("sig")
+        }
+    }
+    
     
     enum Key:CodingKey{
         case rawValue
@@ -89,6 +101,7 @@ extension SigType : Decodable{
         default : self = .SIG
         }
     }
+    
 }
 
 
@@ -103,7 +116,7 @@ public enum TxType:String{
     case APPL="appl"
 }
 
-extension TxType : Decodable{
+extension TxType : Codable{
      
     enum Key:String,CodingKey{
         case rawValue

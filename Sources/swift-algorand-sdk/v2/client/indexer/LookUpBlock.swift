@@ -7,7 +7,7 @@
 
 import Foundation
 import Alamofire
-public class LookupBlocks{
+public class LookupBlock{
     var client:IndexerClient
     var rawTransaction:[Int8]?
     var roundNumber:Int64

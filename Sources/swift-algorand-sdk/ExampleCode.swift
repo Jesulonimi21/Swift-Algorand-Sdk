@@ -11,7 +11,7 @@
 //var PURESTAKE_ALGOD_API_TESTNET_ADDRESS="https://testnet-algorand.api.purestake.io/ps2";
 //var PURESTAKE_ALGOD_API_MAINNET_ADDRESS="https://mainnet-algorand.api.purestake.io/ps2";
 //var PURESTAKE_INDEXER_API_ADDRESS="https://testnet-algorand.api.purestake.io/idx2";
-//var PURESTAKE_API_KEY="ADRySlL0NK5trzqZGAE3q1xxIqlQdSfk1nbHxTNe";
+//var PURESTAKE_API_KEY="";
 //var PURESTAKE_API_PORT="443";
 //var HACKATHON_API_PORT="9100";
 //var HACKATHON_API_ADDRESS="http://hackathon.algodev.network";
@@ -57,15 +57,136 @@
 //
 //
 ////testCreateASA(account.getAddress(),algodClient)
-////var data=try! ContractTemplate.readAndVerifyContract(program: [1,32,8,1,-48,15,2,0,-64,-106,-79,2,7,3,-72,23,38,3,32,-2,-68,-96,-69,20,74,90,78,-89,-76,56,-92,104,26,-56,14,108,-95,5,-68,-74,7,-4,86,83,37,-55,86,-107,-10,-94,19,32,-103,-32,115,15,-121,33,36,-25,-55,41,-58,11,-66,50,-54,114,59,-13,-36,55,-27,-29,-19,-111,-31,80,-84,-9,36,-35,85,30,32,2,90,-46,-63,-65,28,-93,-8,19,31,-9,-85,-12,-116,-37,-21,-98,-50,-17,50,105,126,42,107,-36,5,-100,-22,26,89,11,22,49,16,34,18,49,1,35,12,16,50,4,36,18,64,0,25,49,9,40,18,49,7,50,3,18,16,49,8,37,18,16,49,2,33,4,13,16,34,64,0,46,51,0,0,51,1,0,18,49,9,50,3,18,16,51,0,7,41,18,16,51,1,7,42,18,16,51,0,8,33,5,11,51,1,8,33,6,11,18,16,51,0,8,33,7,15,16,16,], numInts: 8, numByteArrays: 3)
-////print(data.intBlock[1])
-////print(data.intBlock[6])
-////print(data.intBlock[5])
-////print(data.intBlock[7])
-////print(ContractTemplate(prog: [1,32,8,1,-48,15,2,0,-64,-106,-79,2,7,3,-72,23,38,3,32,-2,-68,-96,-69,20,74,90,78,-89,-76,56,-92,104,26,-56,14,108,-95,5,-68,-74,7,-4,86,83,37,-55,86,-107,-10,-94,19,32,-103,-32,115,15,-121,33,36,-25,-55,41,-58,11,-66,50,-54,114,59,-13,-36,55,-27,-29,-19,-111,-31,80,-84,-9,36,-35,85,30,32,2,90,-46,-63,-65,28,-93,-8,19,31,-9,-85,-12,-116,-37,-21,-98,-50,-17,50,105,126,42,107,-36,5,-100,-22,26,89,11,22,49,16,34,18,49,1,35,12,16,50,4,36,18,64,0,25,49,9,40,18,49,7,50,3,18,16,49,8,37,18,16,49,2,33,4,13,16,34,64,0,46,51,0,0,51,1,0,18,49,9,50,3,18,16,51,0,7,41,18,16,51,1,7,42,18,16,51,0,8,33,5,11,51,1,8,33,6,11,18,16,51,0,8,33,7,15,16,16,]).address.description)
-////
 //
 ////try! testSplitProgram()
+//
+////indexerClient.lookUpAccountById(address: "LL2ZGXSHW7FJGOOVSV76RRZ6IGU5ZF4DPCHQ23G7ZLIWCB4WEMIATDBTLY").execute(){response in
+////
+////    if response.isSuccessful{
+////
+////        print(response.data!.toJson()!)
+//// print(1)
+////    }else{
+////        print(response.errorDescription)
+////    }
+////}
+////indexerClient.lookUpAccountTransactions(address: "LL2ZGXSHW7FJGOOVSV76RRZ6IGU5ZF4DPCHQ23G7ZLIWCB4WEMIATDBTLY").execute(){response in
+////    if response.isSuccessful{
+////        print(response.data!.toJson()!)
+////        print(2)
+////    }else{
+////        print(response.errorDescription)
+////    }
+////}
+//
+//
+////indexerClient.lookUpAccountById(address: "LL2ZGXSHW7FJGOOVSV76RRZ6IGU5ZF4DPCHQ23G7ZLIWCB4WEMIATDBTLY").execute(){response in
+////
+////    if response.isSuccessful{
+////
+////        print(response.data!.toJson())
+////        print(3)
+////
+////
+////    }else{
+////        print(response.errorDescription)
+////    }
+////}
+//
+////indexerClient.lookUpAssetBalances(assetId:14077815).execute(){response in
+////    if response.isSuccessful{
+//// 
+////        print(response.data!.toJson()!)
+////        print(4)
+////    }else{
+////        print(response.errorDescription)
+////    }
+////}
+//
+////indexerClient.lookUpAssetById(id:14077815).execute(){response in
+////
+////    if response.isSuccessful{
+////        print(response.data!.toJson()!)
+////        print(5)
+////    }else{
+////        print(response.errorDescription)
+////        print("Error");
+////
+////    }
+////}
+//
+////indexerClient.lookupAssetTransactions(assetId:14077815).execute(){response in
+////
+////    if response.isSuccessful{
+////        print(response.data!.toJson()!)
+////        print("6")
+////
+////    }else{
+////        print(response.errorDescription)
+////    }
+////}
+//
+////indexerClient.lookUpBlock(roundNumber: 12471917).execute(){response in
+////
+////    if response.isSuccessful{
+////        
+////        print(response.data!.toJson()!)
+////        print(7)
+////
+////    }else{
+////        print(response.errorDescription)
+////    }
+////}
+//
+////indexerClient.makeHealthCheck().execute(){ response in
+////    if response.isSuccessful{
+////        print(response.data!.toJson()!)
+////        print(8)
+////    }else{
+////        print(response.errorDescription)
+////    }
+////}
+//
+////
+////indexerClient.searchForAccounts().assetId(assetId: 14077815).execute(){ response in
+////    if response.isSuccessful{
+////        print(response.data!.toJson())
+////        print(9)
+////    }else{
+////        print(response.errorDescription)
+////    }
+////}
+//
+////indexerClient.searchForApplications().execute(){ response in
+////    if response.isSuccessful{
+////        print(response.data!.toJson()!)
+////        print(10)
+////    }else{
+////        print(response.errorDescription)
+////    }
+////}
+//
+////indexerClient.searchForAssets()/*.limit(limit:10).unit(unit:"LAT") */.assetId(assetId:14077815).execute(){ response in
+////    if response.isSuccessful{
+////        print(response.data!.toJson()!)
+////        print(11)
+////    }else{
+////        print(response.errorDescription)
+////        print("Error");
+////    }
+////}
+//
+////
+////indexerClient.searchForTransactions().txid(txid:"HPS2AQU26NNVTFIJVBYYZN2P2T73AONKWCS7HPT5JUQEQMXFHMJA").execute(){ response in
+////    if response.isSuccessful{
+////        print(response.data!.toJson()!)
+////        print(12)
+////    }else{
+////        print(response.errorDescription)
+////
+////
+////    }
+////}
 //
 //dispatchMain()
 //
@@ -570,17 +691,11 @@
 //}
 //
 //public func testLookUpBlock(){
-//    indexerClient.lookUpBlocks(roundNumber: 12471917).execute(){response in
+//    indexerClient.lookUpBlock(roundNumber: 12471917).execute(){response in
 //
 //        if response.isSuccessful{
 //                print("success")
 //            print(response.data!.genesisHash)
-//            print(response.data!.genesisId)
-//            print(response.data!.rewards!.feeSink)
-//            print(response.data!.round)
-//            print(response.data!.upgradeVote?.upgradeApprove)
-//            print(response.data!.upgradeState?.currentProtocol)
-//
 //        }else{
 //            print(response.errorDescription)
 //        }

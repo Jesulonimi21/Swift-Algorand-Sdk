@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class ApplicationResponse : Decodable{
+public class ApplicationResponse : Codable{
     public var application: Application?
     public var currentRound: Int64?
 
@@ -14,6 +14,11 @@ public class ApplicationResponse : Decodable{
     enum CodingKeys:String,CodingKey{
         case application = "application"
         case currentRound = "current-round"
-     
+    }
+    public func toJson()->String?{
+        var jsonencoder=JSONEncoder()
+        var classData=try! jsonencoder.encode(self)
+        var classString=String(data: classData, encoding: .utf8)
+       return classString
     }
 }

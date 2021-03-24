@@ -16,4 +16,12 @@ public class AssetBalancesResponse:Codable{
         case currentRound="current-round"
         case nextToken="next-token"
     }
+    
+    public func toJson()->String?{
+        var jsonencoder=JSONEncoder()
+        var classData=try! jsonencoder.encode(self)
+        var classString=String(data: classData, encoding: .utf8)
+       return classString
+    }
+    
 }

@@ -21,9 +21,12 @@ public class TransactionSignature:Codable{
     
     public required init(from decoder: Decoder) throws {
         var container = try! decoder.container(keyedBy: CodingKeys.self)
-        var signatureString = try! container.decode(String.self, forKey: .sig)
+        var signatureString = try? container.decode(String.self, forKey: .sig)
         self.multisig = try? container.decode(TransactionSignatureMultisig.self, forKey: .multisig)
         self.logicsig = try? container.decode(TransactionSignatureLogicsig.self, forKey: .logicsig)
-        self.sig=CustomEncoder.convertToInt8Array(input: CustomEncoder.convertBase64ToByteArray(data1: signatureString))
+        if let sigString=signatureString{
+            self.sig=CustomEncoder.convertToInt8Array(input: CustomEncoder.convertBase64ToByteArray(data1: sigString))
+        }
+
     }
 }

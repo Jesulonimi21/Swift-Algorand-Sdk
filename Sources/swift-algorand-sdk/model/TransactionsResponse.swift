@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class TransactionsResponse : Decodable {
+public class TransactionsResponse :  Codable {
     public var currentRound:Int64?;
     public var nextToken:String?;
     public var transactions:[TransactionData]?
@@ -20,5 +20,13 @@ public class TransactionsResponse : Decodable {
     
     init() {
     }
+    
+    public func toJson()->String?{
+        var jsonencoder=JSONEncoder()
+        var classData=try! jsonencoder.encode(self)
+        var classString=String(data: classData, encoding: .utf8)
+       return classString
+    }
+
 
 }

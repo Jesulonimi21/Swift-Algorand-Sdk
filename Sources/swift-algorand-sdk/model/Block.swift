@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class Block: Decodable{
+public class Block: Codable{
     public var genesisHash:[Int8]?
     public var genesisId:String?
     public var previousBlockHash:[Int8]?
@@ -61,5 +61,12 @@ public class Block: Decodable{
         self.upgradeState =  try! container.decode(BlockUpgradeState.self, forKey: .upgradeState)
         
         self.upgradeVote = try! container.decode(BlockUpgradeVote.self, forKey: .upgradeVote)
+    }
+    
+    public func toJson()->String?{
+        var jsonencoder=JSONEncoder()
+        var classData=try! jsonencoder.encode(self)
+        var classString=String(data: classData, encoding: .utf8)
+       return classString
     }
 }

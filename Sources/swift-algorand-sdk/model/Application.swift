@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class Application :Decodable{
+public class Application :Codable{
     public var id:Int64?;
 
     public var  params:ApplicationParams?
