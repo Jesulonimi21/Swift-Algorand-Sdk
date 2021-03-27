@@ -11,7 +11,7 @@
 //var PURESTAKE_ALGOD_API_TESTNET_ADDRESS="https://testnet-algorand.api.purestake.io/ps2";
 //var PURESTAKE_ALGOD_API_MAINNET_ADDRESS="https://mainnet-algorand.api.purestake.io/ps2";
 //var PURESTAKE_INDEXER_API_ADDRESS="https://testnet-algorand.api.purestake.io/idx2";
-//var PURESTAKE_API_KEY="";
+//var PURESTAKE_API_KEY="ADRySlL0NK5trzqZGAE3q1xxIqlQdSfk1nbHxTNe";
 //var PURESTAKE_API_PORT="443";
 //var HACKATHON_API_PORT="9100";
 //var HACKATHON_API_ADDRESS="http://hackathon.algodev.network";
@@ -95,7 +95,7 @@
 //
 ////indexerClient.lookUpAssetBalances(assetId:14077815).execute(){response in
 ////    if response.isSuccessful{
-//// 
+////
 ////        print(response.data!.toJson()!)
 ////        print(4)
 ////    }else{
@@ -129,7 +129,7 @@
 ////indexerClient.lookUpBlock(roundNumber: 12471917).execute(){response in
 ////
 ////    if response.isSuccessful{
-////        
+////
 ////        print(response.data!.toJson()!)
 ////        print(7)
 ////
@@ -957,3 +957,63 @@
 //        }
 //        
 //    }
+//
+//private func testLimitOrderTemplate(){
+//    var  owner = try! Address("AJNNFQN7DSR7QEY766V7JDG35OPM53ZSNF7CU264AWOOUGSZBMLMSKCRIU" );
+//
+//
+//            // Recover accounts used in example
+//            // Account 1 is the asset owner
+//            // Used later in the example
+//            var account1_mnemonic = "portion never forward pill lunch organ biology" +
+//                " weird catch curve isolate plug innocent skin grunt" +
+//             " bounce clown mercy hole eagle soul chunk type absorb trim";
+//             var assetOwner = try!  Account(account1_mnemonic);
+//
+//    var expiryRound = 5000000;
+//          var maxFee = 2000;
+//    var minTrade = 2999;
+//    var ratn = 1;
+//    var ratd = 3000;
+//    var assetID = 316084;
+//    var limit = try! LimitOrder.MakeLimitOrder(owner: owner, assetId: assetID, ratn: ratn, ratd: ratd, expirationRound: expiryRound, minTrade: minTrade, maxFee: maxFee)
+//
+//
+//    print(limit.address.description)
+//    print(limit.program)
+//
+//    var assetAmount:Int64 = 1;
+//    var microAlgoAmount:Int64 = 3000;
+//           // set to get minimum fee
+//    var feePerByte:Int64 = 0;
+//    algodClient.transactionParams().execute(){params in
+//        
+//        if params.isSuccessful{
+//            
+//            var loadedContract = ContractTemplate(prog: limit.program)
+//            var transactions = try! LimitOrder.MakeSwapAssetsTransaction(
+//                contract: loadedContract,
+//                assetAmount: assetAmount,
+//                microAlgoAmount: microAlgoAmount,
+//                sender: assetOwner,
+//                firstValid: params.data!.lastRound!,
+//                lastValid: params.data!.lastRound!+500,
+//                genesisHash: Digest(params.data!.genesisHash), feePerByte: feePerByte);
+//            algodClient.rawTransaction().rawtxn(rawtaxn: transactions).execute(){ rawTxResponse in
+//                
+//                if(rawTxResponse.isSuccessful)
+//                {
+//                    print(rawTxResponse.data!.txId)
+//                    print("trans sucessfull")
+//                    
+//                }else{
+//                    print(rawTxResponse.errorDescription)
+//                }
+//               
+//            }
+//        }else{
+//            print(params.errorDescription)
+//        }
+//        
+//    }
+//}
