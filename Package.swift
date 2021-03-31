@@ -29,14 +29,15 @@ let package = Package(
             from: "1.2.3"
         ),
         .package(name:"MessagePacker", url: "https://github.com/hirotakan/MessagePacker.git", from: "0.0.0"),
-        .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.2.0"))
+        .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.2.0")),
+        .package(url: "https://github.com/bitflying/SwiftKeccak.git", from: "0.1.0")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "swift-algorand-sdk",
-            dependencies: ["Ed25519","MessagePack","MessagePacker","Alamofire"],
+            dependencies: ["Ed25519","MessagePack","MessagePacker","Alamofire","SwiftKeccak"],
             resources:[
                         .process("Resources/Langspec.txt")
                     ]

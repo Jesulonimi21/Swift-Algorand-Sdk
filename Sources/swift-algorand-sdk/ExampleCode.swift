@@ -7,6 +7,9 @@
 //import Ed25519
 //import Foundation
 //import Alamofire
+//import CommonCrypto
+//import CryptoKit
+//import SwiftKeccak
 ////14077815
 //var PURESTAKE_ALGOD_API_TESTNET_ADDRESS="https://testnet-algorand.api.purestake.io/ps2";
 //var PURESTAKE_ALGOD_API_MAINNET_ADDRESS="https://mainnet-algorand.api.purestake.io/ps2";
@@ -188,10 +191,29 @@
 ////    }
 ////}
 //
+//
+//
+////testHtlc()
+//
 //dispatchMain()
 //
 //
+//func sha256(data : Data) -> Data {
+//    var hash = [UInt8](repeating: 0,  count: Int(CC_SHA256_DIGEST_LENGTH))
+//    data.withUnsafeBytes {
+//        _ = CC_SHA256($0.baseAddress, CC_LONG(data.count), &hash)
+//    }
+//    return Data(hash)
+//}
 //
+//func base64ToByteArray(base64String: String) -> [UInt8]? {
+//    if let nsdata = NSData(base64Encoded: base64String, options: .ignoreUnknownCharacters) {
+//        var bytes = [UInt8](repeating: 0, count: nsdata.length)
+//        nsdata.getBytes(&bytes, length: bytes.count)
+//        return bytes
+//    }
+//    return nil // Invalid input
+//}
 //
 //
 //func testPayment(mnemonic:String) throws{
@@ -903,7 +925,7 @@
 //    }
 //}
 //
-//    
+//
 //
 //    func testSplitProgram() throws{
 //        var owner =  try Address("726KBOYUJJNE5J5UHCSGQGWIBZWKCBN4WYD7YVSTEXEVNFPWUIJ7TAEOPM");
@@ -952,10 +974,10 @@
 //                    print("Faled")
 //                }
 //
-//            
+//
 //        }
 //        }
-//        
+//
 //    }
 //
 //private func testLimitOrderTemplate(){
@@ -987,9 +1009,9 @@
 //           // set to get minimum fee
 //    var feePerByte:Int64 = 0;
 //    algodClient.transactionParams().execute(){params in
-//        
+//
 //        if params.isSuccessful{
-//            
+//
 //            var loadedContract = ContractTemplate(prog: limit.program)
 //            var transactions = try! LimitOrder.MakeSwapAssetsTransaction(
 //                contract: loadedContract,
@@ -1000,20 +1022,114 @@
 //                lastValid: params.data!.lastRound!+500,
 //                genesisHash: Digest(params.data!.genesisHash), feePerByte: feePerByte);
 //            algodClient.rawTransaction().rawtxn(rawtaxn: transactions).execute(){ rawTxResponse in
-//                
+//
 //                if(rawTxResponse.isSuccessful)
 //                {
 //                    print(rawTxResponse.data!.txId)
 //                    print("trans sucessfull")
-//                    
+//
 //                }else{
 //                    print(rawTxResponse.errorDescription)
 //                }
-//               
+//
 //            }
 //        }else{
 //            print(params.errorDescription)
 //        }
-//        
+//
+//    }
+//}
+//
+//func testHtlc(){
+//    algodClient.transactionParams().execute(){ paramResponse in
+//        if(!(paramResponse.isSuccessful)){
+//        print(paramResponse.errorDescription);
+//        return;
+//    }
+//
+////sha256
+////XhfULXrVUf3VrV6Ooc0qyoXjajfeGgkYHQCX16sTgco="
+////HI THERE
+//
+////        keccak256
+////        SwiftKeccak
+////       k9MZJHGip19x3Mol2NZidZu24X1qIQdnxuDHBUDWMCQ=
+//
+//
+//        var maxFee:Int = 2000;
+//             var owner = "726KBOYUJJNE5J5UHCSGQGWIBZWKCBN4WYD7YVSTEXEVNFPWUIJ7TAEOPM";
+//        var receiver = "42NJMHTPFVPXVSDGA6JGKUV6TARV5UZTMPFIREMLXHETRKIVW34QFSDFRE";
+//        var hashFn = "sha256";
+//        var hashImg = "XhfULXrVUf3VrV6Ooc0qyoXjajfeGgkYHQCX16sTgco=";
+//
+//        var result:ContractTemplate = try! HTLC.MakeHTLC(owner: Address(owner), receiver: Address(receiver), hashFunction: hashFn, hashImage: hashImg, expiryRound: Int(paramResponse.data!.lastRound!), maxFee: maxFee)
+//
+//        print("HTLC Address: \(result.address.description)")
+//        print(result.program)
+//
+//
+//        var signedTrans = try! HTLC.GetHTLCTransaction(contract: result, preImage: "HI THERE", firstValid: paramResponse.data!.lastRound!, lastValid: paramResponse.data!.lastRound!+500, genesisHash:Digest( paramResponse.data!.genesisHash), feePerByte: 0)
+//
+//    //
+//        var htlcEncodedTrans:[Int8]=CustomEncoder.encodeToMsgPack(signedTrans)
+//
+//
+//        var senderAddress = account.getAddress()
+//        var receiverAddress = result.address
+//
+//
+//            var trans =  algodClient.transactionParams().execute(){ paramResponse in
+//                if(!(paramResponse.isSuccessful)){
+//                print(paramResponse.errorDescription);
+//                return;
+//            }
+//
+//
+//               var tx = Transaction.paymentTransactionBuilder().setSender(senderAddress)
+//                .amount(1000000)
+//                .receiver(receiverAddress)
+//                .note("Swift Algo sdk is cool".bytes)
+//                .suggestedParams(params: paramResponse.data!)
+//                .build()
+//
+//
+//                var signedTransaction=account.signTransaction(tx: tx)
+//
+//                var encodedTrans:[Int8]=CustomEncoder.encodeToMsgPack(signedTransaction)
+//
+//
+//
+//                algodClient.rawTransaction().rawtxn(rawtaxn: encodedTrans).execute(){
+//                   response in
+//                    if(response.isSuccessful){
+//
+//                        waitForTransaction(txId:response.data!.txId){assetIndex in
+//                            algodClient.rawTransaction().rawtxn(rawtaxn: htlcEncodedTrans).execute(){
+//                               response in
+//                                if(response.isSuccessful){
+//                                    print(response.data!.txId)
+//                                    print("Success")
+//
+//                                }else{
+//                                    print(response.errorDescription)
+//                                    print("Faled")
+//                                }
+//
+//                            }
+//
+//
+//                        }
+//
+//
+//
+//                    }else{
+//                        print(response.errorDescription)
+//                        print("Faled")
+//                    }
+//
+//                }
+//            }
+//
+//
 //    }
 //}

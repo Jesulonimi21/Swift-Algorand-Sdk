@@ -65,6 +65,21 @@ public class SignedTransaction: Codable {
         self.lSig=lSig
         self.transactionID=txId
     }
-
-   
+    
+    init(tx:Transaction,lsig:LogicsigSignature){
+        self.tx=tx
+        self.lSig=lsig
+    }
+    
+    init(tx:Transaction,sig:Signature,txId:String){
+        self.tx=tx
+        self.sig=sig
+        self.transactionID=txId
+    }
+    public func toJson()->String?{
+        var jsonencoder=JSONEncoder()
+        var classData=try! jsonencoder.encode(self)
+        var classString=String(data: classData, encoding: .utf8)
+       return classString
+    }
 }

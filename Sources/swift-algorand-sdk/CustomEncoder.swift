@@ -6,7 +6,9 @@
 //
 import MessagePacker
 import Foundation
+import CommonCrypto
 public class CustomEncoder{
+    
     
     public static func encodeToMsgPack <T: Encodable>(_ obj:T)-> [Int8]{
         let encoder =  MessagePackEncoder()
@@ -64,13 +66,33 @@ public class CustomEncoder{
     }
     public static func convertBase64ToByteArray(data1:String)->[UInt8]{
          let nsdata1 = Data(base64Encoded: data1, options: NSData.Base64DecodingOptions.ignoreUnknownCharacters)!
-
             let arr2 = nsdata1.withUnsafeBytes {
                Array(UnsafeBufferPointer<UInt8>(start: $0, count: nsdata1.count/MemoryLayout<UInt8>.size))
             }
 
             return arr2
         
+    }
+    
+    public static func convertToSha256(data:Data)->[Int8]{
+        var hash = [UInt8](repeating: 0,  count: Int(CC_SHA256_DIGEST_LENGTH))
+        data.withUnsafeBytes {
+            _ = CC_SHA256($0.baseAddress, CC_LONG(data.count), &hash)
+        }
+       var resData =  Data(hash)
+        var result=CustomEncoder.convertToInt8Array(input: Array(resData))
+        
+        return result
+    }
+    
+    public static func decodeByteFromBase64(string:String)->[UInt8]{
+        var stringEncoded = string.removingAllWhitespaces.padding(toLength: ((string.count+3)/4)*4,
+                                           withPad: "=",
+                                           startingAt: 0)
+        var data:Data? = Data(base64Encoded: stringEncoded, options: .ignoreUnknownCharacters)
+        let originalValues = Array(data!)
+//        return convertToInt8Array(input: originalValues)
+        return originalValues
     }
     
 }

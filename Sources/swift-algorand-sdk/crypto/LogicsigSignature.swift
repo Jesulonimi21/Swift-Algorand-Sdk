@@ -25,6 +25,25 @@ public class LogicsigSignature:Codable {
         if let logic=self.logic{
             try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: logic)), forKey: .logic)
         }
+        if let args = self.args{
+            var Uargs:[Data]=Array()
+            print(args.count)
+            for i in 0..<args.count{
+
+                Uargs.append(Data(CustomEncoder.convertToUInt8Array(input: args[i])))
+            }
+            try! container.encode(Uargs, forKey: .args)
+        }
+//                if let args = self.args{
+//                    var Uargs:[String]=Array()
+//                    print(args.count)
+//                    for i in 0..<args.count{
+//
+//                        Uargs.append(CustomEncoder.encodeToBase64(args[i]))
+//                    }
+//                    try! container.encode(Uargs, forKey: .args)
+//                }
+       
      
     }
 

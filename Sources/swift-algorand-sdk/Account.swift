@@ -141,4 +141,33 @@ public class Account{
         lsig.sig = sig;
         return lsig;
         }
+    
+    
+    public func rawSignBytes(bytes:[Int8])->Signature{
+        var signedBytes = keyPair.sign(CustomEncoder.convertToUInt8Array(input: bytes))
+        return try! Signature(CustomEncoder.convertToInt8Array(input: signedBytes) )
+    }
+    
+    
+    public static func estimatedEncodedSize(tx:Transaction) throws ->Int64 {
+        var signedTrans = SignedTransaction(tx:tx,sig: try Account().rawSignBytes(bytes: tx.bytesToSign()), txId:tx.txID())
+        var msgPack:[Int8] = CustomEncoder.encodeToMsgPack(signedTrans)
+        return Int64(msgPack.count)
+       }
+    
+    public static func setFeeByFeePerByte(tx:Transaction, suggestedFeePerByte:Int64) throws -> Transaction {
+            if (suggestedFeePerByte < 0) {
+                throw Errors.runtimeError("Cannot set fee to a negative number.");
+            } else {
+                tx.fee = suggestedFeePerByte;
+                var size = try estimatedEncodedSize(tx: tx);
+                var fee = suggestedFeePerByte*size;
+                if fee < MIN_TX_FEE_UALGOS {
+                    fee = MIN_TX_FEE_UALGOS;
+                }
+
+                tx.fee = fee
+            }
+        return tx
+        }
 }

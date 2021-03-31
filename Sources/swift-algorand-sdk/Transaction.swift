@@ -425,6 +425,9 @@ public class Transaction : Codable{
         if let assetReceiver=self.assetReceiver{
             try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: assetReceiver.getBytes())), forKey: .assetReceiver)
         }
+        if let closeRemainderTo=self.closeRemainderTo{
+            try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: closeRemainderTo.getBytes())), forKey: .closeRemainderTo)
+        }
         
         if let assetIndex=self.assetIndex{
             try!container.encode(assetIndex, forKey: .assetIndex)

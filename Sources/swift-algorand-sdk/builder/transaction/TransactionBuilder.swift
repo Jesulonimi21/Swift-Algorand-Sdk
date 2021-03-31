@@ -9,6 +9,19 @@ import Foundation
 public extension StringProtocol {
     public var data: Data { .init(utf8) }
     public var bytes: [UInt8] { .init(utf8) }
+    
+   
+}
+extension StringProtocol where Self: RangeReplaceableCollection {
+    var removingAllWhitespaces: Self {
+        filter(\.isWhitespace.negated)
+    }
+    mutating func removeAllWhitespaces() {
+        removeAll(where: \.isWhitespace)
+    }
+}
+extension Bool {
+    var negated: Bool { !self }
 }
 public  class TransactionBuilder<T>{
     var type:String?=nil;
