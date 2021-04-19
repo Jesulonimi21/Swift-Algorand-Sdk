@@ -29,7 +29,7 @@ public class Address: Codable{
   public  var description:String{
         return try! self.encodeAsString()
     }
-    init(_ bytes:[Int8]) throws{
+    public init(_ bytes:[Int8]) throws{
         if(bytes.count != 32){
             throw AddressError.illegalArgumentException("Given address length is not 32")
         }

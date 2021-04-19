@@ -22,9 +22,6 @@ public class LogicsigSignature:Codable {
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        if let logic=self.logic{
-            try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: logic)), forKey: .logic)
-        }
         if let args = self.args{
             var Uargs:[Data]=Array()
             print(args.count)
@@ -32,7 +29,15 @@ public class LogicsigSignature:Codable {
 
                 Uargs.append(Data(CustomEncoder.convertToUInt8Array(input: args[i])))
             }
+            
             try! container.encode(Uargs, forKey: .args)
+        }
+        if let logic=self.logic{
+            try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: logic)), forKey: .logic)
+        }
+       
+        if let sig = self.sig{
+            try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: sig.bytes!)), forKey: .sig)
         }
 //                if let args = self.args{
 //                    var Uargs:[String]=Array()
@@ -55,7 +60,7 @@ public class LogicsigSignature:Codable {
     }
     
     
-    init(logic:[Int8],args:[[Int8]]?,sig:Signature?,msig:MultisigSignature?) {
+    public   init(logic:[Int8],args:[[Int8]]?,sig:Signature?,msig:MultisigSignature?) {
         self.logic=logic
         self.args=args
         self.sig=sig
@@ -64,11 +69,11 @@ public class LogicsigSignature:Codable {
                 try! AlgoLogic.checkProgram(program: logic, args: self.args)
     }
     
-    convenience init(logicsig:[Int8]) {
+    public  convenience init(logicsig:[Int8]) {
         self.init(logicsig: logicsig,args:nil)
     }
     
-    convenience init(logicsig:[Int8],args:[[Int8]]?) {
+    public convenience init(logicsig:[Int8],args:[[Int8]]?) {
         self.init(logic:logicsig,args:args,sig:nil,msig:nil)
     }
     

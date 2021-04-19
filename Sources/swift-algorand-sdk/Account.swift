@@ -15,7 +15,8 @@ public class Account{
     public var address:Address
    public var keyPair:KeyPair
    public var seed:Seed?
-    static var MIN_TX_FEE_UALGOS:Int64 = 1000
+    var PROGDATA_SIGN_PREFIX:[Int8]=[80, 114, 111, 103, 68, 97, 116, 97, ]
+   public static var MIN_TX_FEE_UALGOS:Int64 = 1000
     public  convenience init() throws{
       try  self.init(nil)
     }
@@ -63,7 +64,7 @@ public class Account{
         var signedBytes = keyPair.sign(CustomEncoder.convertToUInt8Array(input: txBytes))
         var retValue = CustomEncoder.convertToInt8Array(input: signedBytes)
         let signature = try!Signature(retValue)
-        var signedTransaction=SignedTransaction(sig: signature, tx: tx)
+    var signedTransaction=SignedTransaction(tx: tx, sig: signature,txId: tx.txID())
         return signedTransaction
     }
     
@@ -94,7 +95,7 @@ public class Account{
            }
        }
 
-    public func  mergeMultisigTransactions(txs:[SignedTransaction])throws ->SignedTransaction {
+    public static func  mergeMultisigTransactions(txs:[SignedTransaction])throws ->SignedTransaction {
           if (txs.count < 2) {
             throw Errors.illegalArgumentError("cannot merge a single transaction");
           } else {
@@ -115,7 +116,7 @@ public class Account{
 
                     if (myMsig.sig?.bytes==nil) {
                           myMsig.sig = theirMsig.sig;
-                    } else if !(myMsig.sig!.bytes == theirMsig.sig!.bytes) && !(theirMsig.sig?.bytes==nil) {
+                    } else if !(myMsig.sig!.bytes == theirMsig.sig?.bytes) && !(theirMsig.sig?.bytes==nil) {
                         throw  Errors.illegalArgumentError("transaction msig has mismatched signatures");
                       }
 
@@ -129,7 +130,7 @@ public class Account{
 
     public func appendMultisigTransaction(from:MultisigAddress, signedTx:SignedTransaction) throws ->SignedTransaction {
         var sTx:SignedTransaction = try! self.signMultisigTransaction(from: from, tx: signedTx.tx!);
-        return try! mergeMultisigTransactions(txs:[sTx, signedTx]);
+        return try! Account.mergeMultisigTransactions(txs:[sTx, signedTx]);
       }
     
     
@@ -170,4 +171,46 @@ public class Account{
             }
         return tx
         }
+    
+    
+    public func signMultisigTransactionBytes(from:MultisigAddress,tx:Transaction)->[Int8]{
+        var signed  = try! self.signMultisigTransaction(from: from, tx: tx)
+        return CustomEncoder.encodeToMsgPack(signed)
+    }
+    
+    public func appendMultisigTransactionBytes(from:MultisigAddress,txBytes:[Int8]) ->[Int8]{
+        var inTx = CustomEncoder.decodeFrmMessagePack(obj: SignedTransaction.self, data: Data(CustomEncoder.convertToUInt8Array(input: txBytes)))
+        var y:[Int8]=CustomEncoder.encodeToMsgPack(inTx)
+        var appended = try! self.appendMultisigTransaction(from: from, signedTx: inTx)
+        return CustomEncoder.encodeToMsgPack(appended)
+    }
+    
+    
+    public static func mergeMultisigTransactionBytes(txsBytes:[[Int8]])->[Int8]{
+        var stxs = Array(repeating: SignedTransaction(),count: txsBytes.count)
+        for i in 0..<txsBytes.count{
+            stxs[i]=CustomEncoder.decodeFrmMessagePack(obj: SignedTransaction.self, data: Data(CustomEncoder.convertToUInt8Array(input:txsBytes[i] )))
+            
+        }
+        var merged = try! self.mergeMultisigTransactions(txs:stxs)
+        return CustomEncoder.encodeToMsgPack(merged)
+    }
+
+    public static func signLogicsigTransaction(lsig:LogicsigSignature,tx:Transaction) -> SignedTransaction{
+        return SignedTransaction(tx:tx,lSig:lsig,txId:tx.txID())
+    }
+
+    public func tealSign(data:[Int8],contractAddress:Address)->Signature{
+        var rawAddress = contractAddress.bytes
+        var rawData = PROGDATA_SIGN_PREFIX + rawAddress!+data
+   
+      return  self.rawSignBytes(bytes: rawData)
+    }
+    
+    public func tealSignFromProgram( data:[Int8],  program:[Int8])->Signature {
+        var lsig =  LogicsigSignature(logicsig: program);
+        return  try! self.tealSign(data: data, contractAddress: lsig.toAddress());
+       }
+    
+   
 }

@@ -28,8 +28,8 @@ var bytes:[Int8]?=nil;
         self.init(CustomEncoder.decodeFromBase32StripPad(base32StringDigest));
     }
 
-   init() {
-        self.bytes = Array(repeating: 0, count: 32)
+  public init() {
+        self.bytes = nil
     }
 
    
@@ -46,4 +46,5 @@ var bytes:[Int8]?=nil;
 //        var container = encoder.container(keyedBy: CodingKeys.self)
 //        try! container.encode( Data(CustomEncoder.convertToUInt8Array(input:self.bytes!)), forKey: .bytes)
 //    }
+  
 }

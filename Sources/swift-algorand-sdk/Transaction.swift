@@ -333,6 +333,7 @@ public class Transaction : Codable{
     }
     
     
+    
 
     
      init() {
@@ -399,6 +400,64 @@ public class Transaction : Codable{
     public  static func assetClawbackTransactionBuilder()->AssetClawbackTransactionBuilder{
         return AssetClawbackTransactionBuilder()
     }
+    
+    
+    public required init(from decoder: Decoder) throws {
+           var container = try! decoder.container(keyedBy: CodingKeys.self)
+          
+           
+           var senderAddress = try! container.decode(Data.self, forKey: .sender)
+
+           self.sender = try! Address(CustomEncoder.convertToInt8Array(input: Array(senderAddress)))
+          
+           var reciverAddress = try? container.decode(Data.self, forKey: .receiver)
+        
+        if let receiverAddr = reciverAddress{
+            self.receiver = try! Address(CustomEncoder.convertToInt8Array(input: Array(receiverAddr)))
+        }
+         
+           var noteBytes = try? container.decode(Data.self,forKey: .note)
+        if let nB = noteBytes{
+            self.note = CustomEncoder.convertToInt8Array(input: Array(nB))
+        }
+       
+           self.lastValid = try? container.decode(Int64.self, forKey: .lastValid)
+           self.firstValid = try? container.decode(Int64.self, forKey: .firstValid)
+           self.amount = try? container.decode(Int64.self,forKey:.amount)
+           self.type = try! container.decode(String.self,forKey: .type)
+           self.fee = try! container.decode(Int64.self,forKey: .fee)
+        
+     var genesisID   = try? container.decode(String.self,forKey: .genesisID)
+        
+        if let gId = genesisID{
+            self.genesisID=gId
+        }
+        
+        var voteList = try? container.decode(Int64.self,forKey: .voteLast)
+        if let vList=voteList{
+            self.voteLast=voteList
+        }
+        
+        var voteKd = try? container.decode(Int64.self,forKey: .voteKeyDilution)
+        if let vKd=voteKd{
+            self.voteKeyDilution=voteKd
+        }
+        
+        var voteKey = try? container.decode(Data.self, forKey: .votePK)
+     
+     if let vKey = voteKey{
+        self.votePK = try! ParticipationPublicKey(bytes:
+                                                    CustomEncoder.convertToInt8Array(input: Array(vKey)))
+     }
+        var sellKey = try? container.decode(Data.self, forKey: .selectionPK)
+     
+        if let sKey = sellKey{
+           self.selectionPK = try! VRFPublicKey(bytes:
+                                                       CustomEncoder.convertToInt8Array(input: Array(sKey)))
+        }
+       }
+    
+    
    public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
@@ -443,13 +502,18 @@ public class Transaction : Codable{
             try! container.encode(fee, forKey: .fee)
         }
         if let firstValid=self.firstValid{
-            try! container.encode(firstValid, forKey: .firstValid)
+            if(firstValid != 0){
+                try! container.encode(firstValid, forKey: .firstValid)
+            }
+     
         }
         if let genesisId=self.genesisID{
             try! container.encode(self.genesisID, forKey: .genesisID)
         }
         if let genesisHash=self.genesisHash{
+            if let genesisHashBytes=genesisHash.bytes{
             try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: genesisHash.getBytes()!)), forKey: .genesisHash)
+            }
         }
     
         if let group=self.group{
@@ -464,12 +528,35 @@ public class Transaction : Codable{
         if let receiver=self.receiver{
             try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: receiver.getBytes())), forKey: .receiver)
         }
+    if let selectionKey = self.selectionPK{
+        try!  container.encode(Data(CustomEncoder.convertToUInt8Array(input: selectionKey.bytes)) , forKey: .selectionPK)
+    }
         if let sender=self.sender{
             try!  container.encode(Data(CustomEncoder.convertToUInt8Array(input: sender.getBytes())) , forKey: .sender)
         }
+    
+    try! container.encode(self.type, forKey: .type)
+    
+    if let voteKeyDilution = self.voteKeyDilution{
+        if(voteKeyDilution != 0){
+            try! container.encode(voteKeyDilution, forKey: .voteKeyDilution)
+        }
+ 
+    }
+    
+    if let votePk=self.votePK{
+        try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: votePk.bytes)), forKey: .votePK)
+    }
+    
+    if let voteLast = self.voteLast{
+        if(voteLast != 0){
+            try! container.encode(voteLast, forKey: .voteLast)
+        }
+ 
+    }
+
         
-        try! container.encode(self.type, forKey: .type)
-        
+      
         
         if let xferasset=self.xferAsset{
             try! container.encode(xferasset, forKey: .xferAsset)

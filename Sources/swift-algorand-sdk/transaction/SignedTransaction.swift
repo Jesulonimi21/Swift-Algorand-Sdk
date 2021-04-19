@@ -34,6 +34,7 @@ public class SignedTransaction: Codable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         if let lSig=self.lSig{
+          
             try! container.encode(lSig, forKey: .lSig)
         }
         if let mSig=self.mSig{
@@ -50,28 +51,30 @@ public class SignedTransaction: Codable {
        
     }
     
-    init(sig:Signature,tx:Transaction){
+    
+    
+    public init(sig:Signature,tx:Transaction){
         self.tx=tx
         self.sig=sig
     }
     
-    init(tx:Transaction,mSig:MultisigSignature,txId:String){
+    public   init(tx:Transaction,mSig:MultisigSignature,txId:String){
         self.tx=tx
         self.mSig=mSig
         self.transactionID=txId
     }
-    init(tx:Transaction,lSig:LogicsigSignature,txId:String){
+    public  init(tx:Transaction,lSig:LogicsigSignature,txId:String){
         self.tx=tx
         self.lSig=lSig
         self.transactionID=txId
     }
     
-    init(tx:Transaction,lsig:LogicsigSignature){
+    public init(tx:Transaction,lsig:LogicsigSignature){
         self.tx=tx
         self.lSig=lsig
     }
     
-    init(tx:Transaction,sig:Signature,txId:String){
+    public  init(tx:Transaction,sig:Signature,txId:String){
         self.tx=tx
         self.sig=sig
         self.transactionID=txId

@@ -94,6 +94,22 @@ public    var subsigs:[MultisigSubsig]?=[MultisigSubsig]();
             case key="pk"
             case sig="s"
         }
+        required public  init(from decoder: Decoder) throws {
+            var container = try! decoder.container(keyedBy: CodingKeys.self)
+            
+            var keyBytes =  try? container.decode(Data.self, forKey:.key)
+            if let kb = keyBytes{
+                self.key = Ed25519PublicKey(bytes: CustomEncoder.convertToInt8Array(input: Array(kb) ))
+            }
+            
+            var sBytes = try? container.decode(Data.self, forKey:.sig)
+            if let sB = sBytes{
+                self.sig = try! Signature(CustomEncoder.convertToInt8Array(input: Array(sB) ))
+            }
+            
+           
+            
+        }
         
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
@@ -104,6 +120,9 @@ public    var subsigs:[MultisigSubsig]?=[MultisigSubsig]();
                 try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: sig)), forKey: .sig)
             }
         }
+        
+        
+        
         
         init(key:[Int8]?, sig:[Int8]?) {
             self.key =  Ed25519PublicKey(bytes: key!);

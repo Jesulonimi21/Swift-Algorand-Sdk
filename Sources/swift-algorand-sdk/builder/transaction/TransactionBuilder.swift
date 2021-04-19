@@ -88,11 +88,11 @@ public  class TransactionBuilder<T>{
         }
 
         if (self.fee != nil && self.flatFee != nil) {
-//            throw new IllegalArgumentException("Cannot set both fee and flatFee.");
+//            throw Errors.illegalArgumentError("Cannot set both fee and flatFee.")
             print("Cannot set both fee and flatFee.")
         } else {
             if (self.fee != nil) {
-                self.fee=1000
+               try! Account.setFeeByFeePerByte(tx: txn, suggestedFeePerByte: fee!)
             }
 
             if (self.flatFee != nil) {
@@ -112,6 +112,10 @@ public  class TransactionBuilder<T>{
         self.fee = fee;
         return self as! T;
     }
+    public func flatFee(_ flatFee:Int64)->T {
+        self.flatFee = flatFee;
+        return self as! T;
+    }
     public func suggestedParams(params:TransactionParametersResponse) ->T{
         self.fee(params.fee!);
         self.genesisID(params.genesisId!);
@@ -126,12 +130,12 @@ public  class TransactionBuilder<T>{
         return self as! T;
     }
     
-    internal func genesisID(_ ID:String)->T{
+    public func genesisID(_ ID:String)->T{
         self.genesisID=ID
         return self as! T;
     }
 
-    internal func  firstValid(_ firstValid:Int64) -> T{
+    public func  firstValid(_ firstValid:Int64) -> T{
         self.firstValid = firstValid;
         return self as! T;
     }
@@ -147,13 +151,23 @@ public  class TransactionBuilder<T>{
         return self as! T;
     }
     
+    public func noteB64(note:String)->T {
+        self.note=CustomEncoder.convertToInt8Array(input: CustomEncoder.decodeByteFromBase64(string: note))
+        
+        return  self as! T;
+       }
+    
     public func note(_ note:[UInt8])->T {
         self.note = CustomEncoder.convertToInt8Array(input: note);
         return self as! T;
     }
 
-    internal func genesisHash(_ genesisHash:[Int8]) -> T{
+    public func genesisHash(_ genesisHash:[Int8]) -> T{
         self.genesisHash =  Digest(genesisHash);
+        return self as! T;
+    }
+    public func genesisHash(_ genesisHash:Digest) -> T{
+        self.genesisHash =  genesisHash;
         return self as! T;
     }
 

@@ -7,6 +7,18 @@
 import MessagePacker
 import Foundation
 import CommonCrypto
+
+extension Data {
+    struct HexEncodingOptions: OptionSet {
+        let rawValue: Int
+        static let upperCase = HexEncodingOptions(rawValue: 1 << 0)
+    }
+
+    func hexEncodedString(options: HexEncodingOptions = []) -> String {
+        let format = options.contains(.upperCase) ? "%02hhX" : "%02hhx"
+        return self.map { String(format: format, $0) }.joined()
+    }
+}
 public class CustomEncoder{
     
     
@@ -25,6 +37,11 @@ public class CustomEncoder{
         return Array(value)
     }
     
+    
+    public static func decodeFrmMessagePack<T: Decodable>(obj:T.Type,data:Data)->T{
+        let decoded = try! MessagePackDecoder().decode(obj, from: data)
+        return decoded
+    }
     public static func encodeToBase32StripPad(_ uBytes :[Int8])-> String{
         let bytes=uBytes.map{uint8Val -> UInt8 in return unsafeBitCast(uint8Val, to: UInt8.self)}
         let dat = Data(bytes)
@@ -95,4 +112,16 @@ public class CustomEncoder{
         return originalValues
     }
     
+    public static func encodeToHexString(bytes:[Int8])->String{
+        var uInt8Val = convertToUInt8Array(input: bytes)
+        let data = Data(uInt8Val)
+        return data.hexEncodedString()
+    }
+    
+    public static func encodeToJson(obj:SignedTransaction)->String{
+        
+        let jsonData = try! JSONEncoder().encode(obj)
+        let jsonString = String(data: jsonData, encoding: .utf8)!
+        return jsonString
+    }
 }
