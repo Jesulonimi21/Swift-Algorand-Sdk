@@ -13,7 +13,6 @@ public class MultisigSignature : Codable {
   public  var threshold:Int?;
 public    var subsigs:[MultisigSubsig]?=[MultisigSubsig]();
   public  var alphabetic=true
-    
     enum CodingKeys:String,CodingKey{
         case subsigs="subsig"
         case threshold="thr"
@@ -84,7 +83,7 @@ public    var subsigs:[MultisigSubsig]?=[MultisigSubsig]();
     }
 
    
-    public  class MultisigSubsig :Codable{
+    public  class MultisigSubsig :Codable,Equatable{
  
         var key:Ed25519PublicKey?;
 
@@ -144,5 +143,8 @@ public    var subsigs:[MultisigSubsig]?=[MultisigSubsig]();
         }
 
     
-    
+        public static func ==(lhs:MultisigSubsig,rhs:MultisigSubsig)-> Bool{
+            return lhs.sig?.bytes == rhs.sig?.bytes && lhs.key?.bytes==rhs.key?.bytes
+        }
+        
 }

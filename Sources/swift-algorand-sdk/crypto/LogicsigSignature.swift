@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class LogicsigSignature:Codable {
+public class LogicsigSignature:Codable,Equatable {
     private static var LOGIC_PREFIX:[Int8]=[80,114,111,103,114,97,109,]
   
     private static  var SIGN_ALGO:String = "EdDSA"
@@ -19,6 +19,8 @@ public class LogicsigSignature:Codable {
 
     public var msig:MultisigSignature?
     
+    
+  
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
@@ -59,6 +61,25 @@ public class LogicsigSignature:Codable {
         case msig="msig"
     }
     
+    public required init(from decoder: Decoder) throws {
+        var container = try? decoder.container(keyedBy: CodingKeys.self)
+        self.args = Array()
+         var Uargs = try? container?.decode([Data].self, forKey: .args)
+         for i in 0..<Uargs!.count{
+
+            self.args!.append(CustomEncoder.convertToInt8Array(input: Array(Uargs![i])))
+         }
+        self.logic = try? CustomEncoder.convertToInt8Array(input: Array((container?.decode(Data.self, forKey: .logic))!))
+        
+        var sigBytes = try? CustomEncoder.convertToInt8Array(input: Array((container?.decode(Data.self, forKey: .sig))!))
+        if let sigBytess = (sigBytes){
+            self.sig = try? Signature(sigBytess)
+        }
+      
+
+        
+    }
+    
     
     public   init(logic:[Int8],args:[[Int8]]?,sig:Signature?,msig:MultisigSignature?) {
         self.logic=logic
@@ -74,6 +95,7 @@ public class LogicsigSignature:Codable {
     }
     
     public convenience init(logicsig:[Int8],args:[[Int8]]?) {
+        
         self.init(logic:logicsig,args:args,sig:nil,msig:nil)
     }
     
@@ -193,4 +215,29 @@ public class LogicsigSignature:Codable {
 //    }
 //
 //
+    
+  public  static func ==(lhs: LogicsigSignature, rhs: LogicsigSignature) -> Bool {
+        var equal: Bool = false;
+        //logic
+        equal = lhs.logic==rhs.logic
+        if(!equal){
+            return equal
+        }
+        //args
+        equal = lhs.args==rhs.args
+        if(!equal){
+            return equal
+        }
+        
+        //sig
+        equal = lhs.sig?.bytes==rhs.sig?.bytes
+        if(!equal){
+            return equal
+        }
+        //multisig
+    equal = lhs.msig?.subsigs==rhs.msig?.subsigs&&lhs.msig?.MULTISIG_VERSION==rhs.msig?.MULTISIG_VERSION&&lhs.msig?.threshold==rhs.msig?.threshold&&lhs.msig?.version==rhs.msig?.version
+ 
+        return equal
+    
+    }
 }
