@@ -22,7 +22,7 @@ public class Signature: Codable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         if let bytes=self.bytes{
-            try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: bytes)), forKey: .bytes)
+            try container.encode(Data(CustomEncoder.convertToUInt8Array(input: bytes)), forKey: .bytes)
         }
       
     }

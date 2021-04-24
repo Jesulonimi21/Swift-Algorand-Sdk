@@ -252,9 +252,9 @@ public class AlgoLogic{
             }
     }
     
-    
+    @discardableResult
     public static func checkProgram(program:[Int8],  args:[[Int8]]?) throws -> Bool {
-       var programData = try! readProgram(program: program, args: args)
+       let programData = try readProgram(program: program, args: args)
         return programData.good
        }
     

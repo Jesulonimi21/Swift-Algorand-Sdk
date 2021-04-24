@@ -30,9 +30,9 @@ public    var subsigs:[MultisigSubsig]?=[MultisigSubsig]();
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try!container.encode(subsigs, forKey: .subsigs)
-        try!container.encode(threshold, forKey: .threshold)
-        try!container.encode(version, forKey: .version)
+        try container.encode(subsigs, forKey: .subsigs)
+        try container.encode(threshold, forKey: .threshold)
+        try container.encode(version, forKey: .version)
     }
 
     convenience init(version:Int, threshold:Int) {
@@ -94,16 +94,14 @@ public    var subsigs:[MultisigSubsig]?=[MultisigSubsig]();
             case sig="s"
         }
         required public  init(from decoder: Decoder) throws {
-            var container = try! decoder.container(keyedBy: CodingKeys.self)
+            let container = try decoder.container(keyedBy: CodingKeys.self)
             
-            var keyBytes =  try? container.decode(Data.self, forKey:.key)
-            if let kb = keyBytes{
-                self.key = Ed25519PublicKey(bytes: CustomEncoder.convertToInt8Array(input: Array(kb) ))
+            if let keyBytes = try container.decodeIfPresent(Data.self, forKey:.key) {
+                self.key = Ed25519PublicKey(bytes: CustomEncoder.convertToInt8Array(input: Array(keyBytes) ))
             }
             
-            var sBytes = try? container.decode(Data.self, forKey:.sig)
-            if let sB = sBytes{
-                self.sig = try! Signature(CustomEncoder.convertToInt8Array(input: Array(sB) ))
+            if let sBytes = try container.decodeIfPresent(Data.self, forKey:.sig){
+                self.sig = try Signature(CustomEncoder.convertToInt8Array(input: Array(sBytes) ))
             }
             
            
@@ -113,19 +111,19 @@ public    var subsigs:[MultisigSubsig]?=[MultisigSubsig]();
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             if let key = self.key{
-                try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: key.bytes)), forKey: .key)
+                try container.encode(Data(CustomEncoder.convertToUInt8Array(input: key.bytes)), forKey: .key)
             }
             if let sig=self.sig?.bytes{
-                try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: sig)), forKey: .sig)
+                try container.encode(Data(CustomEncoder.convertToUInt8Array(input: sig)), forKey: .sig)
             }
         }
         
         
         
         
-        init(key:[Int8]?, sig:[Int8]?) {
-            self.key =  Ed25519PublicKey(bytes: key!);
-            self.sig = try! Signature(sig!);
+        init(key:[Int8], sig:[Int8]) throws {
+            self.key =  Ed25519PublicKey(bytes: key);
+            self.sig = try Signature(sig);
         }
 
         init(key:Ed25519PublicKey, sig:Signature) {

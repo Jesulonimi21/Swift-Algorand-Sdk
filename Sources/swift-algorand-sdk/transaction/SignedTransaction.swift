@@ -35,7 +35,7 @@ public class SignedTransaction: Codable {
         
         if let lSig=self.lSig{
           
-            try! container.encode(lSig, forKey: .lSig)
+            try container.encode(lSig, forKey: .lSig)
         }
         if let mSig=self.mSig{
             try! container.encode(mSig, forKey: .mSig)
