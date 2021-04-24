@@ -76,7 +76,7 @@ public class HTLC {
             } else {
 
                 var args = [CustomEncoder.convertToInt8Array(input: CustomEncoder.decodeByteFromBase64(string: preImage))]
-                var lsig=LogicsigSignature(logicsig: contract.program, args: args)
+                var lsig = try! LogicsigSignature(logicsig: contract.program, args: args)
                 return  SignedTransaction(tx: txn, lsig: lsig);
             }
         }

@@ -203,14 +203,83 @@ public class Account{
     public func tealSign(data:[Int8],contractAddress:Address)->Signature{
         var rawAddress = contractAddress.bytes
         var rawData = PROGDATA_SIGN_PREFIX + rawAddress!+data
-   
       return  self.rawSignBytes(bytes: rawData)
     }
     
     public func tealSignFromProgram( data:[Int8],  program:[Int8])->Signature {
-        var lsig =  LogicsigSignature(logicsig: program);
+        var lsig = try! LogicsigSignature(logicsig: program);
         return  try! self.tealSign(data: data, contractAddress: lsig.toAddress());
        }
     
-   
+    
+    public func signLogicsig(lsig:LogicsigSignature,ma:MultisigAddress) throws -> LogicsigSignature{
+        var myPk = Ed25519PublicKey(bytes: self.getAddress().getBytes())
+        var index = ma.publicKeys.first{$0 == myPk}
+        if let _ = index{
+            var sig:Signature
+            var bytesToSign = lsig.bytesToSign()
+            sig = self.rawSignBytes(bytes: bytesToSign)
+            
+            var mSig = MultisigSignature(version: ma.version, threshold: ma.threshold)
+            for i in 0..<ma.publicKeys.count{
+                if ma.publicKeys[i] == index{
+                    mSig.subsigs?.append(MultisigSubsig(key: myPk, sig: sig))
+                }else{
+                    mSig.subsigs?.append(MultisigSubsig(key: ma.publicKeys[i]))
+                }
+                
+            }
+            lsig.msig = mSig
+            return lsig
+        }else{
+            throw Errors.illegalArgumentError("Multisig account does not contain this secret key")
+        }
+    }
+    
+    
+    public func appendToLogicsig(lsig: LogicsigSignature) throws -> LogicsigSignature{
+        var myPK = Ed25519PublicKey(bytes: self.getAddress().getBytes())
+        var myIndex = -1
+        for i in 0..<(lsig.msig?.subsigs?.count)!{
+            var subsig = lsig.msig?.subsigs?[i]
+            if (subsig?.key==myPK){
+                myIndex = i
+            }
+        }
+        
+        if  myIndex != -1{
+            var bytesToSign = lsig.bytesToSign()
+            var sig = self.rawSignBytes(bytes: bytesToSign)
+            lsig.msig?.subsigs?.insert(MultisigSubsig(key: myPK, sig: sig), at: myIndex)
+            
+            return lsig
+        }else{
+            throw Errors.illegalArgumentError("Multisig account does not contain this secret key")
+        }
+    }
+  
+//    public LogicsigSignature appendToLogicsig(LogicsigSignature lsig) throws IllegalArgumentException, IOException {
+//            Ed25519PublicKey myPK = this.getEd25519PublicKey();
+//            int myIndex = -1;
+//            for (int i = 0; i < lsig.msig.subsigs.size(); i++ ) {
+//                MultisigSubsig subsig = lsig.msig.subsigs.get(i);
+//                if (subsig.key.equals(myPK)) {
+//                    myIndex = i;
+//                }
+//            }
+//            if (myIndex == -1) {
+//                throw new IllegalArgumentException("Multisig account does not contain this secret key");
+//            }
+//
+//            try {
+//                // now, create the multisignature
+//                byte[] bytesToSign = lsig.bytesToSign();
+//                Signature sig = this.rawSignBytes(bytesToSign);
+//                lsig.msig.subsigs.set(myIndex, new MultisigSubsig(myPK, sig));
+//                return lsig;
+//            } catch (NoSuchAlgorithmException ex) {
+//                throw new IOException("could not sign transaction", ex);
+//            }
+//
+//        }
 }

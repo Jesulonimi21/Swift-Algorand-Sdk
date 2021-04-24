@@ -68,7 +68,7 @@ public class Split {
                     
                     
                     if (tx1.fee! <= Int64(maxFee) && tx2.fee! <= Int64(maxFee)) {
-                        var lsig =  LogicsigSignature(logicsig: contract.program);
+                        var lsig = try! LogicsigSignature(logicsig: contract.program);
                         var gid = try! TxGroup.computeGroupID(txns: [tx1,tx2])
                         tx1.assignGroupID(gid: gid)
                         tx2.assignGroupID(gid: gid)

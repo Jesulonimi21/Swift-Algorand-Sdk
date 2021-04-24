@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class Signature: Codable {
+public class Signature: Codable,Equatable {
     
     var ED25519_SIG_SIZE = 64;
  
@@ -46,5 +46,8 @@ public class Signature: Codable {
     public func getBytes() ->[Int8]{
         return self.bytes!
     }
-
+    public static func == (lhs:Signature,rhs:Signature)->Bool{
+        return lhs.bytes==rhs.bytes
+    }
+   
 }

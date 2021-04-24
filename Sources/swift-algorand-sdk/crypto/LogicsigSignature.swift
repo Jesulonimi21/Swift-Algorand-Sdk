@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Ed25519
 public class LogicsigSignature:Codable,Equatable {
     private static var LOGIC_PREFIX:[Int8]=[80,114,111,103,114,97,109,]
   
@@ -41,6 +42,11 @@ public class LogicsigSignature:Codable,Equatable {
         if let sig = self.sig{
             try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: sig.bytes!)), forKey: .sig)
         }
+        if let msig = self.msig{
+            try! container.encode(msig, forKey: .msig)
+        }
+        
+    
 //                if let args = self.args{
 //                    var Uargs:[String]=Array()
 //                    print(args.count)
@@ -65,38 +71,47 @@ public class LogicsigSignature:Codable,Equatable {
         var container = try? decoder.container(keyedBy: CodingKeys.self)
         self.args = Array()
          var Uargs = try? container?.decode([Data].self, forKey: .args)
-         for i in 0..<Uargs!.count{
+        if let uargs=Uargs{
+            for i in 0..<Uargs!.count{
 
-            self.args!.append(CustomEncoder.convertToInt8Array(input: Array(Uargs![i])))
-         }
+               self.args!.append(CustomEncoder.convertToInt8Array(input: Array(Uargs![i])))
+            }
+        }
+        if(self.args?.count==0){
+            self.args=nil
+        }
         self.logic = try? CustomEncoder.convertToInt8Array(input: Array((container?.decode(Data.self, forKey: .logic))!))
         
         var sigBytes = try? CustomEncoder.convertToInt8Array(input: Array((container?.decode(Data.self, forKey: .sig))!))
         if let sigBytess = (sigBytes){
             self.sig = try? Signature(sigBytess)
         }
+        
+        self.msig = try? container?.decode(MultisigSignature.self, forKey: .msig)
+        
+        
       
 
         
     }
     
     
-    public   init(logic:[Int8],args:[[Int8]]?,sig:Signature?,msig:MultisigSignature?) {
+    public   init(logic:[Int8],args:[[Int8]]?,sig:Signature?,msig:MultisigSignature?) throws {
         self.logic=logic
         self.args=args
         self.sig=sig
         self.msig=msig
         
-                try! AlgoLogic.checkProgram(program: logic, args: self.args)
+                try AlgoLogic.checkProgram(program: logic, args: self.args)
     }
     
-    public  convenience init(logicsig:[Int8]) {
-        self.init(logicsig: logicsig,args:nil)
+    public  convenience init(logicsig:[Int8]) throws {
+        try self.init(logicsig: logicsig,args:nil)
     }
     
-    public convenience init(logicsig:[Int8],args:[[Int8]]?) {
+    public convenience init(logicsig:[Int8],args:[[Int8]]?) throws {
         
-        self.init(logic:logicsig,args:args,sig:nil,msig:nil)
+        try self.init(logic:logicsig,args:args,sig:nil,msig:nil)
     }
     
    
@@ -124,6 +139,48 @@ public class LogicsigSignature:Codable,Equatable {
         }
         return prefixedEncoded;
     }
+    
+    public func verify (address:Address)->Bool{
+        
+        if(self.logic==nil){
+            return false
+        }else if self.sig != nil && self.msig != nil{
+            return false
+        }else{
+            do{
+              try  AlgoLogic.checkProgram(program: self.logic!, args: self.args)
+                
+            }catch is Error{
+                return false
+            }
+            
+            if self.sig == nil && self.msig==nil{
+                do{
+                    return  try address==self.toAddress()
+                    
+                }catch is Error{
+                    return false
+                }
+            }else{
+//                print("Printing sig bytez")
+                if(self.sig != nil){
+                    print("SIG VER")
+                    let publicKey = try! PublicKey(CustomEncoder.convertToUInt8Array(input: address.getBytes()))
+                
+                    var isVerified = try! publicKey.verify(signature: CustomEncoder.convertToUInt8Array(input: self.sig!.bytes!), message: CustomEncoder.convertToUInt8Array(input: self.bytesToSign()))
+                    
+                    return isVerified
+                }else{
+                    print("MSIG VER")
+                    return msig!.verify(message: self.bytesToSign())
+                }
+             
+            }
+            
+        }
+    }
+    
+
 
 //    public boolean verify(Address address) {
 //        if (this.logic == null) {
@@ -176,67 +233,44 @@ public class LogicsigSignature:Codable,Equatable {
 //            return o1 == null || o2 != null;
 //        }
 //    }
-//
-//    public boolean equals(Object obj) {
-//        if (obj instanceof LogicsigSignature) {
-//            LogicsigSignature actual = (LogicsigSignature)obj;
-//            if (!nullCheck(this.logic, actual.logic)) {
-//                return false;
-//            } else if (!Arrays.equals(this.logic, actual.logic)) {
-//                return false;
-//            } else if (!nullCheck(this.args, actual.args)) {
-//                return false;
-//            } else {
-//                if (this.args != null) {
-//                    if (this.args.size() != actual.args.size()) {
-//                        return false;
-//                    }
-//
-//                    for(int i = 0; i < this.args.size(); ++i) {
-//                        if (!Arrays.equals((byte[])this.args.get(i), (byte[])actual.args.get(i))) {
-//                            return false;
-//                        }
-//                    }
-//                }
-//
-//                if (!nullCheck(this.sig, actual.sig)) {
-//                    return false;
-//                } else if (this.sig != null && !this.sig.equals(actual.sig)) {
-//                    return false;
-//                } else if (!nullCheck(this.msig, actual.msig)) {
-//                    return false;
-//                } else {
-//                    return this.msig == null || this.msig.equals(actual.msig);
-//                }
-//            }
-//        } else {
-//            return false;
-//        }
-//    }
-//
-//
+
     
   public  static func ==(lhs: LogicsigSignature, rhs: LogicsigSignature) -> Bool {
         var equal: Bool = false;
         //logic
         equal = lhs.logic==rhs.logic
         if(!equal){
+            print("Logic fail")
             return equal
         }
+    print("Logic pass")
         //args
         equal = lhs.args==rhs.args
         if(!equal){
+            print("args fail")
             return equal
         }
-        
+    print("args pass")
         //sig
         equal = lhs.sig?.bytes==rhs.sig?.bytes
         if(!equal){
+            print("sig fail")
             return equal
         }
         //multisig
+    print("sig pass")
     equal = lhs.msig?.subsigs==rhs.msig?.subsigs&&lhs.msig?.MULTISIG_VERSION==rhs.msig?.MULTISIG_VERSION&&lhs.msig?.threshold==rhs.msig?.threshold&&lhs.msig?.version==rhs.msig?.version
- 
+    
+        print(equal)
+    
+    print(lhs.msig?.subsigs)
+    print(rhs.msig?.subsigs)
+    print(lhs.msig?.MULTISIG_VERSION)
+    print(rhs.msig?.MULTISIG_VERSION)
+    print(lhs.msig?.threshold)
+    print(rhs.msig?.threshold)
+    print(lhs.msig?.version)
+    print(rhs.msig?.version)
         return equal
     
     }

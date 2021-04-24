@@ -44,7 +44,7 @@ public class LimitOrder {
                     var gid = try! TxGroup.computeGroupID(txns: [tx1,tx2])
                     tx1.assignGroupID(gid: gid)
                     tx2.assignGroupID(gid: gid)
-                    var lsig =  LogicsigSignature(logicsig: contract.program);
+                    var lsig = try! LogicsigSignature(logicsig: contract.program);
                     var stx1 =  SignedTransaction(tx: tx1, lSig: lsig, txId: tx1.txID());
                     var stx2 =  sender.signTransaction(tx: tx2);
 

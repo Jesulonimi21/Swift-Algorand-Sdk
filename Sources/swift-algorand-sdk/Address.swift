@@ -18,7 +18,7 @@ extension Array where Element: Comparable {
         return self.count == other.count && self.sorted() == other.sorted()
     }
 }
-public class Address: Codable{
+public class Address: Codable,Equatable{
     
    
     public var bytes:[Int8]?=Array(repeating:0,count:32)
@@ -105,6 +105,8 @@ public class Address: Codable{
     
     
     
-   
+    public static func == (lhs:Address,rhs:Address)->Bool{
+        return lhs.bytes==rhs.bytes
+    }
     
 }

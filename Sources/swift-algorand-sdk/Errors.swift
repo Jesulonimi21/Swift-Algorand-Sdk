@@ -6,11 +6,15 @@
 //
 
 import Foundation
-enum Errors:Error{
+public enum Errors:Error,Equatable{
     case runtimeError(String)
     case illegalArgumentError(String)
     case generalSecurityError(String)
     case NetworkError(String)
     
+ 
+//    public static func ==(lhs:Errors,rhs:Errors)-> Bool{
+//        return lhs==rhs
+//    }
     
 }

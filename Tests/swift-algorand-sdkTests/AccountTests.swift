@@ -245,7 +245,7 @@ public class AccountTests : XCTestCase{
         args.append(arg1);
         args.append(arg2);
 
-        var lsig:LogicsigSignature = LogicsigSignature(logicsig: program, args: args)
+        var lsig:LogicsigSignature = try! LogicsigSignature(logicsig: program, args: args)
   
         lsig = try! account.signLogicsig(lsig:lsig)
         var stx = Account.signLogicsigTransaction(lsig: lsig, tx: tx)

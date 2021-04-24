@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class Ed25519PublicKey : Codable {
+public class Ed25519PublicKey : Codable,Equatable {
     var  KEY_LEN_BYTES = 32;
     public var bytes:[Int8] = Array(repeating: 0, count: 32) ;
     
@@ -31,5 +31,8 @@ public class Ed25519PublicKey : Codable {
         return self.bytes;
     }
 
+    public static func == (lhs:Ed25519PublicKey,rhs:Ed25519PublicKey)->Bool{
+        return lhs.bytes==rhs.bytes
+    }
    
 }
