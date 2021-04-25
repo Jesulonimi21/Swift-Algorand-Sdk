@@ -116,7 +116,7 @@ extension Transaction.type:Codable{
 }
 
 
-public class Transaction : Codable{
+public class Transaction : Codable,Equatable{
     enum onCompletion: String {
         case  NoOpOC="NoOpOC"
         case  OptInOC="OptInOC"
@@ -144,42 +144,42 @@ public class Transaction : Codable{
      
     var TX_SIGN_PREFIX:[Int8]=[84,88]
   public  var assetParams:AssetParams?=nil
-    var selectionPK:VRFPublicKey?=nil
-    var foreignApps:[Int64]?=nil
-    var applicationArgs:[[Int64]]?=nil
-    var votePK:ParticipationPublicKey?=nil
-    var sender:Address?;
-    var localStateSchema:StateSchema?=nil
-    var globalStateSchema: StateSchema?=nil
-    var fee:Int64?=nil;
-    var firstValid:Int64?=nil;
-    var lastValid:Int64?=nil;
-    var note:[Int8]?=nil;
-    var genesisID: String?=nil;
-    var genesisHash:Digest?=nil;
-    var  group:Digest?=nil;
-    var lease:[Int8]?=nil;
-    var rekeyTo:Address?=nil;
-    var amount:Int64?=nil;
-    var receiver:Address?=nil;
-    var closeRemainderTo:Address?=nil;
-    var voteFirst:Int64?=nil;
-    var voteLast:Int64?=nil;
-    var voteKeyDilution:Int64?=nil;
-    var assetIndex:Int64?=nil;
-    var  xferAsset:Int64?=nil;
-    var assetAmount:Int64?=nil;
-    var assetSender:Address?=nil;
-    var assetReceiver:Address?=nil;
-    var assetCloseTo:Address?=nil;
-    var freezeTarget:Address?=nil;
-    var assetFreezeID:Int64?=nil;
-    var freezeState:Bool?=nil;
-    var onCompletion: String?=nil;
-    var  accounts:[Address]?=nil;
-    var foreignAssets:[Int64]?=nil;
+    public  var selectionPK:VRFPublicKey?=nil
+   public var foreignApps:[Int64]?=nil
+   public var applicationArgs:[[Int64]]?=nil
+   public var votePK:ParticipationPublicKey?=nil
+   public var sender:Address?;
+   public var localStateSchema:StateSchema?=nil
+   public var globalStateSchema: StateSchema?=nil
+   public var fee:Int64?=nil;
+   public var firstValid:Int64?=nil;
+   public var lastValid:Int64?=nil;
+   public var note:[Int8]?=nil;
+   public var genesisID: String?=nil;
+   public var genesisHash:Digest?=nil;
+   public var  group:Digest?=nil;
+   public var lease:[Int8]?=nil;
+   public var rekeyTo:Address?=nil;
+   public var amount:Int64?=nil;
+   public var receiver:Address?=nil;
+   public var closeRemainderTo:Address?=nil;
+   public var voteFirst:Int64?=nil;
+   public var voteLast:Int64?=nil;
+   public var voteKeyDilution:Int64?=nil;
+   public var assetIndex:Int64?=nil;
+   public var  xferAsset:Int64?=nil;
+   public var assetAmount:Int64?=nil;
+   public var assetSender:Address?=nil;
+   public var assetReceiver:Address?=nil;
+   public var assetCloseTo:Address?=nil;
+   public var freezeTarget:Address?=nil;
+   public var assetFreezeID:Int64?=nil;
+   public var freezeState:Bool?=nil;
+   public var onCompletion: String?=nil;
+   public var  accounts:[Address]?=nil;
+   public var foreignAssets:[Int64]?=nil;
 
-    var applicationId:Int64?=nil;
+   public var applicationId:Int64?=nil;
 
 //        public TEALProgram clearStateProgram;
 
@@ -577,6 +577,20 @@ public class Transaction : Codable{
             self.group = gid;
         }
 
+    public static func == (lhs:Transaction,rhs:Transaction)->Bool{
+        return lhs.type == rhs.type && lhs.sender == rhs.sender && lhs.fee == rhs.fee
+            && lhs.firstValid == rhs.firstValid && lhs.lastValid == rhs.lastValid &&
+            lhs.note == rhs.note && lhs.genesisID == rhs.genesisID && lhs.genesisHash == rhs.genesisHash
+            && lhs.lease == rhs.lease && lhs.group == rhs.group && lhs.amount == rhs.amount && lhs.receiver == rhs.receiver
+            && lhs.closeRemainderTo == rhs.closeRemainderTo && lhs.votePK == rhs.votePK && lhs.selectionPK == rhs.selectionPK
+            && lhs.voteFirst == rhs.voteFirst && lhs.voteLast == rhs.voteLast && lhs.voteKeyDilution == rhs.voteKeyDilution
+            && lhs.assetParams == rhs.assetParams && lhs.assetIndex == rhs.assetIndex && lhs.xferAsset == rhs.xferAsset
+            && lhs.assetAmount == rhs.assetAmount && lhs.assetSender == rhs.assetSender && lhs.assetReceiver == rhs.assetReceiver
+            && lhs.assetCloseTo == rhs.assetCloseTo && lhs.freezeTarget == rhs.freezeTarget && lhs.assetFreezeID == rhs.assetFreezeID
+            && lhs.freezeState == rhs.freezeState && lhs.rekeyTo == rhs.rekeyTo && lhs.lease == rhs.lease
+
+
+    }
 }
 
 

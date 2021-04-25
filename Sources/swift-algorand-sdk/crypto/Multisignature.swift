@@ -68,8 +68,7 @@ public    var subsigs:[MultisigSubsig]?=[MultisigSubsig]();
                         
                     }
                 }
-                print("Verified count")
-              print(verifiedCount)
+              
             if (verifiedCount < self.threshold!) {
                 return false;
             } else {

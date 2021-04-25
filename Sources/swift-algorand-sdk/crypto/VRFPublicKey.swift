@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class VRFPublicKey : Codable {
+public class VRFPublicKey : Codable,Equatable {
    var  KEY_LEN_BYTES = 32
     var bytes:[Int8] = Array(repeating: 0, count: 32)
 public
@@ -31,6 +31,8 @@ public
    init() {
     }
 
-
+    public static func == (lhs:VRFPublicKey,rhs:VRFPublicKey)->Bool{
+        return lhs.bytes == rhs.bytes
+    }
  
 }

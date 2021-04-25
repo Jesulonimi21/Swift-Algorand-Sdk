@@ -162,16 +162,16 @@ public class LogicsigSignature:Codable,Equatable {
                     return false
                 }
             }else{
-//                print("Printing sig bytez")
+
                 if(self.sig != nil){
-                    print("SIG VER")
+            
                     let publicKey = try! PublicKey(CustomEncoder.convertToUInt8Array(input: address.getBytes()))
                 
                     var isVerified = try! publicKey.verify(signature: CustomEncoder.convertToUInt8Array(input: self.sig!.bytes!), message: CustomEncoder.convertToUInt8Array(input: self.bytesToSign()))
                     
                     return isVerified
                 }else{
-                    print("MSIG VER")
+                 
                     return msig!.verify(message: self.bytesToSign())
                 }
              
@@ -182,47 +182,7 @@ public class LogicsigSignature:Codable,Equatable {
     
 
 
-//    public boolean verify(Address address) {
-//        if (this.logic == null) {
-//            return false;
-//        } else if (this.sig != null && this.msig != null) {
-//            return false;
-//        } else {
-//            try {
-//                Logic.checkProgram(this.logic, this.args);
-//            } catch (Exception var7) {
-//                return false;
-//            }
-//
-//            if (this.sig == null && this.msig == null) {
-//                try {
-//                    return address.equals(this.toAddress());
-//                } catch (NoSuchAlgorithmException var4) {
-//                    return false;
-//                }
-//            } else {
-//                PublicKey pk;
-//                try {
-//                    pk = address.toVerifyKey();
-//                } catch (Exception var6) {
-//                    return false;
-//                }
-//
-//                if (this.sig != null) {
-//                    try {
-//                        java.security.Signature sig = java.security.Signature.getInstance("EdDSA");
-//                        sig.initVerify(pk);
-//                        sig.update(this.bytesToSign());
-//                        return sig.verify(this.sig.getBytes());
-//                    } catch (Exception var5) {
-//                        return false;
-//                    }
-//                } else {
-//                    return this.msig.verify(this.bytesToSign());
-//                }
-//            }
-//        }
-//    }
+
 //
 //    private static boolean nullCheck(Object o1, Object o2) {
 //        if (o1 == null && o2 == null) {
@@ -240,37 +200,27 @@ public class LogicsigSignature:Codable,Equatable {
         //logic
         equal = lhs.logic==rhs.logic
         if(!equal){
-            print("Logic fail")
+         
             return equal
         }
-    print("Logic pass")
+ 
         //args
         equal = lhs.args==rhs.args
         if(!equal){
-            print("args fail")
+           
             return equal
         }
-    print("args pass")
+  
         //sig
         equal = lhs.sig?.bytes==rhs.sig?.bytes
         if(!equal){
-            print("sig fail")
+         
             return equal
         }
         //multisig
-    print("sig pass")
+  
     equal = lhs.msig?.subsigs==rhs.msig?.subsigs&&lhs.msig?.MULTISIG_VERSION==rhs.msig?.MULTISIG_VERSION&&lhs.msig?.threshold==rhs.msig?.threshold&&lhs.msig?.version==rhs.msig?.version
     
-        print(equal)
-    
-    print(lhs.msig?.subsigs)
-    print(rhs.msig?.subsigs)
-    print(lhs.msig?.MULTISIG_VERSION)
-    print(rhs.msig?.MULTISIG_VERSION)
-    print(lhs.msig?.threshold)
-    print(rhs.msig?.threshold)
-    print(lhs.msig?.version)
-    print(rhs.msig?.version)
         return equal
     
     }

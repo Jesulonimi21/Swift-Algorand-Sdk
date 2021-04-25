@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class Digest: Codable {
+public class Digest: Codable,Equatable {
     var  DIG_LEN_BYTES = 32;
 var bytes:[Int8]?=nil;
 
@@ -42,6 +42,9 @@ var bytes:[Int8]?=nil;
         case bytes
     }
     
+    public static func ==(lhs:Digest,rhs:Digest)->Bool{
+        return lhs.bytes == rhs.bytes
+    }
 //    public func encode(to encoder: Encoder) throws {
 //        var container = encoder.container(keyedBy: CodingKeys.self)
 //        try! container.encode( Data(CustomEncoder.convertToUInt8Array(input:self.bytes!)), forKey: .bytes)
