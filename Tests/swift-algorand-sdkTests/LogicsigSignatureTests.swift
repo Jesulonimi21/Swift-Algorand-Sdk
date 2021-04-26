@@ -38,7 +38,7 @@ public class LogicsigSignatureTests:XCTestCase{
         var outBytes:[UInt8] = CustomEncoder.encodeToMsgPack(lsig)
         var lsig1  = CustomEncoder.decodeFrmMessagePack(obj: LogicsigSignature.self, data: Data(outBytes))
         XCTAssertEqual(lsig, lsig1)
-
+        TestUtil.serializeDeserializeCheck(object: lsig);
     }
     
     public func testLogicsigInvalidProgramCreation(){
@@ -67,9 +67,10 @@ public class LogicsigSignatureTests:XCTestCase{
       
         let jsonData = try! JSONEncoder().encode(lsig1)
         let jsonString = String(data: jsonData, encoding: .utf8)!
-        print(jsonString)
+//        print(jsonString)
         print( String(data: try! JSONEncoder().encode(lsig), encoding: .utf8)!)
         XCTAssertEqual(lsig1, lsig)
+        TestUtil.serializeDeserializeCheck(object: lsig);
     }
     
     public func testLogicsigMultisigSignature(){
@@ -133,7 +134,7 @@ public class LogicsigSignatureTests:XCTestCase{
         XCTAssertEqual(lsig2, lsig)
         verified = lsig2.verify(address: try! ma.toAddress())
         XCTAssertTrue(verified)
-        
+        TestUtil.serializeDeserializeCheck(object: lsig);
     }
 
 

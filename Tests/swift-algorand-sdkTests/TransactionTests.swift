@@ -69,6 +69,7 @@ static var DEFAULT_ACCOUNT = initializeDefaultAccount();
         XCTAssertEqual(decodedOut, stx)
    
         XCTAssertEqual(encodedOut,goldenString )
+        TestUtil.serializeDeserializeCheck(object: stx);
      }
     
     func testAssetParamsValidation() throws {
@@ -139,6 +140,7 @@ static var DEFAULT_ACCOUNT = initializeDefaultAccount();
         XCTAssertEqual(encodedOutbytes, CustomEncoder.convertBase64ToByteArray(data1: goldenString) )
     
         XCTAssertEqual(o, stx)
+        TestUtil.serializeDeserializeCheck(object: stx);
         
     }
 
@@ -190,7 +192,7 @@ static var DEFAULT_ACCOUNT = initializeDefaultAccount();
    
         XCTAssertEqual(o, stx)
        
-        
+        TestUtil.serializeDeserializeCheck(object: stx);
     }
     
     func testPaymentTransaction(){
@@ -221,6 +223,7 @@ static var DEFAULT_ACCOUNT = initializeDefaultAccount();
         XCTAssertEqual(stx, stxDecoded)
         
         XCTAssertEqual(encodedOutBytes, goldenString)
+        TestUtil.serializeDeserializeCheck(object: stx);
         
     }
     
@@ -255,7 +258,9 @@ static var DEFAULT_ACCOUNT = initializeDefaultAccount();
         var expectedmSGpACK:[UInt8] = CustomEncoder.decodeByteFromBase64(string: goldenTx1)
         var expectedStx = CustomEncoder.decodeFrmMessagePack(obj: SignedTransaction.self, data: Data(expectedmSGpACK))
         
-      
+        TestUtil.serializeDeserializeCheck(object: stx1);
+        TestUtil.serializeDeserializeCheck(object: stx2);
+        
         var fRoundMsgPackStx1:[UInt8] = CustomEncoder.encodeToMsgPack(stx1)
         var fRoundMsgPackStx2:[UInt8] = CustomEncoder.encodeToMsgPack(stx2)
         XCTAssertEqual(CustomEncoder.encodeToBase64(fRoundMsgPackStx1), goldenTx1)
@@ -366,7 +371,7 @@ static var DEFAULT_ACCOUNT = initializeDefaultAccount();
         var stxDecoded = CustomEncoder.decodeFrmMessagePack(obj: SignedTransaction.self, data: Data(msgPack))
         XCTAssertEqual(stxDecoded, stx)
         XCTAssertEqual(encodedOutBytes, goldenString)
-        
+        TestUtil.serializeDeserializeCheck(object: stx);
     }
     
 
@@ -406,6 +411,7 @@ static var DEFAULT_ACCOUNT = initializeDefaultAccount();
         var stxDecoded = CustomEncoder.decodeFrmMessagePack(obj: SignedTransaction.self, data: Data(msgPack))
         XCTAssertEqual(stxDecoded, stx)
         XCTAssertEqual(encodedOutBytes, goldenString)
+        TestUtil.serializeDeserializeCheck(object: stx);
     }
     
     
@@ -443,7 +449,7 @@ static var DEFAULT_ACCOUNT = initializeDefaultAccount();
         var stxDecoded = CustomEncoder.decodeFrmMessagePack(obj: SignedTransaction.self, data: Data(msgPack))
         XCTAssertEqual(stxDecoded, stx)
         XCTAssertEqual(encodedOutBytes, goldenString)
-        
+        TestUtil.serializeDeserializeCheck(object: stx);
     }
     
 
@@ -496,6 +502,7 @@ static var DEFAULT_ACCOUNT = initializeDefaultAccount();
         XCTAssertEqual(stx, stxDecoded)
         
         XCTAssertEqual(encodedOutBytes, goldenString)
+        TestUtil.serializeDeserializeCheck(object: stx);
     }
  
     

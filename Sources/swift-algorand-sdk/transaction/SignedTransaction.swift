@@ -8,7 +8,7 @@
 import Foundation
 public class SignedTransaction: Codable,Equatable {
    public var  tx:Transaction?;
-    public var sig:Signature?;
+    public var sig:Signature?=Signature();
     public var transactionID:String?
     public  var mSig:MultisigSignature?
     public var lSig:LogicsigSignature?
@@ -121,6 +121,39 @@ public class SignedTransaction: Codable,Equatable {
 //        print(lhs.lSig==rhs.lSig)
 //        print(lhs.mSig==rhs.mSig)
 //        print(lhs.sig==rhs.sig)
+        
+        
+        if(lhs.tx == Transaction()){
+            lhs.tx = nil
+        }
+        if(rhs.tx == Transaction()){
+            rhs.tx = nil
+        }
+        if(lhs.sig == Signature()){
+            lhs.sig = nil
+        }
+        if(rhs.sig == Signature()){
+            rhs.sig = nil
+        }
+      
+        
+        
+        if(lhs.lSig == LogicsigSignature()){
+            lhs.lSig = nil
+        }
+        if(rhs.lSig == LogicsigSignature()){
+            rhs.lSig = nil
+        }
+        
+        if(lhs.mSig == MultisigSignature()){
+            lhs.mSig = nil
+        }
+        if(rhs.mSig == MultisigSignature()){
+            rhs.mSig = nil
+        }
+    
+    
+      
         print("Sg end")
         return lhs.tx==rhs.tx && lhs.lSig==rhs.lSig && lhs.mSig==rhs.mSig && lhs.sig==rhs.sig
     }

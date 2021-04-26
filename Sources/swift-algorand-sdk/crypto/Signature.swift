@@ -38,15 +38,11 @@ public class Signature: Codable,Equatable {
     }
    
    public init(_ rawBytes:[Int8]) throws {
-   
             if (rawBytes.count != 64) {
-            
                 throw  Errors.illegalArgumentError("Given signature length is not \(64)")
             } else {
-
                 self.bytes=rawBytes
             }
-        
     }
 
    public init() {
@@ -59,5 +55,4 @@ public class Signature: Codable,Equatable {
     public static func == (lhs:Signature,rhs:Signature)->Bool{
         return lhs.bytes==rhs.bytes
     }
-   
 }
