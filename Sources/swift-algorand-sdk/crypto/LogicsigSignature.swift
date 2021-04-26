@@ -27,7 +27,7 @@ public class LogicsigSignature:Codable,Equatable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         if let args = self.args{
             var Uargs:[Data]=Array()
-            print(args.count)
+        
             for i in 0..<args.count{
 
                 Uargs.append(Data(CustomEncoder.convertToUInt8Array(input: args[i])))
@@ -115,7 +115,7 @@ public class LogicsigSignature:Codable,Equatable {
     }
     
    
-     init() {
+    public init() {
         self.logic = nil;
         self.args = nil;
     }

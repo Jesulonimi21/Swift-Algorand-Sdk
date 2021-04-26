@@ -68,7 +68,7 @@ public class HTLC {
                 }
             }
    
-        var txn:Transaction = Transaction.paymentTransactionBuilder().setSender(contract.address).fee(0).firstValid(firstValid).lastValid(lastValid).genesisHash(genesisHash.bytes!).closeRemainderTo(receiver).build()
+        var txn:Transaction = try! Transaction.paymentTransactionBuilder().setSender(contract.address).fee(0).firstValid(firstValid).lastValid(lastValid).genesisHash(genesisHash.bytes!).closeRemainderTo(receiver).build()
         
       txn =  try Account.setFeeByFeePerByte(tx: txn, suggestedFeePerByte: feePerByte);
         if (txn.fee! > maxFee) {

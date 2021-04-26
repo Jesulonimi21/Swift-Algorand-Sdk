@@ -29,16 +29,15 @@ public class  BaseAssetBuilder <T>: TransactionBuilder<BaseAssetBuilder> {
         self.init(type);
     }
 
-    override func applyTo(_ txn:Transaction) {
+    override func applyTo(_ txn:Transaction) throws {
      
 //Use a gard statement to make sure sender,firstvalid,lastvalid,genesishash,assetTotal.assetDecimals have a value
     
     
-        var params =  AssetParams(assetTotal: self.assetTotal, assetDecimals: self.assetDecimals ?? 0, assetDefaultFrozen: self.defaultFrozen ?? false, assetUnitName: self.assetUnitName, assetName: self.assetName, url: self.url, metadataHash: self.metadataHash, assetManager: self.manager, assetReserve: self.reserve, assetFreeze: self.freeze, assetClawback: self.clawback);
+        var params = try! AssetParams(assetTotal: self.assetTotal, assetDecimals: self.assetDecimals ?? 0, assetDefaultFrozen: self.defaultFrozen ?? false, assetUnitName: self.assetUnitName, assetName: self.assetName, url: self.url, metadataHash: self.metadataHash, assetManager: self.manager, assetReserve: self.reserve, assetFreeze: self.freeze, assetClawback: self.clawback);
         
         txn.assetParams = params;
-        print(txn.assetParams?.assetDecimals)
-        print("Assset ffrozen")
+       
     }
 
     public func setAssetTotal(assetTotal:Int64) ->T{
@@ -167,6 +166,22 @@ public class  BaseAssetBuilder <T>: TransactionBuilder<BaseAssetBuilder> {
 
     public func clawback(clawback:[Int8])->T {
         self.clawback =  try! Address(clawback);
+        
         return self as! T;
     }
+    
+//    public  func  firstValid(_ firstValid:Int64) -> T{
+//        self.firstValid = firstValid;
+//        return self as! T;
+//    }
+//
+////
+//    public  func lastValid(_ lastValid:Int64)->T {
+//        self.lastValid = lastValid;
+//        return self as! T;
+//    }
+//    public func fee(_ fee:Int64)->T {
+//        self.fee = fee;
+//        return self as! T;
+//    }
 }

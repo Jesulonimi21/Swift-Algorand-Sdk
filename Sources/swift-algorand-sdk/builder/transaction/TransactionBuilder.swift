@@ -12,11 +12,11 @@ public extension StringProtocol {
     
    
 }
-extension StringProtocol where Self: RangeReplaceableCollection {
-    var removingAllWhitespaces: Self {
+public extension StringProtocol where Self: RangeReplaceableCollection {
+  public  var removingAllWhitespaces: Self {
         filter(\.isWhitespace.negated)
     }
-    mutating func removeAllWhitespaces() {
+    public mutating func removeAllWhitespaces() {
         removeAll(where: \.isWhitespace)
     }
 }
@@ -43,14 +43,14 @@ public  class TransactionBuilder<T>{
 
      func  applyTo(_ var1: Transaction) throws{};
 
-     public func build() ->Transaction{
+     public func build() throws ->Transaction{
         if (self.lastValid == nil && self.firstValid != nil) {
             self.lastValid = self.firstValid!+1000;
         }
 
         var txn =  Transaction()
         txn.type = self.type!
-      try!  self.applyTo(txn);
+      try  self.applyTo(txn);
         if (self.sender != nil) {
             txn.sender = self.sender!;
         }
@@ -84,12 +84,12 @@ public  class TransactionBuilder<T>{
         }
 
         if (self.lease != nil && self.lease!.count != 0) {
-//            txn.setLease(new Lease(self.lease));
+            txn.setLease(lease: try Lease(lease: self.lease!));
         }
 
         if (self.fee != nil && self.flatFee != nil) {
-//            throw Errors.illegalArgumentError("Cannot set both fee and flatFee.")
-            print("Cannot set both fee and flatFee.")
+            throw Errors.illegalArgumentError("Cannot set both fee and flatFee.")
+//            print("Cannot set both fee and flatFee.")
         } else {
             if (self.fee != nil) {
                try! Account.setFeeByFeePerByte(tx: txn, suggestedFeePerByte: fee!)
@@ -170,6 +170,23 @@ public  class TransactionBuilder<T>{
         self.genesisHash =  genesisHash;
         return self as! T;
     }
+    
+    public func lease(lease:[Int8]) -> T{
+           self.lease = lease
+        return self as! T
+       }
+    
+    public func leaseB64(lease:String) -> T{
+        self.lease = CustomEncoder.convertToInt8Array(input: CustomEncoder.decodeByteFromBase64(string: lease))
+        return self as! T
+    }
+    public func genesisHashB64(_ genesisHash:String)-> T{
+        self.genesisHash = Digest(  CustomEncoder.convertToInt8Array(input: CustomEncoder.decodeByteFromBase64(string: genesisHash)))
+        return self as! T
+    }
+    
+    
+
 
 //Group,rekey,flatFee, try setFeePerByte
 }

@@ -19,6 +19,7 @@ public class Signature: Codable,Equatable {
         case bytes
     }
     
+    
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         if let bytes=self.bytes{
@@ -26,8 +27,17 @@ public class Signature: Codable,Equatable {
         }
       
     }
+    
+    public required init(from decoder: Decoder) throws {
+        var container = try decoder.singleValueContainer()
+        var bytesData = try? container.decode(Data.self)
+        if let _ = bytesData{
+            self.bytes = CustomEncoder.convertToInt8Array(input: Array(bytesData!))
+        }
+        
+    }
    
-    init(_ rawBytes:[Int8]) throws {
+   public init(_ rawBytes:[Int8]) throws {
    
             if (rawBytes.count != 64) {
             
@@ -39,7 +49,7 @@ public class Signature: Codable,Equatable {
         
     }
 
-    init() {
+   public init() {
     }
 
    

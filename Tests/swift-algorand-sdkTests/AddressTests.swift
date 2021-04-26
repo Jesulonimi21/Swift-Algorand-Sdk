@@ -52,7 +52,7 @@ public class AddressTests: XCTestCase{
         var aBytes:[UInt8] = CustomEncoder.encodeToMsgPack(a)
         
         var o = CustomEncoder.decodeFrmMessagePack(obj: Address.self, data: Data(aBytes))
-        
+        print(o.description)
         XCTAssertEqual("VKM6KSCTDHEM6KGEAMSYCNEGIPFJMHDSEMIRAQLK76CJDIRMMDHKAIRMFQ", o.description)
     }
 }

@@ -26,6 +26,13 @@ public class Ed25519PublicKey : Codable,Equatable {
         try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: self.bytes)), forKey: .bytes)
     }
 
+    public required init(from decoder: Decoder) throws {
+        var container = try decoder.singleValueContainer()
+        var bytesData = try? container.decode(Data.self)
+        if let bData = bytesData {
+            self.bytes = CustomEncoder.convertToInt8Array(input: Array(bytesData!))
+        }
+    }
    
     public func getBytes()->[Int8] {
         return self.bytes;

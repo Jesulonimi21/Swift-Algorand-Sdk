@@ -25,9 +25,7 @@ public class Account{
    public init(_ bytes:[Int8]?) throws {
    
         if  let Ubytes = bytes{
-             seed = try Seed(bytes:Ubytes.map{Int8val -> UInt8 in
-                return unsafeBitCast(Int8val, to: UInt8.self)
-            })
+            seed = try Seed(bytes:CustomEncoder.convertToUInt8Array(input: Ubytes))
         }else{
             seed = try Seed()
         }

@@ -18,8 +18,6 @@ public    var subsigs:[MultisigSubsig]?=[MultisigSubsig]();
         case subsigs="subsig"
         case threshold="thr"
         case version="v"
-     
-   
         
     }
 
@@ -35,6 +33,14 @@ public    var subsigs:[MultisigSubsig]?=[MultisigSubsig]();
         try!container.encode(threshold, forKey: .threshold)
         try!container.encode(version, forKey: .version)
        
+    }
+    
+    public required init(from decoder: Decoder) throws {
+        var container = try decoder.container(keyedBy: CodingKeys.self)
+        self.version = try  container.decode(Int.self, forKey: .version)
+        self.threshold = try container.decode(Int.self,forKey: .threshold)
+        self.subsigs =  try container.decode([MultisigSubsig].self,forKey: .subsigs)
+        
     }
 
     convenience init(version:Int, threshold:Int) {

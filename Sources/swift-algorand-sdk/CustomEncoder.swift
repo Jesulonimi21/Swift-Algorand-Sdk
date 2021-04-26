@@ -118,7 +118,7 @@ public class CustomEncoder{
         return data.hexEncodedString()
     }
     
-    public static func encodeToJson(obj:SignedTransaction)->String{
+    public static func encodeToJson<T>(obj:T)->String where T : Encodable{
         
         let jsonData = try! JSONEncoder().encode(obj)
         let jsonString = String(data: jsonData, encoding: .utf8)!

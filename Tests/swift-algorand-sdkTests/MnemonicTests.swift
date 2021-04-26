@@ -100,18 +100,5 @@ public class MnemonicTests:XCTestCase{
             XCTAssertEqual(thrownError as? Errors, .illegalArgumentError("key length must be 32 bytes"))
         }
     }
-//    public void testInvalidKeylen() throws Exception {
-//           Random r = new Random();
-//           int[] badLengths = new int[]{
-//               0, 31, 33, 100, 35, 2, 30
-//           };
-//           for (int badlen: badLengths) {
-//               byte[] randKey = new byte[badlen];
-//               r.nextBytes(randKey);
-//               assertThatThrownBy(() -> Mnemonic.fromKey(randKey))
-//                       .isInstanceOf(IllegalArgumentException.class)
-//                       .hasMessage("key length must be 32 bytes");
-//           }
-//       }
 
 }

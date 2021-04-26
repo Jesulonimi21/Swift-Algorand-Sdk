@@ -33,6 +33,7 @@ public class TxGroup : Encodable {
     }
     
 
+
     public static func  computeGroupID(txns:[Transaction])throws -> Digest  {
         if (txns.count != 0) {
             if (txns.count > MAX_TX_GROUP_SIZE) {

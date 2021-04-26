@@ -34,11 +34,11 @@ public class LimitOrder {
             } else if (microAlgoAmount < minTrade) {
                 throw Errors.illegalArgumentError("At least \(minTrade) microalgos must be requested.");
             } else {
-                var tx1 = Transaction.paymentTransactionBuilder().setSender(contract.address).fee(feePerByte).firstValid(firstValid).lastValid(lastValid).genesisHash(genesisHash.bytes!).amount(microAlgoAmount).receiver(sender.address).build()
+                var tx1 = try! Transaction.paymentTransactionBuilder().setSender(contract.address).fee(feePerByte).firstValid(firstValid).lastValid(lastValid).genesisHash(genesisHash.bytes!).amount(microAlgoAmount).receiver(sender.address).build()
                 
                
 
-                var tx2 = Transaction.assetTransferTransactionBuilder().setSender(sender.address).assetReceiver(assetReceiver: owner!).assetAmount(assetAmount: assetAmount).fee(feePerByte).firstValid(firstValid).lastValid(lastValid).genesisHash(genesisHash.bytes!).assetIndex(assetIndex: assetId).build()
+                var tx2 = try! Transaction.assetTransferTransactionBuilder().setSender(sender.address).assetReceiver(assetReceiver: owner!).assetAmount(assetAmount: assetAmount).fee(feePerByte).firstValid(firstValid).lastValid(lastValid).genesisHash(genesisHash.bytes!).assetIndex(assetIndex: assetId).build()
                 
                 if tx1.fee! <= Int64(maxFee) && tx2.fee! <= Int64(maxFee) {
                     var gid = try! TxGroup.computeGroupID(txns: [tx1,tx2])

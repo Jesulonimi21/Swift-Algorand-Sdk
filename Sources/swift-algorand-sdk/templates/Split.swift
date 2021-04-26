@@ -47,7 +47,7 @@ public class Split {
                     var receiver2 = try!  Address(data.byteBlock[2]);
              
                     
-                    var tx1 = Transaction.paymentTransactionBuilder().setSender(contract.address)
+                    var tx1 = try! Transaction.paymentTransactionBuilder().setSender(contract.address)
                      .amount(receiverOneAmount)
                      .receiver(receiver1)
                         .genesisHash(genesisHash.bytes!)
@@ -56,7 +56,7 @@ public class Split {
                         .fee(Int64(feePerByte))
                          .build()
 
-                    var tx2 = Transaction.paymentTransactionBuilder().setSender(contract.address)
+                    var tx2 = try! Transaction.paymentTransactionBuilder().setSender(contract.address)
                      .amount(receiverTwoAmount)
                      .receiver(receiver2)
                         .genesisHash(genesisHash.bytes!)

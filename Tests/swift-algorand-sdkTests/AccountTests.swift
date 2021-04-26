@@ -200,7 +200,7 @@ public class AccountTests : XCTestCase{
     func testTransactionSignatureVerification(){
         var mnemonic="cactus check vocal shuffle remember regret vanish spice problem property diesel success easily napkin deposit gesture forum bag talent mechanic reunion enroll buddy about attract"
                     var address = try! Address("VJQG6EJPZDAWFYLFF5XE3OMRQEK6RFFYSBVJOGXBH63ZQZ3QRRIUVIB7MY")
-                   var tx = Transaction.paymentTransactionBuilder().setSender(address)
+                   var tx = try! Transaction.paymentTransactionBuilder().setSender(address)
                     .amount(10)
                     .receiver(address)
                     .note("Swift Algo sdk is cool".bytes)
@@ -230,7 +230,7 @@ public class AccountTests : XCTestCase{
         var firstRound:Int64 = 2063137
         var note = CustomEncoder.convertBase64ToByteArray(data1: "8xMCTuLQ810=")
       
-        var tx = Transaction
+        var tx = try! Transaction
             .paymentTransactionBuilder().setSender(from).flatFee(fee).firstValid(firstRound).lastValid(firstRound+1000).note(note).genesisID(genesisID).genesisHash(genesisHash).amount(amount).receiver(to).build()
         
         var goldenTx = "gqRsc2lng6NhcmeSxAMxMjPEAzQ1NqFsxAUBIAEBIqNzaWfEQE6HXaI5K0lcq50o/y3bWOYsyw9TLi/oorZB4xaNdn1Z14351u2f6JTON478fl+JhIP4HNRRAIh/I8EWXBPpJQ2jdHhuiqNhbXTNB9CjZmVlzQPoomZ2zgAfeyGjZ2Vuq2Rldm5ldC12MS4womdoxCCwLc/t7ZJ1uookrS1uIJ0r211Klt7pd4IYp2g3OaWPQaJsds4AH38JpG5vdGXECPMTAk7i0PNdo3JjdsQge2ziT+tbrMCxZOKcIixX9fY9w4fUOQSCWEEcX+EPfAKjc25kxCDn8PhNBoEd+fMcjYeLEVX0Zx1RoYXCAJCGZ/RJWHBooaR0eXBlo3BheQ=="

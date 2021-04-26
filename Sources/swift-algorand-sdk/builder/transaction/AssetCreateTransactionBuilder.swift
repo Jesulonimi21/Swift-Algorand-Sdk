@@ -44,11 +44,11 @@ public class AssetCreateTransactionBuilder: TransactionBuilder<AssetCreateTransa
 //Use a gard statement
     
     
-        var params =  AssetParams(assetTotal: self.assetTotal, assetDecimals: self.assetDecimals ?? 0, assetDefaultFrozen: self.defaultFrozen ?? false, assetUnitName: self.assetUnitName, assetName: self.assetName, url: self.url, metadataHash: self.metadataHash, assetManager: self.manager, assetReserve: self.reserve, assetFreeze: self.freeze, assetClawback: self.clawback);
+        var params = try!  AssetParams(assetTotal: self.assetTotal, assetDecimals: self.assetDecimals ?? 0, assetDefaultFrozen: self.defaultFrozen ?? false, assetUnitName: self.assetUnitName, assetName: self.assetName, url: self.url, metadataHash: self.metadataHash, assetManager: self.manager, assetReserve: self.reserve, assetFreeze: self.freeze, assetClawback: self.clawback);
         
         txn.assetParams = params;
-        print(txn.assetParams?.assetDecimals)
-        print("Assset ffrozen")
+//        print(txn.assetParams?.assetDecimals)
+//        print("Assset ffrozen")
     }
 
     public func setAssetTotal(assetTotal:Int64) ->AssetCreateTransactionBuilder{
