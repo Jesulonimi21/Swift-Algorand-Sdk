@@ -27,11 +27,17 @@ public class AccountInformation{
   request.responseDecodable(of: AccountData.self){  (response) in
 
     if(response.error != nil){
-        
         customResponse.setIsSuccessful(value:false)
         var errorDescription=String(data:response.data ?? Data(response.error!.errorDescription!.utf8),encoding: .utf8)
         customResponse.setErrorDescription(errorDescription:errorDescription!)
         callback(customResponse)
+        if(response.data != nil){
+            if let message = String(data: response.data!,encoding: .utf8){
+                var errorDic = try! JSONSerialization.jsonObject(with: message.data, options: []) as? [String: Any]
+                customResponse.errorMessage = errorDic!["message"] as! String
+            }
+
+        }
         return
     }
     

@@ -46,16 +46,7 @@ public class LogicsigSignature:Codable,Equatable {
             try! container.encode(msig, forKey: .msig)
         }
         
-    
-//                if let args = self.args{
-//                    var Uargs:[String]=Array()
-//                    print(args.count)
-//                    for i in 0..<args.count{
-//
-//                        Uargs.append(CustomEncoder.encodeToBase64(args[i]))
-//                    }
-//                    try! container.encode(Uargs, forKey: .args)
-//                }
+
        
      
     }

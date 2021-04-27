@@ -15,6 +15,8 @@ public class Response<T>{
   public  var isSuccessful:Bool
    public var data:T?
    public var errorDescription:String?
+    
+    public var errorMessage:String?
 
     func setIsSuccessful(value:Bool){
         self.isSuccessful=value
@@ -26,6 +28,7 @@ public class Response<T>{
     
     func setErrorDescription(errorDescription:String){
         self.errorDescription=errorDescription
+        self.errorMessage = errorDescription
     }
     
 }

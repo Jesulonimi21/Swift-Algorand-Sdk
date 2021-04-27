@@ -68,7 +68,7 @@ public class LogicsigSignatureTests:XCTestCase{
         let jsonData = try! JSONEncoder().encode(lsig1)
         let jsonString = String(data: jsonData, encoding: .utf8)!
 //        print(jsonString)
-        print( String(data: try! JSONEncoder().encode(lsig), encoding: .utf8)!)
+       
         XCTAssertEqual(lsig1, lsig)
         TestUtil.serializeDeserializeCheck(object: lsig);
     }

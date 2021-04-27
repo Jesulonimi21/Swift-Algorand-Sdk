@@ -42,6 +42,14 @@ public class SearchForAssets  {
             customResponse.setErrorDescription(errorDescription:errorDescription!)
             callback(customResponse)
             print(response.error!.errorDescription)
+            if(response.data != nil){
+                if let message = String(data: response.data!,encoding: .utf8){
+                    var errorDic = try! JSONSerialization.jsonObject(with: message.data, options: []) as? [String: Any]
+                    customResponse.errorMessage = errorDic!["message"] as! String
+                 
+                }
+
+            }
             return
         }
                         let data=response.value

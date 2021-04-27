@@ -47,7 +47,6 @@ public class PaymentTransactionBuilder : TransactionBuilder<PaymentTransactionBu
         public func  amount(amount: Int64)throws -> PaymentTransactionBuilder{
         if (amount < 0) {
             throw Errors.illegalArgumentError("amount cannot be a negative value");
-        print("amount cannot be a negative value")
         } else {
             self.amount = amount;
             return self;

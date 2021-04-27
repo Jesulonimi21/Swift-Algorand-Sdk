@@ -89,7 +89,6 @@ public  class TransactionBuilder<T>{
 
         if (self.fee != nil && self.flatFee != nil) {
             throw Errors.illegalArgumentError("Cannot set both fee and flatFee.")
-//            print("Cannot set both fee and flatFee.")
         } else {
             if (self.fee != nil) {
                try! Account.setFeeByFeePerByte(tx: txn, suggestedFeePerByte: fee!)
@@ -184,6 +183,11 @@ public  class TransactionBuilder<T>{
         self.genesisHash = Digest(  CustomEncoder.convertToInt8Array(input: CustomEncoder.decodeByteFromBase64(string: genesisHash)))
         return self as! T
     }
+    
+    public func rekey(rekeyTo:Address) -> T {
+          self.rekeyTo = rekeyTo;
+        return self as! T
+      }
     
     
 

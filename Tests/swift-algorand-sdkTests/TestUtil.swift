@@ -21,12 +21,10 @@ public class TestUtil{
         
         var decoded : T?
         var decoded2:T?
-        
+    
         encoded = CustomEncoder.encodeToJson(obj: object)
         decoded = try! CustomEncoder.decodeFromJson(json: encoded!) as T
-        
-        print(CustomEncoder.encodeToJson(obj: decoded))
-        print(CustomEncoder.encodeToJson(obj: object))
+
         
         XCTAssertEqual(decoded, object)
         

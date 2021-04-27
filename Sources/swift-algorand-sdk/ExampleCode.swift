@@ -27,9 +27,10 @@
 //let queue = DispatchQueue(label: "com.knowstack.queue1")
 //var mnemonic="cactus check vocal shuffle remember regret vanish spice problem property diesel success easily napkin deposit gesture forum bag talent mechanic reunion enroll buddy about attract"
 //var mnemonic2="box wear empty voyage scout cheap arrive father wagon correct thought sand planet comfort also patient vast patient tide rather young cinnamon plastic abandon model";
-//var account =  try Account(mnemonic2)
-//var account1 = try Account(mnemonic)
+//var account =  try Account(mnemonic)
+//var account1 = try Account(mnemonic2)
 //var address = account.getAddress()
+//var address2 = account1.getAddress()
 //print(address.description)
 //
 //
@@ -193,7 +194,50 @@
 //
 //
 //
+//
 ////testHtlc()
+//
+//
+//
+//algodClient.transactionParams().execute(){ paramResponse in
+//    if(!(paramResponse.isSuccessful)){
+//    print(paramResponse.errorDescription);
+//    return;
+//}
+//
+//
+//    var tx = try! Transaction.paymentTransactionBuilder().setSender(account.getAddress())
+//        .receiver(account1.getAddress())
+//    .amount(10)
+//    .note("Swift Algo rekey transaction".bytes)
+//    .suggestedParams(params: paramResponse.data!)
+////    .rekey(rekeyTo: account.getAddress())
+//    .build()
+//
+//
+//    var signedTransaction=account.signTransaction(tx: tx)
+//
+//    var encodedTrans:[Int8]=CustomEncoder.encodeToMsgPack(signedTransaction)
+//
+//    print(CustomEncoder.encodeToJson(obj: signedTransaction))
+//
+////    return;
+//
+//
+//    algodClient.rawTransaction().rawtxn(rawtaxn: encodedTrans).execute(){
+//       response in
+//        if(response.isSuccessful){
+//            print(response.data!.txId)
+//
+//        }else{
+//            print(response.errorDescription)
+//            print("Faled")
+//        }
+//
+//    }
+//}
+//
+////try testPayment(mnemonic: mnemonic)
 //
 //dispatchMain()
 //
@@ -229,7 +273,7 @@
 //        }
 //
 //
-//           var tx = Transaction.paymentTransactionBuilder().setSender(senderAddress)
+//           var tx = try! Transaction.paymentTransactionBuilder().setSender(senderAddress)
 //            .amount(10)
 //            .receiver(receiverAddress)
 //            .note("Swift Algo sdk is cool".bytes)
@@ -263,7 +307,7 @@
 //            print(paramResponse.errorDescription);
 //            return;
 //        }
-//        var tx = Transaction.assetCreateTransactionBuilder()
+//        var tx = try! Transaction.assetCreateTransactionBuilder()
 //                      .setSender(address)
 //                      .setAssetTotal(assetTotal: 10000)
 //                      .setAssetDecimals(assetDecimals:  0)
@@ -346,7 +390,7 @@
 //            print(paramResponse.errorDescription);
 //            return;
 //        }
-//        var tx = Transaction.assetConfigureTransactionBuilder().reserve(reserve: address).freeze(freeze: address).clawback(clawback: address).assetIndex(assetIndex: 14066442).setSender(account1.getAddress())
+//        var tx = try! Transaction.assetConfigureTransactionBuilder().reserve(reserve: address).freeze(freeze: address).clawback(clawback: address).assetIndex(assetIndex: 14066442).setSender(account1.getAddress())
 //        .manager(manager: account1.getAddress())
 //            .suggestedParams(params: paramResponse.data!)
 //                  .build();
@@ -389,7 +433,7 @@
 //            print(paramResponse.errorDescription);
 //            return;
 //        }
-//        var tx = Transaction.assetDestroyTransactionBuilder()
+//        var tx = try! Transaction.assetDestroyTransactionBuilder()
 //            .setSender(account1.getAddress())
 //            .assetIndex(assetIndex: 14066442)
 //            .suggestedParams(params: paramResponse.data!)
@@ -419,7 +463,7 @@
 //            print(paramResponse.errorDescription);
 //            return;
 //        }
-//        var tx = Transaction.assetAcceptTransactionBuilder()
+//        var tx =  try! Transaction.assetAcceptTransactionBuilder()
 //            .acceptingAccount(acceptingAccount: account1.getAddress())
 //            .assetIndex(assetIndex: 14077815)
 //            .suggestedParams(params: paramResponse.data!)
@@ -457,7 +501,7 @@
 //            return;
 //        }
 //
-//        var tx = Transaction.assetTransferTransactionBuilder().setSender(account.getAddress()).assetReceiver(assetReceiver: account1.getAddress())
+//        var tx =  try! Transaction.assetTransferTransactionBuilder().setSender(account.getAddress()).assetReceiver(assetReceiver: account1.getAddress())
 //            .assetAmount(assetAmount:10).assetIndex(assetIndex:14077815).suggestedParams(params:paramResponse.data!).build();
 //
 //        var txMessagePack:[Int8]=CustomEncoder.encodeToMsgPack(tx)
@@ -489,7 +533,7 @@
 //            return;
 //        }
 //
-//        var tx=Transaction.assetFreezeTransactionBuilder().setSender(account.getAddress()).freezeTarget(freezeTarget:account1.getAddress())
+//        var tx =  try! Transaction.assetFreezeTransactionBuilder().setSender(account.getAddress()).freezeTarget(freezeTarget:account1.getAddress())
 //            .freezeState(freezeState:false).assetIndex(assetIndex: 14077815).suggestedParams(params: paramResponse.data!).build();
 //
 //        var txMessagePack:[Int8]=CustomEncoder.encodeToMsgPack(tx)
@@ -520,7 +564,7 @@
 //            return;
 //        }
 //
-//        var tx = Transaction.assetClawbackTransactionBuilder().setSender(account.getAddress())
+//        var tx = try! Transaction.assetClawbackTransactionBuilder().setSender(account.getAddress())
 //            .assetClawbackFrom(assetClawbackFrom:account1.getAddress()).assetReceiver(assetReceiver: account.getAddress()).assetAmount(assetAmount: 10)
 //            .assetIndex(assetIndex:14077815).suggestedParams(params: paramResponse.data!).build();
 //        var txMessagePack:[Int8]=CustomEncoder.encodeToMsgPack(tx)
@@ -555,7 +599,7 @@
 //            return;
 //        }
 //
-//        var tx = Transaction.paymentTransactionBuilder()
+//        var tx =  try! Transaction.paymentTransactionBuilder()
 //            .setSender( try! multisigAddress.toAddress())
 //            //            .suggestedParams(params: paramResponse.data!)
 //              .amount(10)
@@ -764,21 +808,21 @@
 //        }
 //
 //
-//           var tx1 = Transaction.paymentTransactionBuilder().setSender(senderAddress)
+//           var tx1 =  try! Transaction.paymentTransactionBuilder().setSender(senderAddress)
 //            .amount(8)
 //            .receiver(receiverAddress)
 //            .note("Swift Algo sdk is cool".bytes)
 //            .suggestedParams(params: paramResponse.data!)
 //            .build()
 //
-//            var tx2 = Transaction.paymentTransactionBuilder().setSender(senderAddress)
+//            var tx2 =  try! Transaction.paymentTransactionBuilder().setSender(senderAddress)
 //             .amount(9)
 //             .receiver(receiverAddress)
 //             .note("Swift Algo sdk is cool".bytes)
 //             .suggestedParams(params: paramResponse.data!)
 //             .build()
 //
-//            var tx3 = Transaction.paymentTransactionBuilder().setSender(senderAddress)
+//            var tx3 =  try! Transaction.paymentTransactionBuilder().setSender(senderAddress)
 //             .amount(10)
 //             .receiver(receiverAddress)
 //             .note("Swift Algo sdk is cool".bytes)
@@ -786,7 +830,7 @@
 //             .build()
 //
 //
-//            var tx4 = Transaction.paymentTransactionBuilder().setSender(senderAddress)
+//            var tx4 =  try! Transaction.paymentTransactionBuilder().setSender(senderAddress)
 //             .amount(11)
 //             .receiver(receiverAddress)
 //             .note("Swift Algo sdk is cool".bytes)
@@ -844,7 +888,7 @@
 //
 //public func testCompiledSplitProgram(){
 //
-//    var lsig=LogicsigSignature(logicsig: [1, 32, 8, 1, -48, 15, 2, 0, -64, -106, -79, 2, 7, 3, -72, 23, 38, 3, 32, -2, -68, -96, -69, 20, 74, 90, 78, -89, -76, 56, -92, 104, 26, -56, 14, 108, -95, 5, -68, -74, 7, -4, 86, 83, 37, -55, 86, -107, -10, -94, 19, 32, -103, -32, 115, 15, -121, 33, 36, -25, -55, 41, -58, 11, -66, 50, -54, 114, 59, -13, -36, 55, -27, -29, -19, -111, -31, 80, -84, -9, 36, -35, 85, 30, 32, 2, 90, -46, -63, -65, 28, -93, -8, 19, 31, -9, -85, -12, -116, -37, -21, -98, -50, -17, 50, 105, 126, 42, 107, -36, 5, -100, -22, 26, 89, 11, 22, 49, 16, 34, 18, 49, 1, 35, 12, 16, 50, 4, 36, 18, 64, 0, 25, 49, 9, 40, 18, 49, 7, 50, 3, 18, 16, 49, 8, 37, 18, 16, 49, 2, 33, 4, 13, 16, 34, 64, 0, 46, 51, 0, 0, 51, 1, 0, 18, 49, 9, 50, 3, 18, 16, 51, 0, 7, 41, 18, 16, 51, 1, 7, 42, 18, 16, 51, 0, 8, 33, 5, 11, 51, 1, 8, 33, 6, 11, 18, 16, 51, 0, 8, 33, 7, 15, 16, 16])
+//    var lsig =  try! LogicsigSignature(logicsig: [1, 32, 8, 1, -48, 15, 2, 0, -64, -106, -79, 2, 7, 3, -72, 23, 38, 3, 32, -2, -68, -96, -69, 20, 74, 90, 78, -89, -76, 56, -92, 104, 26, -56, 14, 108, -95, 5, -68, -74, 7, -4, 86, 83, 37, -55, 86, -107, -10, -94, 19, 32, -103, -32, 115, 15, -121, 33, 36, -25, -55, 41, -58, 11, -66, 50, -54, 114, 59, -13, -36, 55, -27, -29, -19, -111, -31, 80, -84, -9, 36, -35, 85, 30, 32, 2, 90, -46, -63, -65, 28, -93, -8, 19, 31, -9, -85, -12, -116, -37, -21, -98, -50, -17, 50, 105, 126, 42, 107, -36, 5, -100, -22, 26, 89, 11, 22, 49, 16, 34, 18, 49, 1, 35, 12, 16, 50, 4, 36, 18, 64, 0, 25, 49, 9, 40, 18, 49, 7, 50, 3, 18, 16, 49, 8, 37, 18, 16, 49, 2, 33, 4, 13, 16, 34, 64, 0, 46, 51, 0, 0, 51, 1, 0, 18, 49, 9, 50, 3, 18, 16, 51, 0, 7, 41, 18, 16, 51, 1, 7, 42, 18, 16, 51, 0, 8, 33, 5, 11, 51, 1, 8, 33, 6, 11, 18, 16, 51, 0, 8, 33, 7, 15, 16, 16])
 //
 //
 //    var trans =  algodClient.transactionParams().execute(){ paramResponse in
@@ -854,14 +898,14 @@
 //    }
 //
 //
-//       var tx1 = Transaction.paymentTransactionBuilder().setSender(try! Address("FABHMDUB2ACZR657MK3ECLSQKD2ILD5CGWYYYOVPWL37RUROTNUY36FXMQ"))
+//       var tx1 = try!  Transaction.paymentTransactionBuilder().setSender(Address("FABHMDUB2ACZR657MK3ECLSQKD2ILD5CGWYYYOVPWL37RUROTNUY36FXMQ"))
 //        .amount(15000)
 //        .receiver(try! Address("THQHGD4HEESOPSJJYYF34MWKOI57HXBX4XR63EPBKCWPOJG5KUPDJ7QJCM"))
 //    //    .note("Swift Algo sdk is cool".bytes)
 //        .suggestedParams(params: paramResponse.data!)
 //        .build()
 //
-//        var tx2 = Transaction.paymentTransactionBuilder().setSender(try! Address("FABHMDUB2ACZR657MK3ECLSQKD2ILD5CGWYYYOVPWL37RUROTNUY36FXMQ"))
+//        var tx2 = try! Transaction.paymentTransactionBuilder().setSender( Address("FABHMDUB2ACZR657MK3ECLSQKD2ILD5CGWYYYOVPWL37RUROTNUY36FXMQ"))
 //         .amount(35000)
 //         .receiver(try! Address("AJNNFQN7DSR7QEY766V7JDG35OPM53ZSNF7CU264AWOOUGSZBMLMSKCRIU"))
 //    //     .note("Swift Algo sdk is cool".bytes)
@@ -1085,7 +1129,7 @@
 //            }
 //
 //
-//               var tx = Transaction.paymentTransactionBuilder().setSender(senderAddress)
+//               var tx = try! Transaction.paymentTransactionBuilder().setSender(senderAddress)
 //                .amount(1000000)
 //                .receiver(receiverAddress)
 //                .note("Swift Algo sdk is cool".bytes)

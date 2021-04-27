@@ -436,6 +436,7 @@ public class Transaction : Codable,Equatable{
         
         self.closeRemainderTo = try? container.decode(Address.self,forKey: .closeRemainderTo)
         
+        self.rekeyTo = try? container.decode(Address.self,forKey: .rekeyTo)
      
         
            var reciverAddress = try? container.decode(Data.self, forKey: .receiver)
@@ -517,7 +518,9 @@ public class Transaction : Codable,Equatable{
         }
         
         if let amount=self.amount{
-            try! container.encode(amount, forKey: .amount)
+            if(amount != 0){
+                try! container.encode(amount, forKey: .amount)
+            }
         }
         if let assetParams=self.assetParams{
             try! container.encode(assetParams, forKey: .assetParams)
@@ -558,7 +561,7 @@ public class Transaction : Codable,Equatable{
         }
         if let genesisHash=self.genesisHash{
             if let genesisHashBytes=genesisHash.bytes{
-                print("Encoded genHash")
+    
             try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: genesisHash.getBytes()!)), forKey: .genesisHash)
             }
         }
@@ -579,6 +582,11 @@ public class Transaction : Codable,Equatable{
         if let receiver=self.receiver{
             try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: receiver.getBytes())), forKey: .receiver)
         }
+            
+            if let rekeyTo = self.rekeyTo{
+                try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: rekeyTo.getBytes())), forKey: .rekeyTo)
+            }
+            
     if let selectionKey = self.selectionPK{
         try!  container.encode(Data(CustomEncoder.convertToUInt8Array(input: selectionKey.bytes)) , forKey: .selectionPK)
     }

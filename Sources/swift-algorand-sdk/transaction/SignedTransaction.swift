@@ -12,11 +12,13 @@ public class SignedTransaction: Codable,Equatable {
     public var transactionID:String?
     public  var mSig:MultisigSignature?
     public var lSig:LogicsigSignature?
+    public var authAddress:Address?
     enum CodingKeys:String, CodingKey{
         case tx = "txn"
         case sig = "sig"
         case mSig="msig"
         case lSig="lsig"
+        case authAddress = "sgnr"
     }
     
     init(){
@@ -37,6 +39,8 @@ public class SignedTransaction: Codable,Equatable {
                 self.sig = try? container.decode(Signature.self, forKey: .sig)
                 self.mSig = try? container.decode(MultisigSignature.self, forKey: .mSig)
                 self.lSig = try? container.decode(LogicsigSignature.self, forKey: .lSig)
+                
+        self.authAddress = try? container.decode(Address.self,forKey: .authAddress)
     }
     
     
@@ -65,7 +69,13 @@ public class SignedTransaction: Codable,Equatable {
             }
         
         }
-      
+
+        if let authAddress = self.authAddress{
+            if let authAddressBytes = self.authAddress{
+                try! container.encode(Data(CustomEncoder.convertToUInt8Array(input:authAddress.getBytes())), forKey: .authAddress)
+            }
+        }
+        
         if let tx=self.tx{
             try! container.encode(tx, forKey: .tx)
         }
@@ -108,6 +118,10 @@ public class SignedTransaction: Codable,Equatable {
         self.sig=sig
         self.transactionID=txId
     }
+    
+    public func authAddress(authAddress:Address){
+        self.authAddress = authAddress
+    }
     public func toJson()->String?{
         var jsonencoder=JSONEncoder()
         var classData=try! jsonencoder.encode(self)
@@ -116,7 +130,7 @@ public class SignedTransaction: Codable,Equatable {
     }
     
     public static func == (lhs: SignedTransaction,rhs:SignedTransaction) -> Bool{
-        print("Sg check")
+//        print("Sg check")
 //        print(lhs.tx==rhs.tx)
 //        print(lhs.lSig==rhs.lSig)
 //        print(lhs.mSig==rhs.mSig)
@@ -154,7 +168,7 @@ public class SignedTransaction: Codable,Equatable {
     
     
       
-        print("Sg end")
+//        print("Sg end")
         return lhs.tx==rhs.tx && lhs.lSig==rhs.lSig && lhs.mSig==rhs.mSig && lhs.sig==rhs.sig
     }
 }
