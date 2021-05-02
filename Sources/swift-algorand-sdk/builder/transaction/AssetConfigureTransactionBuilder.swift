@@ -17,31 +17,36 @@ public class AssetConfigureTransactionBuilder:BaseAssetBuilder<AssetConfigureTra
         self.init(type:Transaction.type.AssetConfig);
        }
 
-override func applyTo(_ txn:Transaction) {
-//           if (this.assetUnitName != null) {
-//               throw new IllegalArgumentException("Must not set assetUnitName.");
-//           } else if (this.assetName != null) {
-//               throw new IllegalArgumentException("Must not set assetName.");
-//           } else if (this.url != null) {
-//               throw new IllegalArgumentException("Must not set url.");
-//           } else if (this.metadataHash != null) {
-//               throw new IllegalArgumentException("Must not set metadataHash.");
-//           } else if (this.assetDecimals != null) {
-//               throw new IllegalArgumentException("Must not set assetDecimals.");
-//           } else if (this.assetTotal != null) {
-//               throw new IllegalArgumentException("Must not set assetTotal.");
-//           } else if (this.defaultFrozen) {
-//               throw new IllegalArgumentException("Must not set defaultFrozen.");
-//           } else {
-//               Address defaultAddr = new Address();
-//               if (this.strictEmptyAddressChecking && (this.manager == null || this.manager.equals(defaultAddr) || this.reserve == null || this.reserve.equals(defaultAddr) || this.freeze == null || this.freeze.equals(defaultAddr) || this.clawback == null || this.clawback.equals(defaultAddr))) {
-//                   throw new RuntimeException("strict empty address checking requested but empty or default address supplied to one or more manager addresses");
-//               } else {
+override func applyTo(_ txn:Transaction) throws {
+    
+           if (self.assetUnitName != nil) {
+               throw Errors.illegalArgumentError("Must not set assetUnitName.");
+           } else if (self.assetName != nil) {
+            throw Errors.illegalArgumentError("Must not set assetName.");
+           } else if (self.url != nil) {
+            throw Errors.illegalArgumentError("Must not set url.");
+           } else if (self.metadataHash != nil) {
+            throw Errors.illegalArgumentError("Must not set metadataHash.");
+           } else if (self.assetDecimals != nil) {
+            throw Errors.illegalArgumentError("Must not set assetDecimals.");
+           } else if (self.assetTotal != nil) {
+            throw Errors.illegalArgumentError("Must not set assetTotal.");
+           } else if (self.defaultFrozen) {
+            throw Errors.illegalArgumentError("Must not set defaultFrozen.");
+           }
+//    else {
+               var  defaultAddr =  Address();
+//               if (this.strictEmptyAddressChecking && (this.manager == nil || this.manager.equals(defaultAddr) || this.reserve == null || this.reserve.equals(defaultAddr) || this.freeze == null || this.freeze.equals(defaultAddr) || this.clawback == null || this.clawback.equals(defaultAddr)))
+    if(self.clawback==nil || self.clawback == defaultAddr || self.manager==nil || self.manager == defaultAddr || self.reserve == nil || self.reserve == defaultAddr || self.freeze == nil || self.freeze == defaultAddr)
+               {
+        throw Errors.runtimeError("strict empty address checking requested but empty or default address supplied to one or more manager addresses");
+               }
+//        else {
         if let assetIndex=self.assetIndex {
                            txn.assetIndex = self.assetIndex;
                        }
 
-                   super.applyTo(txn);
+                 try  super.applyTo(txn);
                }
 //           }
        

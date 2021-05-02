@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class Signature: Codable {
+public class Signature: Codable,Equatable {
     
     var ED25519_SIG_SIZE = 64;
  
@@ -19,6 +19,7 @@ public class Signature: Codable {
         case bytes
     }
     
+    
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         if let bytes=self.bytes{
@@ -26,25 +27,32 @@ public class Signature: Codable {
         }
       
     }
-   
-    init(_ rawBytes:[Int8]) throws {
-   
-            if (rawBytes.count != 64) {
-            
-                throw  Errors.illegalArgumentError("Given signature length is not \(64)")
-            } else {
-
-                self.bytes=rawBytes
-            }
+    
+    public required init(from decoder: Decoder) throws {
+        var container = try decoder.singleValueContainer()
+        var bytesData = try? container.decode(Data.self)
+        if let _ = bytesData{
+            self.bytes = CustomEncoder.convertToInt8Array(input: Array(bytesData!))
+        }
         
     }
+   
+   public init(_ rawBytes:[Int8]) throws {
+            if (rawBytes.count != 64) {
+                throw  Errors.illegalArgumentError("Given signature length is not \(64)")
+            } else {
+                self.bytes=rawBytes
+            }
+    }
 
-    init() {
+   public init() {
     }
 
    
     public func getBytes() ->[Int8]{
         return self.bytes!
     }
-
+    public static func == (lhs:Signature,rhs:Signature)->Bool{
+        return lhs.bytes==rhs.bytes
+    }
 }

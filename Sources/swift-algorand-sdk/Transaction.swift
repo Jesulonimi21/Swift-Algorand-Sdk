@@ -116,7 +116,7 @@ extension Transaction.type:Codable{
 }
 
 
-public class Transaction : Codable{
+public class Transaction : Codable,Equatable{
     enum onCompletion: String {
         case  NoOpOC="NoOpOC"
         case  OptInOC="OptInOC"
@@ -144,42 +144,42 @@ public class Transaction : Codable{
      
     var TX_SIGN_PREFIX:[Int8]=[84,88]
   public  var assetParams:AssetParams?=nil
-    var selectionPK:VRFPublicKey?=nil
-    var foreignApps:[Int64]?=nil
-    var applicationArgs:[[Int64]]?=nil
-    var votePK:ParticipationPublicKey?=nil
-    var sender:Address?;
-    var localStateSchema:StateSchema?=nil
-    var globalStateSchema: StateSchema?=nil
-    var fee:Int64?=nil;
-    var firstValid:Int64?=nil;
-    var lastValid:Int64?=nil;
-    var note:[Int8]?=nil;
-    var genesisID: String?=nil;
-    var genesisHash:Digest?=nil;
-    var  group:Digest?=nil;
-    var lease:[Int8]?=nil;
-    var rekeyTo:Address?=nil;
-    var amount:Int64?=nil;
-    var receiver:Address?=nil;
-    var closeRemainderTo:Address?=nil;
-    var voteFirst:Int64?=nil;
-    var voteLast:Int64?=nil;
-    var voteKeyDilution:Int64?=nil;
-    var assetIndex:Int64?=nil;
-    var  xferAsset:Int64?=nil;
-    var assetAmount:Int64?=nil;
-    var assetSender:Address?=nil;
-    var assetReceiver:Address?=nil;
-    var assetCloseTo:Address?=nil;
-    var freezeTarget:Address?=nil;
-    var assetFreezeID:Int64?=nil;
-    var freezeState:Bool?=nil;
-    var onCompletion: String?=nil;
-    var  accounts:[Address]?=nil;
-    var foreignAssets:[Int64]?=nil;
+    public  var selectionPK:VRFPublicKey?=nil
+   public var foreignApps:[Int64]?=nil
+   public var applicationArgs:[[Int64]]?=nil
+   public var votePK:ParticipationPublicKey?=nil
+   public var sender:Address?;
+   public var localStateSchema:StateSchema?=nil
+   public var globalStateSchema: StateSchema?=nil
+   public var fee:Int64?=nil;
+   public var firstValid:Int64?=nil;
+   public var lastValid:Int64?=nil;
+   public var note:[Int8]?=nil;
+   public var genesisID: String?=nil;
+   public var genesisHash:Digest?=Digest();
+   public var  group:Digest?=nil;
+   public var lease:[Int8]?=nil;
+   public var rekeyTo:Address?=nil;
+   public var amount:Int64?=nil;
+   public var receiver:Address?=nil;
+   public var closeRemainderTo:Address?=nil;
+   public var voteFirst:Int64?=nil;
+   public var voteLast:Int64?=nil;
+   public var voteKeyDilution:Int64?=nil;
+   public var assetIndex:Int64?=nil;
+   public var  xferAsset:Int64?=nil;
+   public var assetAmount:Int64?=nil;
+   public var assetSender:Address?=nil;
+   public var assetReceiver:Address?=nil;
+   public var assetCloseTo:Address?=nil;
+   public var freezeTarget:Address?=nil;
+   public var assetFreezeID:Int64?=nil;
+   public var freezeState:Bool?=nil;
+   public var onCompletion: String?=nil;
+   public var  accounts:[Address]?=nil;
+   public var foreignAssets:[Int64]?=nil;
 
-    var applicationId:Int64?=nil;
+   public var applicationId:Int64?=nil;
 
 //        public TEALProgram clearStateProgram;
 
@@ -336,7 +336,7 @@ public class Transaction : Codable{
     
 
     
-     init() {
+    public init() {
         self.type = Transaction.type.Default.rawValue;
             self.sender =  Address();
             self.fee = Account.MIN_TX_FEE_UALGOS;
@@ -405,11 +405,40 @@ public class Transaction : Codable{
     public required init(from decoder: Decoder) throws {
            var container = try! decoder.container(keyedBy: CodingKeys.self)
           
+        self.assetParams = try? container.decode(AssetParams.self, forKey: .assetParams)
            
            var senderAddress = try! container.decode(Data.self, forKey: .sender)
 
+        var groupId = try? container.decode(Data.self, forKey: .group)
+        if let group = groupId{
+            self.group = try! Digest(CustomEncoder.convertToInt8Array(input: Array(group)))
+        }
+        self.assetSender = try? container.decode(Address.self, forKey: .assetSender)
            self.sender = try! Address(CustomEncoder.convertToInt8Array(input: Array(senderAddress)))
-          
+        
+        self.xferAsset = try? container.decode(Int64.self, forKey: .xferAsset)
+        
+        self.assetCloseTo = try? container.decode(Address.self, forKey: .assetCloseTo)
+        
+        self.assetReceiver = try? container.decode(Address.self, forKey: .assetReceiver)
+        
+        self.assetAmount = try? container.decode(Int64.self, forKey: .assetAmount)
+        
+        self.assetIndex = try? container.decode(Int64.self, forKey: .assetIndex)
+        
+        self.assetFreezeID = try? container.decode(Int64.self, forKey: .assetFreezeID)
+        
+        self.freezeState = try? container.decode(Bool.self,forKey: .freezeState)
+        
+        self.freezeTarget = try? container.decode(Address.self,forKey: .freezeTarget)
+        
+        self.genesisID = try? container.decode(String.self, forKey: .genesisID)
+        
+        self.closeRemainderTo = try? container.decode(Address.self,forKey: .closeRemainderTo)
+        
+        self.rekeyTo = try? container.decode(Address.self,forKey: .rekeyTo)
+     
+        
            var reciverAddress = try? container.decode(Data.self, forKey: .receiver)
         
         if let receiverAddr = reciverAddress{
@@ -429,10 +458,15 @@ public class Transaction : Codable{
         
      var genesisID   = try? container.decode(String.self,forKey: .genesisID)
         
+        
         if let gId = genesisID{
             self.genesisID=gId
         }
-        
+        var genesisHash = try? container.decode(Data.self, forKey: .genesisHash)
+        if let genHash = genesisHash{
+            self.genesisHash = try! Digest(CustomEncoder.convertToInt8Array(input: Array(genHash)))
+        }
+     
         var voteList = try? container.decode(Int64.self,forKey: .voteLast)
         if let vList=voteList{
             self.voteLast=voteList
@@ -443,8 +477,16 @@ public class Transaction : Codable{
             self.voteKeyDilution=voteKd
         }
         
+        
+        var leaseData = try? container.decode(Data.self,forKey: .lease)
+        if let lData=leaseData{
+            self.lease = CustomEncoder.convertToInt8Array(input: Array(lData))
+        }
+        
         var voteKey = try? container.decode(Data.self, forKey: .votePK)
      
+        
+        
      if let vKey = voteKey{
         self.votePK = try! ParticipationPublicKey(bytes:
                                                     CustomEncoder.convertToInt8Array(input: Array(vKey)))
@@ -476,7 +518,9 @@ public class Transaction : Codable{
         }
         
         if let amount=self.amount{
-            try! container.encode(amount, forKey: .amount)
+            if(amount != 0){
+                try! container.encode(amount, forKey: .amount)
+            }
         }
         if let assetParams=self.assetParams{
             try! container.encode(assetParams, forKey: .assetParams)
@@ -484,6 +528,11 @@ public class Transaction : Codable{
         if let assetReceiver=self.assetReceiver{
             try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: assetReceiver.getBytes())), forKey: .assetReceiver)
         }
+    
+    if let assetSender = self.assetSender{
+        try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: assetSender.getBytes())), forKey: .assetSender)
+    }
+    
         if let closeRemainderTo=self.closeRemainderTo{
             try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: closeRemainderTo.getBytes())), forKey: .closeRemainderTo)
         }
@@ -512,6 +561,7 @@ public class Transaction : Codable{
         }
         if let genesisHash=self.genesisHash{
             if let genesisHashBytes=genesisHash.bytes{
+    
             try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: genesisHash.getBytes()!)), forKey: .genesisHash)
             }
         }
@@ -522,12 +572,21 @@ public class Transaction : Codable{
         if let lastValid=self.lastValid{
             try! container.encode(lastValid, forKey: .lastValid)
         }
+    
+    if let lease = self.lease{
+        try!  container.encode(Data(CustomEncoder.convertToUInt8Array(input: lease)) , forKey: .lease)
+    }
         if let note=self.note{
             try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: note)), forKey: .note)
         }
         if let receiver=self.receiver{
             try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: receiver.getBytes())), forKey: .receiver)
         }
+            
+            if let rekeyTo = self.rekeyTo{
+                try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: rekeyTo.getBytes())), forKey: .rekeyTo)
+            }
+            
     if let selectionKey = self.selectionPK{
         try!  container.encode(Data(CustomEncoder.convertToUInt8Array(input: selectionKey.bytes)) , forKey: .selectionPK)
     }
@@ -577,6 +636,67 @@ public class Transaction : Codable{
             self.group = gid;
         }
 
+    public func setLease(lease:Lease){
+        self.lease = lease.getBytes()
+    }
+    public static func == (lhs:Transaction,rhs:Transaction)->Bool{
+//        print(lhs.type == rhs.type )
+//        print(lhs.sender == rhs.sender)
+//        print(lhs.fee == rhs.fee)
+//        print(lhs.firstValid == rhs.firstValid)
+//        print(lhs.lastValid == rhs.lastValid )
+//        print(  lhs.note == rhs.note)
+//        print(lhs.genesisID == rhs.genesisID)
+//        print(lhs.genesisHash?.bytes)
+//        print(rhs.genesisHash?.bytes)
+//        print(Digest() == Digest())
+//
+//        print( lhs.lease == rhs.lease)
+//        print(lhs.group == rhs.group)
+//        print(lhs.amount == rhs.amount)
+//        print(lhs.receiver == rhs.receiver)
+//        print(lhs.closeRemainderTo == rhs.closeRemainderTo)
+//        print( lhs.votePK == rhs.votePK)
+//        print(lhs.selectionPK == rhs.selectionPK)
+//        print(lhs.selectionPK == rhs.selectionPK)
+//        print(lhs.voteFirst == rhs.voteFirst)
+//        print(lhs.voteLast == rhs.voteLast)
+//        print(lhs.voteKeyDilution == rhs.voteKeyDilution)
+//        print(lhs.assetParams)
+//        print(rhs.assetParams)
+//        print(lhs.assetParams == rhs.assetParams)
+//        print(lhs.assetIndex == rhs.assetIndex)
+//        print(lhs.xferAsset == rhs.xferAsset)
+//        print(lhs.assetAmount == rhs.assetAmount)
+//        print(lhs.assetSender?.bytes)
+//        print(rhs.assetSender?.bytes)
+//        print(lhs.assetSender == rhs.assetSender)
+//        print(lhs.assetReceiver == rhs.assetReceiver)
+//        print(lhs.assetCloseTo == rhs.assetCloseTo)
+//        print(lhs.freezeTarget == rhs.freezeTarget )
+//        print(lhs.assetFreezeID == rhs.assetFreezeID)
+//        print(lhs.freezeState == rhs.freezeState)
+//        print(lhs.rekeyTo == rhs.rekeyTo)
+//        print(lhs.lease == rhs.lease)
+//        print()
+//        print()
+//        print()
+        
+        
+        
+        return lhs.type == rhs.type && lhs.sender == rhs.sender && lhs.fee == rhs.fee
+            && lhs.firstValid == rhs.firstValid && lhs.lastValid == rhs.lastValid &&
+            lhs.note == rhs.note && lhs.genesisID == rhs.genesisID && lhs.genesisHash == rhs.genesisHash
+            && lhs.lease == rhs.lease && lhs.group == rhs.group && lhs.amount == rhs.amount && lhs.receiver == rhs.receiver
+            && lhs.closeRemainderTo == rhs.closeRemainderTo && lhs.votePK == rhs.votePK && lhs.selectionPK == rhs.selectionPK
+            && lhs.voteFirst == rhs.voteFirst && lhs.voteLast == rhs.voteLast && lhs.voteKeyDilution == rhs.voteKeyDilution
+            && lhs.assetParams == rhs.assetParams && lhs.assetIndex == rhs.assetIndex && lhs.xferAsset == rhs.xferAsset
+            && lhs.assetAmount == rhs.assetAmount && lhs.assetSender == rhs.assetSender && lhs.assetReceiver == rhs.assetReceiver
+            && lhs.assetCloseTo == rhs.assetCloseTo && lhs.freezeTarget == rhs.freezeTarget && lhs.assetFreezeID == rhs.assetFreezeID
+            && lhs.freezeState == rhs.freezeState && lhs.rekeyTo == rhs.rekeyTo && lhs.lease == rhs.lease
+
+
+    }
 }
 
 

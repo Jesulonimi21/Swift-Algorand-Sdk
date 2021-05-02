@@ -39,7 +39,8 @@ let package = Package(
             name: "swift-algorand-sdk",
             dependencies: ["Ed25519","MessagePack","MessagePacker","Alamofire","SwiftKeccak"],
             resources:[
-                        .process("Resources/Langspec.txt")
+                        .process("Resources/Langspec.txt"),
+                        .process("Resources/sample.teal.txt")
                     ]
         ),
 //
@@ -49,6 +50,8 @@ let package = Package(
       
         .testTarget(
             name: "swift-algorand-sdkTests",
-            dependencies: ["swift-algorand-sdk"]),
+            dependencies: ["swift-algorand-sdk"]
+        ),
+        
     ]
 )

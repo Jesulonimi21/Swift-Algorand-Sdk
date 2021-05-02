@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class ParticipationPublicKey: Codable {
+public class ParticipationPublicKey: Codable,Equatable {
    var KEY_LEN_BYTES = 32;
     var bytes:[Int8] = Array(repeating: 0, count: 32);
 
@@ -31,6 +31,10 @@ public class ParticipationPublicKey: Codable {
 
     public func getBytes() -> [Int8]{
         return self.bytes;
+    }
+    
+    public static func == (lhs:ParticipationPublicKey,rhs:ParticipationPublicKey)->Bool{
+        return lhs.bytes == rhs.bytes
     }
 
 }

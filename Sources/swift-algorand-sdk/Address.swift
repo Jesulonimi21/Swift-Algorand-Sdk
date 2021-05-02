@@ -18,13 +18,13 @@ extension Array where Element: Comparable {
         return self.count == other.count && self.sorted() == other.sorted()
     }
 }
-public class Address: Codable{
+public class Address: Codable,Equatable{
     
    
     public var bytes:[Int8]?=Array(repeating:0,count:32)
-    enum CodingKeys:CodingKey{
-        case bytes
-    }
+//    enum CodingKeys:CodingKey{
+//        case bytes
+//    }
     
   public  var description:String{
         return try! self.encodeAsString()
@@ -105,6 +105,26 @@ public class Address: Codable{
     
     
     
-   
+    public static func == (lhs:Address,rhs:Address)->Bool{
+        return lhs.bytes==rhs.bytes
+    }
+    
+    public required init(from decoder: Decoder) throws {
+        var container = try? decoder.singleValueContainer()
+        var bytesData = try? container?.decode(Data.self)
+        if let bytes =  bytesData{
+            self.bytes = CustomEncoder.convertToInt8Array(input: Array(bytes))
+        }
+        
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = try? encoder.singleValueContainer()
+        if let b = self.bytes{
+          try  container?.encode(Data(CustomEncoder.convertToUInt8Array(input: b)))
+        }
+    }
+    
+    
     
 }

@@ -43,7 +43,6 @@ public class AddressTests: XCTestCase{
             bytes[i] = -1
         }
        try! XCTAssertEqual(Address(bytes).description, golden)
-        
     }
     
     
@@ -52,7 +51,7 @@ public class AddressTests: XCTestCase{
         var aBytes:[UInt8] = CustomEncoder.encodeToMsgPack(a)
         
         var o = CustomEncoder.decodeFrmMessagePack(obj: Address.self, data: Data(aBytes))
-        
+  
         XCTAssertEqual("VKM6KSCTDHEM6KGEAMSYCNEGIPFJMHDSEMIRAQLK76CJDIRMMDHKAIRMFQ", o.description)
     }
 }

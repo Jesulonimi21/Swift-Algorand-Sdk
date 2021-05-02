@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class MultisigAddress: Codable {
+public class MultisigAddress: Codable,Equatable {
   
     var version:Int;
  
@@ -69,6 +69,27 @@ public class MultisigAddress: Codable {
         return try! self.toAddress().description;
       
     }
+    
+    public static func == (lhs:MultisigAddress,rhs:MultisigAddress)->Bool{
+        
+        do{
+            return try lhs.toAddress() == rhs.toAddress()
+        }catch is Error{
+            return false
+        }
+   
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = try encoder.container(keyedBy: CodingKeys.self)
+        try? container.encode(threshold, forKey: .threshold)
+        try? container.encode(version, forKey: .version)
+        try? container.encode(publicKeys, forKey: .publicKeys)
+    }
+    
+//    public required init(from decoder: Decoder) throws {
+//        <#code#>
+//    }
 
   
    

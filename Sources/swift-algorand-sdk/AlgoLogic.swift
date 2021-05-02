@@ -67,6 +67,7 @@ public class AlgoLogic{
     public static func getUVarint(buffer:[Int8],  bufferOffset:Int)->VarintResult {
           var x = 0;
           var s = 0;
+       
         for i in 0..<buffer.count{
             var b:Int = Int(unsafeBitCast(buffer[bufferOffset + i], to: UInt8.self)  & 255)
             if b<128{
@@ -202,7 +203,7 @@ public class AlgoLogic{
                         length += funcArgs![pc].count
                       pc=pc+1
                     }
-
+              
                     if (length > 1000) {
                         throw Errors.illegalArgumentError("program too long");
                     } else {
@@ -221,7 +222,12 @@ public class AlgoLogic{
                         var size:Int=0;
                         while pc<program.count{
                             var opcode:Int=Int(program[pc] & unsafeBitCast(UInt8(255), to:Int8.self))
-                            var op=opcodes![opcode]
+                           
+                         
+                            if(opcode>=opcodes!.count||opcode<=0){
+                                throw Errors.illegalArgumentError("invalid instruction: \(opcode)")
+                            }
+                            var op=opcodes?[opcode]
                             if(op==nil){
                                 throw Errors.illegalArgumentError("invalid instruction: \(opcode)")
                             }
@@ -252,9 +258,45 @@ public class AlgoLogic{
             }
     }
     
-    @discardableResult
+
+    
+   
+    
+    public static func readPushIntOp(program:[Int8], pc:Int)throws -> IntConstBlock{
+        var size = 1
+        var result:AlgoLogic.VarintResult = getUVarint(buffer: program, bufferOffset: pc+size)
+        if result.length <= 0{
+            throw Errors.illegalArgumentError("could not decode push int const at pc=\(pc)")
+        }
+        size+=result.length
+        
+        return IntConstBlock(size: size, results: [Int64(result.value)])
+    }
+    
+    public static func readPushByteOp(program:[Int8], pc:Int)throws -> ByteConstBlock{
+        var size = 1
+        var result:VarintResult = getUVarint(buffer: program, bufferOffset: pc+size)
+        if result.length <= 0{
+            throw Errors.illegalArgumentError("could not decode push []byte const size at pc=\(pc)")
+        }
+        size += result.length
+        if(pc+size+result.value>program.count){
+            throw Errors.illegalArgumentError("pushbytes ran past end of program")
+        }
+        var buff:[Int8] = Array(repeating: 0, count: result.value)
+        
+        for i in 0..<buff.count{
+              buff[i] =  program[pc+size+i]
+        }
+        size+=result.value
+        return ByteConstBlock(size: size, results: [buff])
+        
+    }
+    
+  
     public static func checkProgram(program:[Int8],  args:[[Int8]]?) throws -> Bool {
        let programData = try readProgram(program: program, args: args)
+
         return programData.good
        }
     

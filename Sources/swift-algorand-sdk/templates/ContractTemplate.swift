@@ -17,7 +17,7 @@ public class ContractTemplate {
     }
 
     public convenience init (prog:[Int8]){
-        self.init(lsig: LogicsigSignature(logicsig: prog));
+      try!  self.init(lsig: LogicsigSignature(logicsig: prog));
     }
 
     public init(lsig:LogicsigSignature)  {

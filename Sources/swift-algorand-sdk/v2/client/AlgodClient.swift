@@ -53,6 +53,15 @@ public class AlgodClient {
     public func getBlock(round:Int64) ->GetBlock{
         return GetBlock(client: self, round: round)
     }
+    
+    public func tealCompile()->TealCompile {
+        return  TealCompile(client: self);
+    }
+    
+    public func tealDryRun()->TealDryRun {
+        return  TealDryRun(client: self);
+    }
+    
     public func set(key:String){
         self.apiKey=key
     }

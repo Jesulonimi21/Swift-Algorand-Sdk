@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class Digest: Codable {
+public class Digest: NSObject, Codable {
     var  DIG_LEN_BYTES = 32;
 var bytes:[Int8]?=nil;
 
@@ -28,7 +28,7 @@ var bytes:[Int8]?=nil;
         self.init(CustomEncoder.decodeFromBase32StripPad(base32StringDigest));
     }
 
-  public init() {
+    public override init() {
         self.bytes = nil
     }
 
@@ -42,6 +42,18 @@ var bytes:[Int8]?=nil;
         case bytes
     }
     
+//    public static func == (lhs:Digest,rhs:Digest)->Bool{
+//        print("lhs hash : \(lhs.bytes) rhs : \(rhs.bytes)")
+//        return lhs.bytes == rhs.bytes
+//    }
+    
+    public override func isEqual(_ object:   (Any)?) -> Bool {
+            if let other = object as? Digest {
+                return self.bytes == other.bytes
+            } else {
+                return false
+            }
+        }
 //    public func encode(to encoder: Encoder) throws {
 //        var container = encoder.container(keyedBy: CodingKeys.self)
 //        try! container.encode( Data(CustomEncoder.convertToUInt8Array(input:self.bytes!)), forKey: .bytes)

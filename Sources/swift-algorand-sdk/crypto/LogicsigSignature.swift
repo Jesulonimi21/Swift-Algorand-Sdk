@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Ed25519
 public class LogicsigSignature:Codable,Equatable {
     private static var LOGIC_PREFIX:[Int8]=[80,114,111,103,114,97,109,]
   
@@ -26,7 +27,7 @@ public class LogicsigSignature:Codable,Equatable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         if let args = self.args{
             var Uargs:[Data]=Array()
-            print(args.count)
+        
             for i in 0..<args.count{
 
                 Uargs.append(Data(CustomEncoder.convertToUInt8Array(input: args[i])))
@@ -41,15 +42,11 @@ public class LogicsigSignature:Codable,Equatable {
         if let sig = self.sig{
             try container.encode(Data(CustomEncoder.convertToUInt8Array(input: sig.bytes!)), forKey: .sig)
         }
-//                if let args = self.args{
-//                    var Uargs:[String]=Array()
-//                    print(args.count)
-//                    for i in 0..<args.count{
-//
-//                        Uargs.append(CustomEncoder.encodeToBase64(args[i]))
-//                    }
-//                    try! container.encode(Uargs, forKey: .args)
-//                }
+        if let msig = self.msig{
+            try! container.encode(msig, forKey: .msig)
+        }
+        
+
        
      
     }
@@ -64,43 +61,53 @@ public class LogicsigSignature:Codable,Equatable {
     public required init(from decoder: Decoder) throws {
         let container = try? decoder.container(keyedBy: CodingKeys.self)
         self.args = Array()
+      
          let Uargs = try? container?.decode([Data].self, forKey: .args)
-         for i in 0..<Uargs!.count{
+        if let uargs=Uargs{
+            for i in 0..<Uargs!.count{
 
-            self.args!.append(CustomEncoder.convertToInt8Array(input: Array(Uargs![i])))
-         }
+
+               self.args!.append(CustomEncoder.convertToInt8Array(input: Array(Uargs![i])))
+            }
+        }
+        if(self.args?.count==0){
+            self.args=nil
+        }
         self.logic = try? CustomEncoder.convertToInt8Array(input: Array((container?.decode(Data.self, forKey: .logic))!))
         
         let sigBytes = try? CustomEncoder.convertToInt8Array(input: Array((container?.decode(Data.self, forKey: .sig))!))
         if let sigBytess = (sigBytes){
             self.sig = try? Signature(sigBytess)
         }
+        
+        self.msig = try? container?.decode(MultisigSignature.self, forKey: .msig)
+        
+        
       
 
         
     }
     
     
-    public   init(logic:[Int8],args:[[Int8]]?,sig:Signature?,msig:MultisigSignature?) {
+    public   init(logic:[Int8],args:[[Int8]]?,sig:Signature?,msig:MultisigSignature?) throws {
         self.logic=logic
         self.args=args
         self.sig=sig
         self.msig=msig
-        
-        try! AlgoLogic.checkProgram(program: logic, args: self.args) // TODO: - Consider making LogicsigSignature.init a throwing init or changing the code such that force unwrap isnt necessary here. If crashing on the failure case is intentional, then use fatalError() so that intent is clear.
+                try AlgoLogic.checkProgram(program: logic, args: self.args)
     }
     
-    public  convenience init(logicsig:[Int8]) {
-        self.init(logicsig: logicsig,args:nil)
+    public  convenience init(logicsig:[Int8]) throws {
+        try self.init(logicsig: logicsig,args:nil)
     }
     
-    public convenience init(logicsig:[Int8],args:[[Int8]]?) {
+    public convenience init(logicsig:[Int8],args:[[Int8]]?) throws {
         
-        self.init(logic:logicsig,args:args,sig:nil,msig:nil)
+        try self.init(logic:logicsig,args:args,sig:nil,msig:nil)
     }
     
    
-     init() {
+    public init() {
         self.logic = nil;
         self.args = nil;
     }
@@ -124,48 +131,50 @@ public class LogicsigSignature:Codable,Equatable {
         }
         return prefixedEncoded;
     }
+    
+    public func verify (address:Address)->Bool{
+        
+        if(self.logic==nil){
+            return false
+        }else if self.sig != nil && self.msig != nil{
+            return false
+        }else{
+            do{
+              try  AlgoLogic.checkProgram(program: self.logic!, args: self.args)
+                
+            }catch is Error{
+                return false
+            }
+            
+            if self.sig == nil && self.msig==nil{
+                do{
+                    return  try address==self.toAddress()
+                    
+                }catch is Error{
+                    return false
+                }
+            }else{
 
-//    public boolean verify(Address address) {
-//        if (this.logic == null) {
-//            return false;
-//        } else if (this.sig != null && this.msig != null) {
-//            return false;
-//        } else {
-//            try {
-//                Logic.checkProgram(this.logic, this.args);
-//            } catch (Exception var7) {
-//                return false;
-//            }
-//
-//            if (this.sig == null && this.msig == null) {
-//                try {
-//                    return address.equals(this.toAddress());
-//                } catch (NoSuchAlgorithmException var4) {
-//                    return false;
-//                }
-//            } else {
-//                PublicKey pk;
-//                try {
-//                    pk = address.toVerifyKey();
-//                } catch (Exception var6) {
-//                    return false;
-//                }
-//
-//                if (this.sig != null) {
-//                    try {
-//                        java.security.Signature sig = java.security.Signature.getInstance("EdDSA");
-//                        sig.initVerify(pk);
-//                        sig.update(this.bytesToSign());
-//                        return sig.verify(this.sig.getBytes());
-//                    } catch (Exception var5) {
-//                        return false;
-//                    }
-//                } else {
-//                    return this.msig.verify(this.bytesToSign());
-//                }
-//            }
-//        }
-//    }
+                if(self.sig != nil){
+            
+                    let publicKey = try! PublicKey(CustomEncoder.convertToUInt8Array(input: address.getBytes()))
+                
+                    var isVerified = try! publicKey.verify(signature: CustomEncoder.convertToUInt8Array(input: self.sig!.bytes!), message: CustomEncoder.convertToUInt8Array(input: self.bytesToSign()))
+                    
+                    return isVerified
+                }else{
+                 
+                    return msig!.verify(message: self.bytesToSign())
+                }
+             
+            }
+            
+        }
+    }
+    
+
+
+
 //
 //    private static boolean nullCheck(Object o1, Object o2) {
 //        if (o1 == null && o2 == null) {
@@ -176,67 +185,34 @@ public class LogicsigSignature:Codable,Equatable {
 //            return o1 == null || o2 != null;
 //        }
 //    }
-//
-//    public boolean equals(Object obj) {
-//        if (obj instanceof LogicsigSignature) {
-//            LogicsigSignature actual = (LogicsigSignature)obj;
-//            if (!nullCheck(this.logic, actual.logic)) {
-//                return false;
-//            } else if (!Arrays.equals(this.logic, actual.logic)) {
-//                return false;
-//            } else if (!nullCheck(this.args, actual.args)) {
-//                return false;
-//            } else {
-//                if (this.args != null) {
-//                    if (this.args.size() != actual.args.size()) {
-//                        return false;
-//                    }
-//
-//                    for(int i = 0; i < this.args.size(); ++i) {
-//                        if (!Arrays.equals((byte[])this.args.get(i), (byte[])actual.args.get(i))) {
-//                            return false;
-//                        }
-//                    }
-//                }
-//
-//                if (!nullCheck(this.sig, actual.sig)) {
-//                    return false;
-//                } else if (this.sig != null && !this.sig.equals(actual.sig)) {
-//                    return false;
-//                } else if (!nullCheck(this.msig, actual.msig)) {
-//                    return false;
-//                } else {
-//                    return this.msig == null || this.msig.equals(actual.msig);
-//                }
-//            }
-//        } else {
-//            return false;
-//        }
-//    }
-//
-//
+
     
   public  static func ==(lhs: LogicsigSignature, rhs: LogicsigSignature) -> Bool {
         var equal: Bool = false;
         //logic
         equal = lhs.logic==rhs.logic
         if(!equal){
+         
             return equal
         }
+ 
         //args
         equal = lhs.args==rhs.args
         if(!equal){
+           
             return equal
         }
-        
+  
         //sig
         equal = lhs.sig?.bytes==rhs.sig?.bytes
         if(!equal){
+         
             return equal
         }
         //multisig
+  
     equal = lhs.msig?.subsigs==rhs.msig?.subsigs&&lhs.msig?.MULTISIG_VERSION==rhs.msig?.MULTISIG_VERSION&&lhs.msig?.threshold==rhs.msig?.threshold&&lhs.msig?.version==rhs.msig?.version
- 
+    
         return equal
     
     }

@@ -6,7 +6,8 @@
 //
 
 import Foundation
-public class MultisigSignature : Codable {
+import Ed25519
+public class MultisigSignature : Codable,Equatable {
     var SIGN_ALGO = "EdDSA";
     var  MULTISIG_VERSION:Int = 1;
   public  var version:Int?;
@@ -17,12 +18,10 @@ public    var subsigs:[MultisigSubsig]?=[MultisigSubsig]();
         case subsigs="subsig"
         case threshold="thr"
         case version="v"
-     
-   
         
     }
 
-    init(version:Int, threshold:Int,  subsigs:[MultisigSubsig]?) {
+  public  init(version:Int, threshold:Int,  subsigs:[MultisigSubsig]?) {
         self.subsigs = subsigs;
         self.threshold = threshold
         self.version = version;
@@ -30,17 +29,63 @@ public    var subsigs:[MultisigSubsig]?=[MultisigSubsig]();
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+
         try container.encode(subsigs, forKey: .subsigs)
         try container.encode(threshold, forKey: .threshold)
         try container.encode(version, forKey: .version)
+
+       
+    }
+    
+    public required init(from decoder: Decoder) throws {
+        var container = try decoder.container(keyedBy: CodingKeys.self)
+        self.version = try  container.decode(Int.self, forKey: .version)
+        self.threshold = try container.decode(Int.self,forKey: .threshold)
+        self.subsigs =  try container.decode([MultisigSubsig].self,forKey: .subsigs)
+        
+
     }
 
     convenience init(version:Int, threshold:Int) {
         self.init(version: version, threshold: threshold, subsigs: [MultisigSubsig]());
     }
+    
+    
 
-    init() {
+ public   init() {
         self.subsigs=[MultisigSubsig]();
+    }
+    
+    public func verify(message:[Int8])->Bool{
+        if self.version==1 && self.threshold! > 0 && self.subsigs?.count != 0 {
+            if(self.threshold!>self.subsigs!.count){
+                return false
+            } else{
+                var verifiedCount = 0;
+                var emptySig = Signature()
+                for i in 0..<self.subsigs!.count{
+                    var subsig:MultisigSubsig = self.subsigs![i]
+                    if(subsig.sig?.bytes != nil){
+                        let publicKey = try! PublicKey(CustomEncoder.convertToUInt8Array(input: (subsig.key?.getBytes())!))
+                     
+                       
+                        var isVerified = try! publicKey.verify(signature: CustomEncoder.convertToUInt8Array(input: subsig.sig!.bytes!), message: CustomEncoder.convertToUInt8Array(input: message))
+                        if isVerified{
+                            verifiedCount = verifiedCount + 1
+                            
+                        }
+                        
+                    }
+                }
+              
+            if (verifiedCount < self.threshold!) {
+                return false;
+            } else {
+                return true;
+            }
+            }
+        }
+        return false
     }
 
 //    public boolean verify(byte[] message) {
@@ -80,6 +125,11 @@ public    var subsigs:[MultisigSubsig]?=[MultisigSubsig]();
 //        }
 //    }
 
+    public static func ==(lh:MultisigSignature,rh:MultisigSignature)-> Bool{
+        return lh.subsigs==rh.subsigs&&lh.MULTISIG_VERSION==rh.MULTISIG_VERSION&&lh.threshold==rh.threshold&&lh.version==rh.version
+        
+    }
+    
     }
 
    

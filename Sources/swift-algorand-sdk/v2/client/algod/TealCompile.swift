@@ -2,50 +2,36 @@
 //  File.swift
 //  
 //
-//  Created by Jesulonimi on 2/10/21.
+//  Created by Jesulonimi on 5/1/21.
 //
 
 import Foundation
 import Alamofire
-
-struct ByteEncoding: ParameterEncoding {
-  private let data: Data
-
-  init(data: Data) {
-    self.data = data
-  }
-
-  func encode(_ urlRequest: URLRequestConvertible, with parameters: Parameters?) throws -> URLRequest {
-    var urlRequest = try urlRequest.asURLRequest()
-    urlRequest.httpBody = data
-    return urlRequest
-  }
-}
-public class RawTransaction{
+public class TealCompile{
     var client:AlgodClient
-    var rawTransaction:[Int8]?
+    var source:[Int8]?
     init(client:AlgodClient) {
         self.client=client
     }
 
-    public func rawtxn(rawtaxn:[Int8]) ->RawTransaction {
-        self.rawTransaction=rawtaxn
+    public func source(source:[Int8]) ->TealCompile {
+        self.source=source
         return self;
     }
 
-    public func execute( callback: @escaping (_:Response<PostTransactionsResponse>) ->Void){
+    public func execute( callback: @escaping (_:Response<CompileResponse>) ->Void){
 //        print(getRequestString())
         let headers:HTTPHeaders=[client.apiKey:client.token,"Content-type":"application/x-binary"]
-        var request=AF.request(getRequestString(),method: .post, parameters: nil, encoding: ByteEncoding(data:Data(CustomEncoder.convertToUInt8Array(input: self.rawTransaction!))), headers: headers,requestModifier: { $0.timeoutInterval = 120 })
+        var request=AF.request(getRequestString(),method: .post, parameters: nil, encoding: ByteEncoding(data:Data(CustomEncoder.convertToUInt8Array(input: self.source!))), headers: headers,requestModifier: { $0.timeoutInterval = 120 })
         
 //        request.responseJSON(){response in
 //            debugPrint(response.value)
 //            print("response json")
 //        }
         request.validate()
-        var customResponse:Response<PostTransactionsResponse>=Response()
+        var customResponse:Response<CompileResponse>=Response()
              
-  request.responseDecodable(of: PostTransactionsResponse.self){  (response) in
+  request.responseDecodable(of: CompileResponse.self){  (response) in
     if(response.error != nil){
         customResponse.setIsSuccessful(value:false)
         var errorDescription=String(data:response.data ?? Data(response.error!.errorDescription!.utf8),encoding: .utf8)
@@ -65,8 +51,8 @@ public class RawTransaction{
     
     customResponse.setIsSuccessful(value:true)
                     let data=response.value
-                    var postTransactionResponse:PostTransactionsResponse=data!
-                    customResponse.setData(data:postTransactionResponse)
+                    var compileResponse:CompileResponse=data!
+                    customResponse.setData(data:compileResponse)
                     callback(customResponse)
 
     }
@@ -74,7 +60,7 @@ public class RawTransaction{
 
     internal func getRequestString()->String {
         var component=client.connectString()
-        component.path = component.path+"/v2/transactions/"
+        component.path = component.path+"/v2/teal/compile"
         return component.url!.absoluteString;
         
     }

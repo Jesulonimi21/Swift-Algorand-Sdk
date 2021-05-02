@@ -6,8 +6,56 @@
 //
 
 import Foundation
-public class AssetParams: Codable {
-    internal init(assetTotal: Int64?, assetDecimals: Int64?, assetDefaultFrozen: Bool?, assetUnitName: String?, assetName: String?, url: String? , metadataHash: [Int8]?, assetManager: Address? , assetReserve: Address?, assetFreeze: Address?, assetClawback: Address? ) {
+public class AssetParams: Codable,Equatable {
+    public init(assetTotal: Int64?, assetDecimals: Int64?, assetDefaultFrozen: Bool?, assetUnitName: String?, assetName: String?, url: String? , metadataHash: [Int8]?, assetManager: Address? , assetReserve: Address?, assetFreeze: Address?, assetClawback: Address? ) throws {
+        
+        
+        if let aDecimals = assetDecimals {
+            if (aDecimals < 0 || aDecimals > 19) {
+                throw Errors.runtimeError("assetDecimals cannot be less than 0 or greater than 19")
+            }
+               }
+
+               if let aUnitName = assetUnitName {
+                   if (aUnitName.count > 8) {
+                    throw  Errors.runtimeError("assetUnitName cannot be greater than 8 characters")
+                    
+                   }
+                
+               }
+
+               if let aName = assetName {
+                   if (aName.count > 32){
+                    throw Errors.runtimeError("assetName cannot be greater than 32 characters");
+                   }
+               }
+
+               if let ul = url {
+                   if (ul.count > 32) {
+                    throw Errors.runtimeError("asset url cannot be greater than 32 characters")
+                   }
+               }
+
+       
+               if let mDataHash = metadataHash {
+                   if (mDataHash.count > 32) {
+                    throw Errors.runtimeError("asset metadataHash cannot be greater than 32 bytes")
+                 
+                   }
+                let base64Regex = "^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)$"
+                let predicate = NSPredicate(format: "SELF MATCHES %@", base64Regex)
+                var string = String(bytes: CustomEncoder.convertToUInt8Array(input: mDataHash), encoding: .utf8)!
+                var stringEncoded = string.removingAllWhitespaces.padding(toLength: ((string.count+3)/4)*4,
+                                                   withPad: "=",
+                                                   startingAt: 0)
+                var data:Data? = Data(base64Encoded: stringEncoded, options: .ignoreUnknownCharacters)
+               
+                if (data==nil){
+                    throw Errors.runtimeError("asset metadataHash \(String(bytes: CustomEncoder.convertToUInt8Array(input: mDataHash), encoding: .utf8)!) is not base64 encoded");
+                }
+               }
+        
+        
         self.assetTotal = assetTotal
         self.assetDecimals = assetDecimals
         self.assetDefaultFrozen = assetDefaultFrozen
@@ -21,18 +69,18 @@ public class AssetParams: Codable {
         self.assetClawback = assetClawback
     }
     
-    var assetTotal:Int64?
-    var assetDecimals:Int64?
-    var assetDefaultFrozen:Bool?
-    var assetUnitName:String?
-    var assetName:String?;
-    var url:String?;
-    var metadataHash:[Int8]?;
-    var assetManager:Address?
-    var  assetReserve:Address?;
-    var assetFreeze:Address?;
-    var assetClawback:Address?;
-    
+   public var assetTotal:Int64?
+    public var assetDecimals:Int64? = 0
+    public var assetDefaultFrozen:Bool? = false
+    public var assetUnitName:String?
+    public  var assetName:String?;
+    public  var url:String?;
+    public   var metadataHash:[Int8]?;
+    public   var assetManager:Address?
+    public   var  assetReserve:Address?;
+    public  var assetFreeze:Address?;
+    public  var assetClawback:Address?;
+
     
  
     
@@ -104,129 +152,76 @@ public class AssetParams: Codable {
      
         
     }
+    public required init(from decoder: Decoder) throws {
+        var container = try decoder.container(keyedBy: CodingKeys.self)
+//        var assetTotal:Int64?
+//        var assetDecimals:Int64?
+//        var assetDefaultFrozen:Bool?
+//        var assetUnitName:String?
+//        var assetName:String?;
+//        var url:String?;
+//        var metadataHash:[Int8]?;
+//        var assetManager:Address?
+//        var  assetReserve:Address?;
+//        var assetFreeze:Address?;
+//        var assetClawback:Address?;
+        self.assetTotal = try? container.decode(Int64.self, forKey: .assetTotal)
+        self.assetDecimals = try? container.decode(Int64.self,forKey: .assetDecimals)
+        if let asD = self.assetDecimals{
+            
+        }else{
+            self.assetDecimals  = 0
+        }
+        self.assetDefaultFrozen = try? container.decode(Bool.self,forKey: .assetDefaultFrozen)
+        if let aDf =  self.assetDefaultFrozen{
+        
+        }else{
+            self.assetDefaultFrozen=false
+        }
+        self.assetUnitName = try? container.decode(String.self,forKey: .assetUnitName)
+        self.assetName = try? container.decode(String.self,forKey: .assetName)
+        self.url = try? container.decode(String.self,forKey: .url)
+        
+        var metaDataHashData = try? container.decode(Data.self,forKey: .metadataHash)
+        if let metadataHash = metaDataHashData{
+            self.metadataHash = CustomEncoder.convertToInt8Array(input: Array(metadataHash))
+        }
+        self.assetManager = try? container.decode(Address.self,forKey: .assetManager)
+        self.assetReserve = try? container.decode(Address.self,forKey: .assetReserve)
+        self.assetFreeze     = try? container.decode(Address.self,forKey: .assetFreeze)
+        self.assetClawback = try? container.decode(Address.self,forKey: .assetClawback)
+        
+        
+    }
     
-//    enum CodingKeys:String,CodingKey{
-//        case assetTotal="t"
-//        case assetDecimals="dc"
-//        case assetDefaultFrozen="df"
-//        case assetUnitName="un"
-//        case assetName="an"
-//        case url="au"
-//        case metadataHash="am"
-//        case assetManager="m"
-//        case assetReserve="r"
-//        case assetFreeze="f"
-//        case assetClawback="c"
-//    }
-
-//    public AssetParams(BigInteger assetTotal, Integer assetDecimals, boolean defaultFrozen, String assetUnitName, String assetName, String url, byte[] metadataHash, Address manager, Address reserve, Address freeze, Address clawback) {
-//        this.assetTotal = BigInteger.valueOf(0L);
-//        this.assetDecimals = 0;
-//        this.assetDefaultFrozen = false;
-//        this.assetUnitName = "";
-//        this.assetName = "";
-//        this.url = "";
-//        this.assetManager = new Address();
-//        this.assetReserve = new Address();
-//        this.assetFreeze = new Address();
-//        this.assetClawback = new Address();
-//        if (assetTotal != null) {
-//            this.assetTotal = assetTotal;
-//        }
-//
-//        if (assetDecimals != null) {
-//            this.assetDecimals = assetDecimals;
-//        }
-//
-//        this.assetDefaultFrozen = defaultFrozen;
-//        if (manager != null) {
-//            this.assetManager = manager;
-//        }
-//
-//        if (reserve != null) {
-//            this.assetReserve = reserve;
-//        }
-//
-//        if (freeze != null) {
-//            this.assetFreeze = freeze;
-//        }
-//
-//        if (clawback != null) {
-//            this.assetClawback = clawback;
-//        }
-//
-//        if (assetDecimals != null) {
-//            if (assetDecimals < 0 || assetDecimals > 19) {
-//                throw new RuntimeException("assetDecimals cannot be less than 0 or greater than 19");
-//            }
-//
-//            this.assetDecimals = assetDecimals;
-//        }
-//
-//        if (assetUnitName != null) {
-//            if (assetUnitName.length() > 8) {
-//                throw new RuntimeException("assetUnitName cannot be greater than 8 characters");
-//            }
-//
-//            this.assetUnitName = assetUnitName;
-//        }
-//
-//        if (assetName != null) {
-//            if (assetName.length() > 32) {
-//                throw new RuntimeException("assetName cannot be greater than 32 characters");
-//            }
-//
-//            this.assetName = assetName;
-//        }
-//
-//        if (url != null) {
-//            if (url.length() > 32) {
-//                throw new RuntimeException("asset url cannot be greater than 32 characters");
-//            }
-//
-//            this.url = url;
-//        }
-//
-//        if (metadataHash != null) {
-//            if (metadataHash.length > 32) {
-//                throw new RuntimeException("asset metadataHash cannot be greater than 32 bytes");
-//            }
-//
-//            if (!Base64.isBase64(metadataHash)) {
-//                throw new RuntimeException("asset metadataHash '" + new String(metadataHash) + "' is not base64 encoded");
-//            }
-//
-//            this.metadataHash = metadataHash;
-//        }
-//
-//    }
-//
-//    public AssetParams() {
-//        this.assetTotal = BigInteger.valueOf(0L);
-//        this.assetDecimals = 0;
-//        this.assetDefaultFrozen = false;
-//        this.assetUnitName = "";
-//        this.assetName = "";
-//        this.url = "";
-//        this.assetManager = new Address();
-//        this.assetReserve = new Address();
-//        this.assetFreeze = new Address();
-//        this.assetClawback = new Address();
-//    }
-//
-//    public boolean equals(Object o) {
-//        if (this == o) {
-//            return true;
-//        } else if (o != null && this.getClass() == o.getClass()) {
-//            AssetParams that = (AssetParams)o;
-//            return this.assetTotal.equals(that.assetTotal) && this.assetDecimals.equals(that.assetDecimals) && this.assetDefaultFrozen == that.assetDefaultFrozen && this.assetName.equals(that.assetName) && this.assetUnitName.equals(that.assetUnitName) && this.url.equals(that.url) && Arrays.equals(this.metadataHash, that.metadataHash) && this.assetManager.equals(that.assetManager) && this.assetReserve.equals(that.assetReserve) && this.assetFreeze.equals(that.assetFreeze) && this.assetClawback.equals(that.assetClawback);
-//        } else {
-//            return false;
-//        }
-//    }
-//
-//    @JsonCreator
-//    private AssetParams(@JsonProperty("t") BigInteger assetTotal, @JsonProperty("dc") Integer assetDecimals, @JsonProperty("df") boolean assetDefaultFrozen, @JsonProperty("un") String assetUnitName, @JsonProperty("an") String assetName, @JsonProperty("au") String url, @JsonProperty("am") byte[] metadataHash, @JsonProperty("m") byte[] assetManager, @JsonProperty("r") byte[] assetReserve, @JsonProperty("f") byte[] assetFreeze, @JsonProperty("c") byte[] assetClawback) {
-//        this(assetTotal, assetDecimals, assetDefaultFrozen, assetUnitName, assetName, url, metadataHash, new Address(assetManager), new Address(assetReserve), new Address(assetFreeze), new Address(assetClawback));
-//    }
+    public static func == (lhs:AssetParams,rhs:AssetParams)->Bool{
+//        print(lhs.assetClawback?.bytes)
+//        print(rhs.assetClawback?.bytes)
+//        print(lhs.assetDecimals)
+//        print( rhs.assetDecimals)
+//        print(lhs.assetDefaultFrozen)
+//        print(rhs.assetDefaultFrozen)
+//        print(lhs.assetUnitName)
+//        print( rhs.assetUnitName)
+//        print(lhs.assetName )
+//        print( rhs.assetName)
+//        print(lhs.url)
+//        print(rhs.url )
+//        print(lhs.metadataHash)
+//        print(rhs.metadataHash)
+//        print(lhs.assetManager)
+//        print(rhs.assetManager)
+//        print( lhs.assetReserve )
+//        print(rhs.assetManager)
+//        print(lhs.assetReserve )
+//        print(rhs.assetReserve)
+//        print(lhs.assetFreeze)
+//        print(rhs.assetFreeze)
+//        print(lhs.assetClawback)
+//        print(rhs.assetClawback)
+        
+        return    lhs.assetClawback == rhs.assetClawback && lhs.assetDecimals == rhs.assetDecimals && lhs.assetDefaultFrozen == rhs.assetDefaultFrozen && lhs.assetUnitName == rhs.assetUnitName && lhs.assetName == rhs.assetName && lhs.url == rhs.url && lhs.metadataHash == rhs.metadataHash
+            && lhs.assetManager == rhs.assetManager && lhs.assetReserve == rhs.assetReserve && lhs.assetFreeze == rhs.assetFreeze && lhs.assetClawback == rhs.assetClawback
+    }
+    
 }

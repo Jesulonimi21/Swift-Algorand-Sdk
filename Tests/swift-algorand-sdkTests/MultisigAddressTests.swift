@@ -21,7 +21,7 @@ public class MultisigAddressTests:XCTestCase{
             Ed25519PublicKey(bytes: three.getBytes())
         ])
        try! XCTAssertEqual(addr.toAddress().description, "UCE2U2JC4O4ZR6W763GUQCG57HQCDZEUJY4J5I6VYY4HQZUJDF7AKZO5GM")
-        
+        TestUtil.serializeDeserializeCheck(object: addr)
     }
     
 

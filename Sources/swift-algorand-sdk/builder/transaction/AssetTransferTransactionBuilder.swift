@@ -57,7 +57,7 @@ public class AssetTransferTransactionBuilder : TransactionBuilder<AssetTransferT
 //        return this;
 //    }
 
-    internal func assetCloseTo(assetCloseTo:Address)->AssetTransferTransactionBuilder {
+    public func assetCloseTo(assetCloseTo:Address)->AssetTransferTransactionBuilder {
         self.assetCloseTo = assetCloseTo;
         return self;
     }

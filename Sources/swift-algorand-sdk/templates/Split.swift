@@ -47,7 +47,7 @@ public class Split {
                     var receiver2 = try!  Address(data.byteBlock[2]);
              
                     
-                    var tx1 = Transaction.paymentTransactionBuilder().setSender(contract.address)
+                    var tx1 = try! Transaction.paymentTransactionBuilder().setSender(contract.address)
                      .amount(receiverOneAmount)
                      .receiver(receiver1)
                         .genesisHash(genesisHash.bytes!)
@@ -56,7 +56,7 @@ public class Split {
                         .fee(Int64(feePerByte))
                          .build()
 
-                    var tx2 = Transaction.paymentTransactionBuilder().setSender(contract.address)
+                    var tx2 = try! Transaction.paymentTransactionBuilder().setSender(contract.address)
                      .amount(receiverTwoAmount)
                      .receiver(receiver2)
                         .genesisHash(genesisHash.bytes!)
@@ -68,7 +68,7 @@ public class Split {
                     
                     
                     if (tx1.fee! <= Int64(maxFee) && tx2.fee! <= Int64(maxFee)) {
-                        var lsig =  LogicsigSignature(logicsig: contract.program);
+                        var lsig = try! LogicsigSignature(logicsig: contract.program);
                         var gid = try! TxGroup.computeGroupID(txns: [tx1,tx2])
                         tx1.assignGroupID(gid: gid)
                         tx2.assignGroupID(gid: gid)

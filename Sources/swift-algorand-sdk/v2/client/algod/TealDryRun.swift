@@ -2,50 +2,38 @@
 //  File.swift
 //  
 //
-//  Created by Jesulonimi on 2/10/21.
+//  Created by Jesulonimi on 5/2/21.
 //
 
 import Foundation
 import Alamofire
-
-struct ByteEncoding: ParameterEncoding {
-  private let data: Data
-
-  init(data: Data) {
-    self.data = data
-  }
-
-  func encode(_ urlRequest: URLRequestConvertible, with parameters: Parameters?) throws -> URLRequest {
-    var urlRequest = try urlRequest.asURLRequest()
-    urlRequest.httpBody = data
-    return urlRequest
-  }
-}
-public class RawTransaction{
+public class TealDryRun{
     var client:AlgodClient
-    var rawTransaction:[Int8]?
+    var request:DryrunRequest?
     init(client:AlgodClient) {
         self.client=client
     }
 
-    public func rawtxn(rawtaxn:[Int8]) ->RawTransaction {
-        self.rawTransaction=rawtaxn
+    public func request(request:DryrunRequest) ->TealDryRun {
+        self.request=request
         return self;
     }
 
-    public func execute( callback: @escaping (_:Response<PostTransactionsResponse>) ->Void){
+    public func execute( callback: @escaping (_:Response<DryrunResponse>) ->Void){
 //        print(getRequestString())
+        var data:[UInt8] = CustomEncoder.encodeToMsgPack(request!)
+        print(data)
         let headers:HTTPHeaders=[client.apiKey:client.token,"Content-type":"application/x-binary"]
-        var request=AF.request(getRequestString(),method: .post, parameters: nil, encoding: ByteEncoding(data:Data(CustomEncoder.convertToUInt8Array(input: self.rawTransaction!))), headers: headers,requestModifier: { $0.timeoutInterval = 120 })
+        var request=AF.request(getRequestString(),method: .post, parameters: nil, encoding: ByteEncoding(data:Data(data)), headers: headers,requestModifier: { $0.timeoutInterval = 120 })
         
 //        request.responseJSON(){response in
 //            debugPrint(response.value)
 //            print("response json")
 //        }
         request.validate()
-        var customResponse:Response<PostTransactionsResponse>=Response()
+        var customResponse:Response<DryrunResponse>=Response()
              
-  request.responseDecodable(of: PostTransactionsResponse.self){  (response) in
+  request.responseDecodable(of: DryrunResponse.self){  (response) in
     if(response.error != nil){
         customResponse.setIsSuccessful(value:false)
         var errorDescription=String(data:response.data ?? Data(response.error!.errorDescription!.utf8),encoding: .utf8)
@@ -58,15 +46,14 @@ public class RawTransaction{
                 customResponse.errorMessage = errorDic!["message"] as! String
                
             }
-
         }
                 return
     }
     
     customResponse.setIsSuccessful(value:true)
                     let data=response.value
-                    var postTransactionResponse:PostTransactionsResponse=data!
-                    customResponse.setData(data:postTransactionResponse)
+                    var dryrunResponse:DryrunResponse=data!
+                    customResponse.setData(data:dryrunResponse)
                     callback(customResponse)
 
     }
@@ -74,7 +61,7 @@ public class RawTransaction{
 
     internal func getRequestString()->String {
         var component=client.connectString()
-        component.path = component.path+"/v2/transactions/"
+        component.path = component.path+"/v2/teal/dryrun"
         return component.url!.absoluteString;
         
     }

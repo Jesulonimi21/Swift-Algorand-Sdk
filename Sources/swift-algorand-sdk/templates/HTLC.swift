@@ -68,7 +68,7 @@ public class HTLC {
                 }
             }
    
-        var txn:Transaction = Transaction.paymentTransactionBuilder().setSender(contract.address).fee(0).firstValid(firstValid).lastValid(lastValid).genesisHash(genesisHash.bytes!).closeRemainderTo(receiver).build()
+        var txn:Transaction = try! Transaction.paymentTransactionBuilder().setSender(contract.address).fee(0).firstValid(firstValid).lastValid(lastValid).genesisHash(genesisHash.bytes!).closeRemainderTo(receiver).build()
         
       txn =  try Account.setFeeByFeePerByte(tx: txn, suggestedFeePerByte: feePerByte);
         if (txn.fee! > maxFee) {
@@ -76,7 +76,7 @@ public class HTLC {
             } else {
 
                 var args = [CustomEncoder.convertToInt8Array(input: CustomEncoder.decodeByteFromBase64(string: preImage))]
-                var lsig=LogicsigSignature(logicsig: contract.program, args: args)
+                var lsig = try! LogicsigSignature(logicsig: contract.program, args: args)
                 return  SignedTransaction(tx: txn, lsig: lsig);
             }
         }

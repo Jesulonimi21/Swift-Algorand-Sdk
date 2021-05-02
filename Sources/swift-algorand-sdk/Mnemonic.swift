@@ -7,10 +7,12 @@
 
 import Foundation
 public class Mnemonic{
+    static var   CHECKSUM_LEN_WORDS = 1
+   static  var   MNEM_LEN_WORDS = 25
 static  public  func toKey( _ mnemonicStr: String) throws ->[Int8] {
   
         var mnemonic:[String] = mnemonicStr.split{$0 == " "}.map(String.init)
-    
+ 
             if (mnemonic.count != 25) {
                 throw Errors.illegalArgumentError("mnemonic does not have enough words")
             } else {
@@ -34,7 +36,7 @@ static  public  func toKey( _ mnemonicStr: String) throws ->[Int8] {
 
                 for w in 0..<numWords{
                     if (uint11Arr[w] == -1) {
-                        throw Errors.illegalArgumentError("mnemonic contains words that are not in wordlist")           
+                        throw Errors.illegalArgumentError("mnemonic contains word that is not in word list")
                     }
                 }
     
@@ -45,11 +47,15 @@ static  public  func toKey( _ mnemonicStr: String) throws ->[Int8] {
                 } else if (b[32] != 0) {
                     throw Errors.generalSecurityError("unexpected byte from key")
                 } else {
-                    var bCopy:[Int8] = b;
 
                     if b[b.count-1]==0{
                         b.remove(at: b.count-1)
                     }
+                    var bCopy:[Int8] = b;
+                    var chkWord = checksum(bCopy)
+                    if (chkWord != mnemonic[24]) {
+                        throw Errors.generalSecurityError("checksum failed to validate");
+                           }
                     return b;
                 }
             }
