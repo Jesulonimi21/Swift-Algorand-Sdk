@@ -43,7 +43,6 @@ public class AddressTests: XCTestCase{
             bytes[i] = -1
         }
        try! XCTAssertEqual(Address(bytes).description, golden)
-        
     }
     
     
