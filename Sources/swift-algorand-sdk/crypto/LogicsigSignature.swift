@@ -33,14 +33,14 @@ public class LogicsigSignature:Codable,Equatable {
                 Uargs.append(Data(CustomEncoder.convertToUInt8Array(input: args[i])))
             }
             
-            try! container.encode(Uargs, forKey: .args)
+            try container.encode(Uargs, forKey: .args)
         }
         if let logic=self.logic{
-            try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: logic)), forKey: .logic)
+            try container.encode(Data(CustomEncoder.convertToUInt8Array(input: logic)), forKey: .logic)
         }
        
         if let sig = self.sig{
-            try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: sig.bytes!)), forKey: .sig)
+            try container.encode(Data(CustomEncoder.convertToUInt8Array(input: sig.bytes!)), forKey: .sig)
         }
         if let msig = self.msig{
             try! container.encode(msig, forKey: .msig)
@@ -59,11 +59,13 @@ public class LogicsigSignature:Codable,Equatable {
     }
     
     public required init(from decoder: Decoder) throws {
-        var container = try? decoder.container(keyedBy: CodingKeys.self)
+        let container = try? decoder.container(keyedBy: CodingKeys.self)
         self.args = Array()
-         var Uargs = try? container?.decode([Data].self, forKey: .args)
+      
+         let Uargs = try? container?.decode([Data].self, forKey: .args)
         if let uargs=Uargs{
             for i in 0..<Uargs!.count{
+
 
                self.args!.append(CustomEncoder.convertToInt8Array(input: Array(Uargs![i])))
             }
@@ -73,7 +75,7 @@ public class LogicsigSignature:Codable,Equatable {
         }
         self.logic = try? CustomEncoder.convertToInt8Array(input: Array((container?.decode(Data.self, forKey: .logic))!))
         
-        var sigBytes = try? CustomEncoder.convertToInt8Array(input: Array((container?.decode(Data.self, forKey: .sig))!))
+        let sigBytes = try? CustomEncoder.convertToInt8Array(input: Array((container?.decode(Data.self, forKey: .sig))!))
         if let sigBytess = (sigBytes){
             self.sig = try? Signature(sigBytess)
         }
@@ -92,7 +94,6 @@ public class LogicsigSignature:Codable,Equatable {
         self.args=args
         self.sig=sig
         self.msig=msig
-        
                 try AlgoLogic.checkProgram(program: logic, args: self.args)
     }
     
@@ -112,8 +113,8 @@ public class LogicsigSignature:Codable,Equatable {
     }
 
     public func toAddress() throws ->Address {
-        var prefixedEncoded:[Int8] = self.bytesToSign();
-        return  try! Address(SHA512_256().hash(prefixedEncoded));
+        let prefixedEncoded:[Int8] = self.bytesToSign();
+        return  try Address(SHA512_256().hash(prefixedEncoded));
     }
 
     public func bytesToSign()->[Int8] {

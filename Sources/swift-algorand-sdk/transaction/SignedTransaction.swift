@@ -48,12 +48,13 @@ public class SignedTransaction: Codable,Equatable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         if let lSig=self.lSig{
+
             if lSig.logic == nil && lSig.args == nil && lSig.sig ==  nil && lSig.msig == nil{
                 
             }else{
                 try! container.encode(lSig, forKey: .lSig)
             }
-           
+
         }
         if let mSig=self.mSig{
             if (mSig.subsigs?.count==0 && mSig.version == nil && mSig.threshold == nil){
