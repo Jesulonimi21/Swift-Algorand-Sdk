@@ -27,7 +27,7 @@ public class PendingTransactionResponse : Codable {
   
     public var senderRewards:Int64?;
     
-//    var txn:SignedTransaction?;
+    var txn:SignedTransaction?;
 
    init() {
     }
@@ -54,7 +54,15 @@ public class PendingTransactionResponse : Codable {
 
         case senderRewards="sender-rewards"
  
-//        case txn="txn"
+        case txn="txn"
     }
+    
+    public func toJson()->String?{
+        var jsonencoder=JSONEncoder()
+        var classData=try! jsonencoder.encode(self)
+        var classString=String(data: classData, encoding: .utf8)
+       return classString
+    }
+
   
 }

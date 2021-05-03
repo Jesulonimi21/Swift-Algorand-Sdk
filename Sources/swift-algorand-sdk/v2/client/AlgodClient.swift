@@ -62,6 +62,51 @@ public class AlgodClient {
         return  TealDryRun(client: self);
     }
     
+    public func getProof(round:Int64,txId:String) ->GetProof{
+        return GetProof(client: self, round: round,txId: txId)
+    }
+    
+    public func getSupply() -> GetSupply{
+        return  GetSupply(client:self);
+    }
+    
+    public func getVersion() -> GetVersion{
+        return  GetVersion(client:self);
+    }
+    
+    public func healthCheck() -> AlgodHealthCheck{
+        return  AlgodHealthCheck(client:self);
+    }
+    
+    public func swaggerJson() -> SwaggerJson{
+        return SwaggerJson(client: self)
+    }
+    
+
+    public func waitForBlock(round:Int64) ->WaitForBlock{
+        return WaitForBlock(client: self, round: round)
+    }
+    
+    public func getApplicationById(applicationId:Int64) -> GetApplicationById{
+        return GetApplicationById(client: self, applicationId: applicationId)
+    }
+    
+    public func getAssetById(assetId:Int64)->GetAssetById{
+        return GetAssetById(client: self, assetId: assetId)
+    }
+    
+    public func getGenesis() -> GetGenesis{
+        return GetGenesis(client: self)
+    }
+    
+    public func getPendingTransactions() -> GetPendingTransactions{
+        return GetPendingTransactions(client: self)
+    }
+    
+    public func getPendingTransactionsByAddress(address:Address) -> GetPendingTransactionsByAddress{
+        return GetPendingTransactionsByAddress(client: self,address: address)
+    }
+    
     public func set(key:String){
         self.apiKey=key
     }

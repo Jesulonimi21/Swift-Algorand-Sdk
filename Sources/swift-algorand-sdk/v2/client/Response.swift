@@ -23,6 +23,7 @@ public class Response<T>{
         self.errorDescription="";
     }
     func setData(data:T){
+  
         self.data=data
     }
     

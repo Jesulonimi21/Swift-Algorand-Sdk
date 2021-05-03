@@ -72,4 +72,5 @@ public class NodeStatusResponse : Codable {
         var classString=String(data: classData, encoding: .utf8)
        return classString
     }
+    
 }

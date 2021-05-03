@@ -296,7 +296,6 @@ public class AlgoLogic{
   
     public static func checkProgram(program:[Int8],  args:[[Int8]]?) throws -> Bool {
        let programData = try readProgram(program: program, args: args)
-
         return programData.good
        }
     
