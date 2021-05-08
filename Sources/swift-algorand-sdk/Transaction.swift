@@ -181,7 +181,8 @@ public class Transaction : Codable,Equatable{
 
    public var applicationId:Int64?=nil;
 
-//        public TEALProgram clearStateProgram;
+    public var clearStateProgram:TEALProgram?
+    public var approvalProgram:TEALProgram?
 
     
    
@@ -330,6 +331,8 @@ public class Transaction : Codable,Equatable{
             case votePK="votekey"
           case localStateSchema="apls"
         case globalStateSchema="apgs"
+        case clearStateProgram = "apsu"
+        case approvalProgram = "apap"
     }
     
     
@@ -399,6 +402,10 @@ public class Transaction : Codable,Equatable{
     }
     public  static func assetClawbackTransactionBuilder()->AssetClawbackTransactionBuilder{
         return AssetClawbackTransactionBuilder()
+    }
+    
+    public static func applicationCreateTransactionBuilder() ->ApplicationCreateTransactionBuilder{
+        return ApplicationCreateTransactionBuilder()
     }
     
     
