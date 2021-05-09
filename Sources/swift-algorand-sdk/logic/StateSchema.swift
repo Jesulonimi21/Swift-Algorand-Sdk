@@ -12,25 +12,37 @@ public class StateSchema: Codable {
 
     var numByteSlice:Int64=0;
 
-//    enum CodingKeys:String,CodingKey{
-//        case numUint = "nui"
-//        case numByteSlice="nbs"
-//    }
+    enum CodingKeys:String,CodingKey{
+        case numUint = "nui"
+        case numByteSlice="nbs"
+    }
 
-    init() {
+  public  init() {
         self.numUint = 0;
       self.numByteSlice = 0;
     }
 
-    init(_ numUint:Int64, _ numByteSlice:Int64) {
+   public init(_ numUint:Int64, _ numByteSlice:Int64) {
         self.numUint = 0;
         self.numByteSlice = 0;
         self.numUint = numUint;
         self.numByteSlice = numByteSlice;
     }
 
-  convenience init( numUint:Int64,  numByteSlice:Int64) {
+ public convenience init( numUint:Int64,  numByteSlice:Int64) {
         self.init(numUint,numByteSlice);
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+       
+        if(numByteSlice != 0){
+        try    container.encode(numByteSlice, forKey: .numByteSlice)
+        }
+        if(numUint != 0){
+          try  container.encode(numUint, forKey: .numUint)
+        }
+       
     }
 
   

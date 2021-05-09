@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class TEALProgram {
+public class TEALProgram:Codable {
     private var program:[Int8]?
 
 
@@ -32,5 +32,22 @@ public class TEALProgram {
      */
     public convenience init(base64String:String) throws{
     try    self.init(program:CustomEncoder.convertToInt8Array(input: CustomEncoder.decodeByteFromBase64(string: base64String)));
+    }
+    
+    
+    public required init(from decoder: Decoder) throws {
+        var container = try? decoder.singleValueContainer()
+        var bytesData = try? container?.decode(Data.self)
+        if let bytes =  bytesData{
+            self.program = CustomEncoder.convertToInt8Array(input: Array(bytes))
+        }
+        
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = try? encoder.singleValueContainer()
+        if let b = self.program{
+          try  container?.encode(Data(CustomEncoder.convertToUInt8Array(input: b)))
+        }
     }
 }

@@ -1177,3 +1177,177 @@
 //
 //    }
 //}
+
+//
+//public func testTealCompile(){
+//    var PURESTAKE_API_KEY="ADRySlL0NK5trzqZGAE3q1xxIqlQdSfk1nbHxTNe";
+//    var PURESTAKE_API_PORT="443";
+//    var PURESTAKE_ALGOD_API_TESTNET_ADDRESS="https://testnet-algorand.api.purestake.io/ps2";
+//    var algodClient=AlgodClient(host: PURESTAKE_ALGOD_API_TESTNET_ADDRESS, port: PURESTAKE_API_PORT, token: PURESTAKE_API_KEY)
+//    algodClient.set(key: "X-API-Key")
+//
+//    var source:[Int8] = TestPlayground.loadSampleTeal()
+//    algodClient.tealCompile().source(source: source).execute(){compileResponse in
+//        if(compileResponse.isSuccessful){
+//            print(compileResponse.data?.hash)
+//            print(compileResponse.data?.result)
+//        }else{
+//            print(compileResponse.errorMessage!)
+//        }
+//
+//    }
+//    dispatchMain()
+//}
+//
+//
+//public func testTealDryRun(){
+//    var PURESTAKE_API_KEY="ADRySlL0NK5trzqZGAE3q1xxIqlQdSfk1nbHxTNe";
+//    var PURESTAKE_API_PORT="443";
+//    var PURESTAKE_ALGOD_API_TESTNET_ADDRESS="https://testnet-algorand.api.purestake.io/ps2";
+//    var algodClient=AlgodClient(host: PURESTAKE_ALGOD_API_TESTNET_ADDRESS, port: PURESTAKE_API_PORT, token: PURESTAKE_API_KEY)
+//    algodClient.set(key: "X-API-Key")
+//    var sender = try! Account("skill state margin token trip clerk view task velvet aspect amused rose glance educate zebra tunnel island odor ranch polar interest ethics lecture ability network")
+//
+//    var receiver = try! Account("title frame buddy stumble orbit buddy gossip finger fabric refuse toward surface shop unique coffee theory decline canal amateur hole lonely nice fault above dragon")
+//
+//    var sources:[DryrunSource] = Array()
+//    var stxns:[SignedTransaction] = Array()
+//    var source:[Int8] = TestPlayground.loadSampleTeal()
+//   var dryRunSource = DryrunSource()
+////        dryRunSource.fieldName = "lsig"
+//    dryRunSource.fieldName =  "approv"
+//    dryRunSource.source = "int 1"
+////        dryRunSource.source = CustomEncoder.encodeToBase64(Data(CustomEncoder.convertToUInt8Array(input:  TestPlayground.loadSampleTeal())))x
+//    dryRunSource.txnIndex = 01
+//
+//    sources.append(dryRunSource)
+//
+//    var program:[Int8] = CustomEncoder.convertToInt8Array(input: CustomEncoder.convertBase64ToByteArray(data1: "ASABASI="))
+//
+//    var lsig = try! LogicsigSignature(logicsig: program)
+//
+//    var signedSig = try! sender.signLogicsig(lsig: lsig)
+//
+//    algodClient.transactionParams().execute(){ paramResponse in
+//        if(!(paramResponse.isSuccessful)){
+//        print(paramResponse.errorDescription);
+//        return;
+//    }
+//
+//        let tx = try! Transaction.paymentTransactionBuilder().setSender(sender.getAddress())
+//        .amount(1000000)
+//            .receiver(receiver.address)
+//        .note("tx using in dryrun".bytes)
+//        .suggestedParams(params: paramResponse.data!)
+//        .build()
+//
+//
+//        var stx = Account.signLogicsigTransaction(lsig: lsig, tx: tx)
+//        stxns.append(stx)
+//        var dryRunRequest = DryrunRequest()
+//        dryRunRequest.sources = sources
+//        dryRunRequest.txns = stxns
+//
+//
+//        var jsonString = CustomEncoder.encodeToJson(obj: dryRunRequest)
+//        print(jsonString)
+//
+//   algodClient.tealDryRun().request(request: dryRunRequest).execute(){ requestResponse in
+//
+//            if(requestResponse.isSuccessful){
+//                print(requestResponse.data!.protocolVersion)
+//                print(requestResponse.data!.txns)
+//                print(requestResponse.data!.toJson())
+//            }else{
+//                print(requestResponse.errorMessage)
+//                print(requestResponse.errorDescription)
+//            }
+//        }
+//    }
+//
+//    dispatchMain()
+//}
+//public static func loadSampleTeal()  -> [Int8] {
+//    let configURL = Bundle.module.path(forResource: "sample.teal", ofType: "txt")
+//    let contensts = try! String(contentsOfFile: configURL!.description)
+//    let jsonData = contensts.data(using: .utf8)!
+////        let langspec = try! JSONDecoder().decode(LangSpec.self, from: jsonData)
+//    var  data = CustomEncoder.convertToInt8Array(input: Array(jsonData))
+//    print(data)
+//    return data
+//   }
+//
+
+//public func testApplicationCreate(){
+//
+//    var PURESTAKE_ALGOD_API_TESTNET_ADDRESS="https://testnet-algorand.api.purestake.io/ps2";
+//    var PURESTAKE_ALGOD_API_MAINNET_ADDRESS="https://mainnet-algorand.api.purestake.io/ps2";
+//    var PURESTAKE_INDEXER_API_ADDRESS="https://testnet-algorand.api.purestake.io/idx2";
+//    var PURESTAKE_API_KEY="ADRySlL0NK5trzqZGAE3q1xxIqlQdSfk1nbHxTNe";
+//    var PURESTAKE_API_PORT="443";
+//    var HACKATHON_API_PORT="9100";
+//    var HACKATHON_API_ADDRESS="http://hackathon.algodev.network";
+//    var HACKATHON_API_TOKEN="ef920e2e7e002953f4b29a8af720efe8e4ecc75ff102b165e0472834b25832c1";
+//    //var algodClient=AlgodClient(host: HACKATHON_API_ADDRESS, port: HACKATHON_API_PORT, token: HACKATHON_API_TOKEN)
+//    var algodClient=AlgodClient(host: PURESTAKE_ALGOD_API_TESTNET_ADDRESS, port: PURESTAKE_API_PORT, token: PURESTAKE_API_KEY)
+//    algodClient.set(key: "X-API-Key")
+//    var indexerClient=IndexerClient(host: PURESTAKE_INDEXER_API_ADDRESS, port: PURESTAKE_API_PORT, token: PURESTAKE_API_KEY)
+//    indexerClient.set(key:"X-API-Key")
+//
+//    var mnemonic="cactus check vocal shuffle remember regret vanish spice problem property diesel success easily napkin deposit gesture forum bag talent mechanic reunion enroll buddy about attract"
+//    var mnemonic2="box wear empty voyage scout cheap arrive father wagon correct thought sand planet comfort also patient vast patient tide rather young cinnamon plastic abandon model";
+//    var account =  try! Account(mnemonic)
+//    var account1 = try! Account(mnemonic2)
+//    var address = account.getAddress()
+//    var address2 = account1.getAddress()
+//
+//    var localInts:Int64 = 1;
+//    var localBytes:Int64 = 1;
+//    var globalInts:Int64 = 1;
+//    var globalBytes:Int64 = 0;
+//
+//    var approvalProgram = try? TEALProgram(base64String: "AiAFAAIGAZBOIjEYEkAAGDIEIxIzABAkEhAzARAlEhAzAQghBA0QQyVD")
+//    var clearStateProgram = try? TEALProgram(base64String:"AiABASI=")
+//
+//
+//            algodClient.transactionParams().execute(){ paramResponse in
+//                if(!(paramResponse.isSuccessful)){
+//                print(paramResponse.errorDescription);
+//                return;
+//            }
+//
+//                var tx = try! Transaction.applicationCreateTransactionBuilder()
+//                    .setSender(account.getAddress())
+//                    .approvalProgram(approvalProgram: approvalProgram!)
+//                    .clearStateProgram(clearStateProgram: clearStateProgram!)
+//                    .globalStateSchema(globalStateSchema: StateSchema(numUint: globalInts, numByteSlice: globalBytes))
+//                    .localStateSchema(localStateSchema:StateSchema(numUint: localInts, numByteSlice: localBytes))
+//                    .suggestedParams(params: paramResponse.data!)
+//                    .build()
+//
+//                var signedTransaction=account.signTransaction(tx: tx)
+//
+//                   var encodedTrans:[Int8]=CustomEncoder.encodeToMsgPack(signedTransaction)
+//
+//                   print(CustomEncoder.encodeToJson(obj: signedTransaction))
+//
+//               //    return;
+//
+//
+//                   algodClient.rawTransaction().rawtxn(rawtaxn: encodedTrans).execute(){
+//                      response in
+//                       if(response.isSuccessful){
+//                           print(response.data!.txId)
+//
+//                       }else{
+//                           print(response.errorDescription)
+//                           print("Faled")
+//                       }
+//
+//                   }
+//
+//
+//            }
+//    dispatchMain()
+//
+//}

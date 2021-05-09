@@ -529,9 +529,25 @@ public class Transaction : Codable,Equatable{
                 try! container.encode(amount, forKey: .amount)
             }
         }
+    
+    if let approvalProgram = self.approvalProgram{
+        try! container.encode(approvalProgram, forKey: .approvalProgram)
+    }
+    
         if let assetParams=self.assetParams{
             try! container.encode(assetParams, forKey: .assetParams)
         }
+    if let globalStateSchema = self.globalStateSchema{
+        try! container.encode(globalStateSchema, forKey: .globalStateSchema)
+    }
+    if let localStateSchema = self.localStateSchema{
+        try! container.encode(localStateSchema, forKey: .localStateSchema)
+    }
+    
+    if let clearStateProgramn = self.clearStateProgram{
+        try! container.encode(clearStateProgram, forKey: .clearStateProgram)
+    }
+    
         if let assetReceiver=self.assetReceiver{
             try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: assetReceiver.getBytes())), forKey: .assetReceiver)
         }
