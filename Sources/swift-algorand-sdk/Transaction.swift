@@ -7,59 +7,59 @@
 import Foundation
 
 
-extension Transaction.onCompletion:Codable{
-      enum Key: CodingKey {
-          case rawValue
-      }
-      
-      enum CodingError: Error {
-          case unknownValue
-      }
-      
-      init(from decoder: Decoder) throws {
-          let container = try decoder.container(keyedBy: Key.self)
-          let rawValue = try container.decode(String.self, forKey: .rawValue)
-          switch rawValue {
-          case "NoOpOC":
-              self = .NoOpOC
-          case "OptInOC":
-              self = .OptInOC
-          case "CloseOutOC":
-              self = .CloseOutOC
-          case "ClearStateOC":
-              self = .ClearStateOC
-          case "UpdateApplicationOC":
-              self = .UpdateApplicationOC
-          case "DeleteApplicationOC":
-              self = .DeleteApplicationOC
-       
-         
-          default:
-              throw CodingError.unknownValue
-          }
-      }
-      
-    func encode(to encoder: Encoder) throws {
-          var container = encoder.container(keyedBy: Key.self)
-          switch self {
-          case .NoOpOC:
-              try container.encode("NoOpOC", forKey: .rawValue)
-          case .OptInOC:
-              try container.encode("OptInOC", forKey: .rawValue)
-          case .CloseOutOC:
-              try container.encode("CloseOutOC", forKey: .rawValue)
-          case .ClearStateOC:
-              try container.encode("ClearStateOC", forKey: .rawValue)
-          case .UpdateApplicationOC:
-              try container.encode("UpdateApplicationOC", forKey: .rawValue)
-          case .DeleteApplicationOC:
-              try container.encode("DeleteApplicationOC", forKey: .rawValue)
-          }
-      }
-    
-    
-       
-}
+//extension Transaction.onCompletion:Codable{
+//      enum Key: CodingKey {
+//          case rawValue
+//      }
+//
+//      enum CodingError: Error {
+//          case unknownValue
+//      }
+//
+//      init(from decoder: Decoder) throws {
+//          let container = try decoder.container(keyedBy: Key.self)
+//          let rawValue = try container.decode(String.self, forKey: .rawValue)
+//          switch rawValue {
+//          case "noop":
+//              self = .NoOpOC
+//          case "optin":
+//              self = .OptInOC
+//          case "closeout":
+//              self = .CloseOutOC
+//          case "clearstate":
+//              self = .ClearStateOC
+//          case "update":
+//              self = .UpdateApplicationOC
+//          case "delete":
+//              self = .DeleteApplicationOC
+//
+//
+//          default:
+//              throw CodingError.unknownValue
+//          }
+//      }
+//
+//    func encode(to encoder: Encoder) throws {
+//          var container = encoder.container(keyedBy: Key.self)
+//          switch self {
+//          case .NoOpOC:
+//              try container.encode("noop", forKey: .rawValue)
+//          case .OptInOC:
+//              try container.encode("optin", forKey: .rawValue)
+//          case .CloseOutOC:
+//              try container.encode("closeout", forKey: .rawValue)
+//          case .ClearStateOC:
+//              try container.encode("clearstate", forKey: .rawValue)
+//          case .UpdateApplicationOC:
+//              try container.encode("update", forKey: .rawValue)
+//          case .DeleteApplicationOC:
+//              try container.encode("delete", forKey: .rawValue)
+//          }
+//      }
+//
+//
+//
+//}
 
 extension Transaction.type:Codable{
     enum Key:String, CodingKey{
@@ -117,13 +117,62 @@ extension Transaction.type:Codable{
 
 
 public class Transaction : Codable,Equatable{
-    enum onCompletion: String {
-        case  NoOpOC="NoOpOC"
-        case  OptInOC="OptInOC"
-        case CloseOutOC="CloseOutOC"
-        case  ClearStateOC="ClearStateOC"
-        case  UpdateApplicationOC="UpdateApplicationOC"
-         case DeleteApplicationOC="DeleteApplicationOC"
+ public   enum onCompletion: String,Codable {
+        case  NoOpOC="noop"
+        case  OptInOC="optin"
+        case CloseOutOC="closeout"
+        case  ClearStateOC="clearstate"
+        case  UpdateApplicationOC="update"
+         case DeleteApplicationOC="delete"
+        
+        enum Key: CodingKey {
+            case rawValue
+        }
+        
+        enum CodingError: Error {
+            case unknownValue
+        }
+        
+    public init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+            let rawValue = try container.decode(Int.self)
+            switch rawValue {
+            case 0:
+                self = .NoOpOC
+            case 1 :
+                self = .OptInOC
+            case 2:
+                self = .CloseOutOC
+            case 3:
+                self = .ClearStateOC
+            case 4:
+                self = .UpdateApplicationOC
+            case 5:
+                self = .DeleteApplicationOC
+         
+           
+            default:
+                throw CodingError.unknownValue
+            }
+        }
+        
+    public func encode(to encoder: Encoder) throws {
+            var container = encoder.singleValueContainer()
+            switch self {
+            case .NoOpOC:
+                try container.encode(0)
+            case .OptInOC:
+                try container.encode(1)
+            case .CloseOutOC:
+                try container.encode(2)
+            case .ClearStateOC:
+                try container.encode(3)
+            case .UpdateApplicationOC:
+                try container.encode(4)
+            case .DeleteApplicationOC:
+                try container.encode(5)
+            }
+        }
     }
     
     enum type: String {
@@ -146,7 +195,7 @@ public class Transaction : Codable,Equatable{
   public  var assetParams:AssetParams?=nil
     public  var selectionPK:VRFPublicKey?=nil
    public var foreignApps:[Int64]?=nil
-   public var applicationArgs:[[Int64]]?=nil
+   public var applicationArgs:[[Int8]]?=nil
    public var votePK:ParticipationPublicKey?=nil
    public var sender:Address?;
    public var localStateSchema:StateSchema?=nil
@@ -175,7 +224,7 @@ public class Transaction : Codable,Equatable{
    public var freezeTarget:Address?=nil;
    public var assetFreezeID:Int64?=nil;
    public var freezeState:Bool?=nil;
-   public var onCompletion: String?=nil;
+   public var onCompletion: onCompletion?=nil;
    public var  accounts:[Address]?=nil;
    public var foreignAssets:[Int64]?=nil;
 
@@ -238,7 +287,7 @@ public class Transaction : Codable,Equatable{
            self.assetFreezeID = 0;
            self.freezeState = false;
           self.applicationArgs = [];
-        self.onCompletion = Transaction.onCompletion.NoOpOC.rawValue;
+        self.onCompletion = Transaction.onCompletion.NoOpOC;
            self.accounts = [];
            self.foreignAssets = []
            self.applicationId = 0;
@@ -408,6 +457,38 @@ public class Transaction : Codable,Equatable{
         return ApplicationCreateTransactionBuilder()
     }
     
+    public static func applicationDeleteTransactionBuilder() ->ApplicationDeleteTransactionBuilder{
+        return ApplicationDeleteTransactionBuilder()
+    }
+    
+    public static func applicationOptInTransactionBuilder() ->ApplicationOptInTransactionBuilder{
+        return ApplicationOptInTransactionBuilder()
+    }
+    
+    public static func applicationClearTransactionBuilder() ->ApplicationClearTransactionBuilder{
+        return ApplicationClearTransactionBuilder()
+    }
+    
+    
+    public static func applicationUpdateTransactionBuilder  () ->ApplicationUpdateTransactionBuilder{
+        return ApplicationUpdateTransactionBuilder()
+    }
+    
+    public static func applicationCallTransactionBuilder() -> ApplicationCallTransactionBuilder{
+        return ApplicationCallTransactionBuilder()
+    }
+    
+    public static func applicationCloseTransactionBuilder() -> ApplicationCloseTransactionBuilder{
+        return ApplicationCloseTransactionBuilder()
+    }
+    
+    
+    
+    
+    
+    
+    
+    
     
     public required init(from decoder: Decoder) throws {
            var container = try! decoder.container(keyedBy: CodingKeys.self)
@@ -529,6 +610,24 @@ public class Transaction : Codable,Equatable{
                 try! container.encode(amount, forKey: .amount)
             }
         }
+    if let applicationArgs = self.applicationArgs{
+        var UapplicationArgs:[Data]=Array()
+    
+        for i in 0..<applicationArgs.count{
+
+            UapplicationArgs.append(Data(CustomEncoder.convertToUInt8Array(input: applicationArgs[i])))
+        }
+        
+        try container.encode(UapplicationArgs, forKey: .applicationArgs)
+    }
+    
+    if let  onCompletion = self.onCompletion{
+        print(onCompletion)
+        if(onCompletion != Transaction.onCompletion.NoOpOC){
+            try! container.encode(onCompletion, forKey: .onCompletion)
+        }
+       
+    }
     
     if let approvalProgram = self.approvalProgram{
         try! container.encode(approvalProgram, forKey: .approvalProgram)
@@ -540,9 +639,16 @@ public class Transaction : Codable,Equatable{
     if let globalStateSchema = self.globalStateSchema{
         try! container.encode(globalStateSchema, forKey: .globalStateSchema)
     }
+    
+    if let applicationId = self.applicationId{
+        try! container.encode(self.applicationId, forKey: .applicationId)
+    }
+    
     if let localStateSchema = self.localStateSchema{
         try! container.encode(localStateSchema, forKey: .localStateSchema)
     }
+    
+   
     
     if let clearStateProgramn = self.clearStateProgram{
         try! container.encode(clearStateProgram, forKey: .clearStateProgram)

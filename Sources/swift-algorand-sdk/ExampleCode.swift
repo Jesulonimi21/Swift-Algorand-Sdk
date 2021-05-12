@@ -1277,7 +1277,9 @@
 //    return data
 //   }
 //
-
+//
+//
+//
 //public func testApplicationCreate(){
 //
 //    var PURESTAKE_ALGOD_API_TESTNET_ADDRESS="https://testnet-algorand.api.purestake.io/ps2";
@@ -1285,9 +1287,80 @@
 //    var PURESTAKE_INDEXER_API_ADDRESS="https://testnet-algorand.api.purestake.io/idx2";
 //    var PURESTAKE_API_KEY="ADRySlL0NK5trzqZGAE3q1xxIqlQdSfk1nbHxTNe";
 //    var PURESTAKE_API_PORT="443";
-//    var HACKATHON_API_PORT="9100";
-//    var HACKATHON_API_ADDRESS="http://hackathon.algodev.network";
-//    var HACKATHON_API_TOKEN="ef920e2e7e002953f4b29a8af720efe8e4ecc75ff102b165e0472834b25832c1";
+//
+//    //var algodClient=AlgodClient(host: HACKATHON_API_ADDRESS, port: HACKATHON_API_PORT, token: HACKATHON_API_TOKEN)
+//    var algodClient=AlgodClient(host: PURESTAKE_ALGOD_API_TESTNET_ADDRESS, port: PURESTAKE_API_PORT, token: PURESTAKE_API_KEY)
+//    algodClient.set(key: "X-API-Key")
+//    var indexerClient=IndexerClient(host: PURESTAKE_INDEXER_API_ADDRESS, port: PURESTAKE_API_PORT, token: PURESTAKE_API_KEY)
+//    indexerClient.set(key:"X-API-Key")
+//
+//    var mnemonic="cactus check vocal shuffle remember regret vanish spice problem property diesel success easily napkin deposit gesture forum bag talent mechanic reunion enroll buddy about attract"
+//    var mnemonic2="box wear empty voyage scout cheap arrive father wagon correct thought sand planet comfort also patient vast patient tide rather young cinnamon plastic abandon model";
+//    var account =  try! Account(mnemonic)
+//    var account1 = try! Account(mnemonic2)
+//    var address = account.getAddress()
+//    var address2 = account1.getAddress()
+//
+//    var localInts:Int64 = 1;
+//    var localBytes:Int64 = 1;
+//    var globalInts:Int64 = 1;
+//    var globalBytes:Int64 = 0;
+//
+//    var approvalProgram = try? TEALProgram(base64String: "AiABASJD")
+//    var clearStateProgram = try? TEALProgram(base64String:"AiABASI=")
+//
+//
+//            algodClient.transactionParams().execute(){ paramResponse in
+//                if(!(paramResponse.isSuccessful)){
+//                print(paramResponse.errorDescription);
+//                return;
+//            }
+//
+//                var tx = try! Transaction.applicationCreateTransactionBuilder()
+//                    .setSender(account1.getAddress())
+//                    .approvalProgram(approvalProgram: approvalProgram!)
+//                    .clearStateProgram(clearStateProgram: clearStateProgram!)
+//                    .globalStateSchema(globalStateSchema: StateSchema(numUint: globalInts, numByteSlice: globalBytes))
+//                    .localStateSchema(localStateSchema:StateSchema(numUint: localInts, numByteSlice: localBytes))
+//                    .suggestedParams(params: paramResponse.data!)
+//                    .build()
+//
+//                var signedTransaction=account1.signTransaction(tx: tx)
+//
+//                   var encodedTrans:[Int8]=CustomEncoder.encodeToMsgPack(signedTransaction)
+//
+//                   print(CustomEncoder.encodeToJson(obj: signedTransaction))
+//
+//               //    return;
+//
+//
+//                   algodClient.rawTransaction().rawtxn(rawtaxn: encodedTrans).execute(){
+//                      response in
+//                       if(response.isSuccessful){
+//                           print(response.data!.txId)
+//
+//                       }else{
+//                           print(response.errorDescription)
+//                           print("Faled")
+//                       }
+//
+//                   }
+//
+//
+//            }
+//    dispatchMain()
+//
+//}
+//
+//public func testApplicationOptIn(){
+//    var applicationId:Int64 = 15838262
+//
+//    var PURESTAKE_ALGOD_API_TESTNET_ADDRESS="https://testnet-algorand.api.purestake.io/ps2";
+//    var PURESTAKE_ALGOD_API_MAINNET_ADDRESS="https://mainnet-algorand.api.purestake.io/ps2";
+//    var PURESTAKE_INDEXER_API_ADDRESS="https://testnet-algorand.api.purestake.io/idx2";
+//    var PURESTAKE_API_KEY="ADRySlL0NK5trzqZGAE3q1xxIqlQdSfk1nbHxTNe";
+//    var PURESTAKE_API_PORT="443";
+//
 //    //var algodClient=AlgodClient(host: HACKATHON_API_ADDRESS, port: HACKATHON_API_PORT, token: HACKATHON_API_TOKEN)
 //    var algodClient=AlgodClient(host: PURESTAKE_ALGOD_API_TESTNET_ADDRESS, port: PURESTAKE_API_PORT, token: PURESTAKE_API_KEY)
 //    algodClient.set(key: "X-API-Key")
@@ -1316,16 +1389,13 @@
 //                return;
 //            }
 //
-//                var tx = try! Transaction.applicationCreateTransactionBuilder()
-//                    .setSender(account.getAddress())
-//                    .approvalProgram(approvalProgram: approvalProgram!)
-//                    .clearStateProgram(clearStateProgram: clearStateProgram!)
-//                    .globalStateSchema(globalStateSchema: StateSchema(numUint: globalInts, numByteSlice: globalBytes))
-//                    .localStateSchema(localStateSchema:StateSchema(numUint: localInts, numByteSlice: localBytes))
+//                var tx = try! Transaction.applicationOptInTransactionBuilder()
+//                    .setSender(account1.getAddress())
+//                    .applicationId(applicationId: applicationId)
 //                    .suggestedParams(params: paramResponse.data!)
 //                    .build()
 //
-//                var signedTransaction=account.signTransaction(tx: tx)
+//                var signedTransaction=account1.signTransaction(tx: tx)
 //
 //                   var encodedTrans:[Int8]=CustomEncoder.encodeToMsgPack(signedTransaction)
 //
@@ -1349,5 +1419,361 @@
 //
 //            }
 //    dispatchMain()
-//
 //}
+//
+//public func testApplicationCallTransaction(){
+//    var applicationId:Int64 = 15837788
+//
+//    var PURESTAKE_ALGOD_API_TESTNET_ADDRESS="https://testnet-algorand.api.purestake.io/ps2";
+//    var PURESTAKE_ALGOD_API_MAINNET_ADDRESS="https://mainnet-algorand.api.purestake.io/ps2";
+//    var PURESTAKE_INDEXER_API_ADDRESS="https://testnet-algorand.api.purestake.io/idx2";
+//    var PURESTAKE_API_KEY="ADRySlL0NK5trzqZGAE3q1xxIqlQdSfk1nbHxTNe";
+//    var PURESTAKE_API_PORT="443";
+//
+//    //var algodClient=AlgodClient(host: HACKATHON_API_ADDRESS, port: HACKATHON_API_PORT, token: HACKATHON_API_TOKEN)
+//    var algodClient=AlgodClient(host: PURESTAKE_ALGOD_API_TESTNET_ADDRESS, port: PURESTAKE_API_PORT, token: PURESTAKE_API_KEY)
+//    algodClient.set(key: "X-API-Key")
+//    var indexerClient=IndexerClient(host: PURESTAKE_INDEXER_API_ADDRESS, port: PURESTAKE_API_PORT, token: PURESTAKE_API_KEY)
+//    indexerClient.set(key:"X-API-Key")
+//
+//    var mnemonic="cactus check vocal shuffle remember regret vanish spice problem property diesel success easily napkin deposit gesture forum bag talent mechanic reunion enroll buddy about attract"
+//    var mnemonic2="box wear empty voyage scout cheap arrive father wagon correct thought sand planet comfort also patient vast patient tide rather young cinnamon plastic abandon model";
+//    var account =  try! Account(mnemonic)
+//    var account1 = try! Account(mnemonic2)
+//    var address = account.getAddress()
+//    var address2 = account1.getAddress()
+//
+//    var localInts:Int64 = 1;
+//    var localBytes:Int64 = 1;
+//    var globalInts:Int64 = 1;
+//    var globalBytes:Int64 = 0;
+//
+//    var approvalProgram = try? TEALProgram(base64String: "AiAFAAIGAZBOIjEYEkAAGDIEIxIzABAkEhAzARAlEhAzAQghBA0QQyVD")
+//    var clearStateProgram = try? TEALProgram(base64String:"AiABASI=")
+//
+//
+//            algodClient.transactionParams().execute(){ paramResponse in
+//                if(!(paramResponse.isSuccessful)){
+//                print(paramResponse.errorDescription);
+//                return;
+//            }
+//
+//                var tx = try! Transaction.applicationCallTransactionBuilder()
+//                    .setSender(account1.getAddress())
+//                    .applicationId(applicationId: applicationId)
+//
+//                    .suggestedParams(params: paramResponse.data!)
+//                    .args(args: [[1,2]])
+//                    .build()
+//
+//                var signedTransaction=account1.signTransaction(tx: tx)
+//
+//                   var encodedTrans:[Int8]=CustomEncoder.encodeToMsgPack(signedTransaction)
+//
+//                   print(CustomEncoder.encodeToJson(obj: signedTransaction))
+//
+//               //    return;
+//
+//
+//                   algodClient.rawTransaction().rawtxn(rawtaxn: encodedTrans).execute(){
+//                      response in
+//                       if(response.isSuccessful){
+//                           print(response.data!.txId)
+//
+//                       }else{
+//                           print(response.errorDescription)
+//                           print("Faled")
+//                       }
+//
+//                   }
+//
+//
+//            }
+//    dispatchMain()
+//}
+//
+//public func testApplicationUpdateTransaction(){
+//    var applicationId:Int64 = 15838231
+//
+//    var PURESTAKE_ALGOD_API_TESTNET_ADDRESS="https://testnet-algorand.api.purestake.io/ps2";
+//    var PURESTAKE_ALGOD_API_MAINNET_ADDRESS="https://mainnet-algorand.api.purestake.io/ps2";
+//    var PURESTAKE_INDEXER_API_ADDRESS="https://testnet-algorand.api.purestake.io/idx2";
+//    var PURESTAKE_API_KEY="ADRySlL0NK5trzqZGAE3q1xxIqlQdSfk1nbHxTNe";
+//    var PURESTAKE_API_PORT="443";
+//
+//    //var algodClient=AlgodClient(host: HACKATHON_API_ADDRESS, port: HACKATHON_API_PORT, token: HACKATHON_API_TOKEN)
+//    var algodClient=AlgodClient(host: PURESTAKE_ALGOD_API_TESTNET_ADDRESS, port: PURESTAKE_API_PORT, token: PURESTAKE_API_KEY)
+//    algodClient.set(key: "X-API-Key")
+//    var indexerClient=IndexerClient(host: PURESTAKE_INDEXER_API_ADDRESS, port: PURESTAKE_API_PORT, token: PURESTAKE_API_KEY)
+//    indexerClient.set(key:"X-API-Key")
+//
+//    var mnemonic="cactus check vocal shuffle remember regret vanish spice problem property diesel success easily napkin deposit gesture forum bag talent mechanic reunion enroll buddy about attract"
+//    var mnemonic2="box wear empty voyage scout cheap arrive father wagon correct thought sand planet comfort also patient vast patient tide rather young cinnamon plastic abandon model";
+//    var account =  try! Account(mnemonic)
+//    var account1 = try! Account(mnemonic2)
+//    var address = account.getAddress()
+//    var address2 = account1.getAddress()
+//
+//    var localInts:Int64 = 1;
+//    var localBytes:Int64 = 1;
+//    var globalInts:Int64 = 1;
+//    var globalBytes:Int64 = 0;
+//
+//    var approvalProgram = try? TEALProgram(base64String: "AiAFAAIGAZBOIjEYEkAAGDIEIxIzABAkEhAzARAlEhAzAQghBA0QQyVD")
+//    var clearStateProgram = try? TEALProgram(base64String:"AiABASI=")
+//
+//
+//            algodClient.transactionParams().execute(){ paramResponse in
+//                if(!(paramResponse.isSuccessful)){
+//                print(paramResponse.errorDescription);
+//                return;
+//            }
+//
+//                var tx = try! Transaction.applicationUpdateTransactionBuilder()
+//                    .setSender(account1.getAddress())
+//                    .applicationId(applicationId: applicationId)
+//                    .approvalProgram(approvalProgram: approvalProgram!)
+//                    .clearStateProgram(clearStateProgram: clearStateProgram!)
+//                    .suggestedParams(params: paramResponse.data!)
+//                    .args(args: [[1,2]])
+//                    .build()
+//
+//                var signedTransaction=account1.signTransaction(tx: tx)
+//
+//                   var encodedTrans:[Int8]=CustomEncoder.encodeToMsgPack(signedTransaction)
+//
+//                   print(CustomEncoder.encodeToJson(obj: signedTransaction))
+//
+//               //    return;
+//
+//
+//                   algodClient.rawTransaction().rawtxn(rawtaxn: encodedTrans).execute(){
+//                      response in
+//                       if(response.isSuccessful){
+//                           print(response.data!.txId)
+//
+//                       }else{
+//                           print(response.errorDescription)
+//                           print("Faled")
+//                       }
+//
+//                   }
+//
+//
+//            }
+//    dispatchMain()
+//}
+//
+//
+//public func testApplicationClear(){
+//    var applicationId:Int64 = 15838231
+//
+//    var PURESTAKE_ALGOD_API_TESTNET_ADDRESS="https://testnet-algorand.api.purestake.io/ps2";
+//    var PURESTAKE_ALGOD_API_MAINNET_ADDRESS="https://mainnet-algorand.api.purestake.io/ps2";
+//    var PURESTAKE_INDEXER_API_ADDRESS="https://testnet-algorand.api.purestake.io/idx2";
+//    var PURESTAKE_API_KEY="ADRySlL0NK5trzqZGAE3q1xxIqlQdSfk1nbHxTNe";
+//    var PURESTAKE_API_PORT="443";
+//
+//    //var algodClient=AlgodClient(host: HACKATHON_API_ADDRESS, port: HACKATHON_API_PORT, token: HACKATHON_API_TOKEN)
+//    var algodClient=AlgodClient(host: PURESTAKE_ALGOD_API_TESTNET_ADDRESS, port: PURESTAKE_API_PORT, token: PURESTAKE_API_KEY)
+//    algodClient.set(key: "X-API-Key")
+//    var indexerClient=IndexerClient(host: PURESTAKE_INDEXER_API_ADDRESS, port: PURESTAKE_API_PORT, token: PURESTAKE_API_KEY)
+//    indexerClient.set(key:"X-API-Key")
+//
+//    var mnemonic="cactus check vocal shuffle remember regret vanish spice problem property diesel success easily napkin deposit gesture forum bag talent mechanic reunion enroll buddy about attract"
+//    var mnemonic2="box wear empty voyage scout cheap arrive father wagon correct thought sand planet comfort also patient vast patient tide rather young cinnamon plastic abandon model";
+//    var account =  try! Account(mnemonic)
+//    var account1 = try! Account(mnemonic2)
+//    var address = account.getAddress()
+//    var address2 = account1.getAddress()
+//
+//    var localInts:Int64 = 1;
+//    var localBytes:Int64 = 1;
+//    var globalInts:Int64 = 1;
+//    var globalBytes:Int64 = 0;
+//
+//    var approvalProgram = try? TEALProgram(base64String: "AiAFAAIGAZBOIjEYEkAAGDIEIxIzABAkEhAzARAlEhAzAQghBA0QQyVD")
+//    var clearStateProgram = try? TEALProgram(base64String:"AiABASI=")
+//
+//
+//            algodClient.transactionParams().execute(){ paramResponse in
+//                if(!(paramResponse.isSuccessful)){
+//                print(paramResponse.errorDescription);
+//                return;
+//            }
+//
+//                var tx = try! Transaction.applicationClearTransactionBuilder()
+//                    .setSender(account1.getAddress())
+//                    .applicationId(applicationId: applicationId)
+//                    .suggestedParams(params: paramResponse.data!)
+//
+//                    .build()
+//
+//                var signedTransaction=account1.signTransaction(tx: tx)
+//
+//                   var encodedTrans:[Int8]=CustomEncoder.encodeToMsgPack(signedTransaction)
+//
+//                   print(CustomEncoder.encodeToJson(obj: signedTransaction))
+//
+//               //    return;
+//
+//
+//                   algodClient.rawTransaction().rawtxn(rawtaxn: encodedTrans).execute(){
+//                      response in
+//                       if(response.isSuccessful){
+//                           print(response.data!.txId)
+//
+//                       }else{
+//                           print(response.errorDescription)
+//                           print("Faled")
+//                       }
+//
+//                   }
+//
+//
+//            }
+//    dispatchMain()
+//}
+//
+//
+//public func testApplicationClose(){
+//    var applicationId:Int64 = 15838262
+//
+//    var PURESTAKE_ALGOD_API_TESTNET_ADDRESS="https://testnet-algorand.api.purestake.io/ps2";
+//    var PURESTAKE_ALGOD_API_MAINNET_ADDRESS="https://mainnet-algorand.api.purestake.io/ps2";
+//    var PURESTAKE_INDEXER_API_ADDRESS="https://testnet-algorand.api.purestake.io/idx2";
+//    var PURESTAKE_API_KEY="ADRySlL0NK5trzqZGAE3q1xxIqlQdSfk1nbHxTNe";
+//    var PURESTAKE_API_PORT="443";
+//
+//    //var algodClient=AlgodClient(host: HACKATHON_API_ADDRESS, port: HACKATHON_API_PORT, token: HACKATHON_API_TOKEN)
+//    var algodClient=AlgodClient(host: PURESTAKE_ALGOD_API_TESTNET_ADDRESS, port: PURESTAKE_API_PORT, token: PURESTAKE_API_KEY)
+//    algodClient.set(key: "X-API-Key")
+//    var indexerClient=IndexerClient(host: PURESTAKE_INDEXER_API_ADDRESS, port: PURESTAKE_API_PORT, token: PURESTAKE_API_KEY)
+//    indexerClient.set(key:"X-API-Key")
+//
+//    var mnemonic="cactus check vocal shuffle remember regret vanish spice problem property diesel success easily napkin deposit gesture forum bag talent mechanic reunion enroll buddy about attract"
+//    var mnemonic2="box wear empty voyage scout cheap arrive father wagon correct thought sand planet comfort also patient vast patient tide rather young cinnamon plastic abandon model";
+//    var account =  try! Account(mnemonic)
+//    var account1 = try! Account(mnemonic2)
+//    var address = account.getAddress()
+//    var address2 = account1.getAddress()
+//
+//    var localInts:Int64 = 1;
+//    var localBytes:Int64 = 1;
+//    var globalInts:Int64 = 1;
+//    var globalBytes:Int64 = 0;
+//
+//    var approvalProgram = try? TEALProgram(base64String: "AiAFAAIGAZBOIjEYEkAAGDIEIxIzABAkEhAzARAlEhAzAQghBA0QQyVD")
+//    var clearStateProgram = try? TEALProgram(base64String:"AiABASI=")
+//
+//
+//            algodClient.transactionParams().execute(){ paramResponse in
+//                if(!(paramResponse.isSuccessful)){
+//                print(paramResponse.errorDescription);
+//                return;
+//            }
+//
+//                var tx = try! Transaction.applicationCloseTransactionBuilder()
+//                    .setSender(account1.getAddress())
+//                    .applicationId(applicationId: applicationId)
+//                    .suggestedParams(params: paramResponse.data!)
+//
+//                    .build()
+//
+//                var signedTransaction=account1.signTransaction(tx: tx)
+//
+//                   var encodedTrans:[Int8]=CustomEncoder.encodeToMsgPack(signedTransaction)
+//
+//                   print(CustomEncoder.encodeToJson(obj: signedTransaction))
+//
+//               //    return;
+//
+//
+//                   algodClient.rawTransaction().rawtxn(rawtaxn: encodedTrans).execute(){
+//                      response in
+//                       if(response.isSuccessful){
+//                           print(response.data!.txId)
+//
+//                       }else{
+//                           print(response.errorDescription)
+//                           print("Faled")
+//                       }
+//
+//                   }
+//
+//
+//            }
+//    dispatchMain()
+//}
+//
+//
+//public func testDeleteApplicationBuilder(){
+//    var applicationId:Int64 = 15838262
+//
+//    var PURESTAKE_ALGOD_API_TESTNET_ADDRESS="https://testnet-algorand.api.purestake.io/ps2";
+//    var PURESTAKE_ALGOD_API_MAINNET_ADDRESS="https://mainnet-algorand.api.purestake.io/ps2";
+//    var PURESTAKE_INDEXER_API_ADDRESS="https://testnet-algorand.api.purestake.io/idx2";
+//    var PURESTAKE_API_KEY="ADRySlL0NK5trzqZGAE3q1xxIqlQdSfk1nbHxTNe";
+//    var PURESTAKE_API_PORT="443";
+//
+//    //var algodClient=AlgodClient(host: HACKATHON_API_ADDRESS, port: HACKATHON_API_PORT, token: HACKATHON_API_TOKEN)
+//    var algodClient=AlgodClient(host: PURESTAKE_ALGOD_API_TESTNET_ADDRESS, port: PURESTAKE_API_PORT, token: PURESTAKE_API_KEY)
+//    algodClient.set(key: "X-API-Key")
+//    var indexerClient=IndexerClient(host: PURESTAKE_INDEXER_API_ADDRESS, port: PURESTAKE_API_PORT, token: PURESTAKE_API_KEY)
+//    indexerClient.set(key:"X-API-Key")
+//
+//    var mnemonic="cactus check vocal shuffle remember regret vanish spice problem property diesel success easily napkin deposit gesture forum bag talent mechanic reunion enroll buddy about attract"
+//    var mnemonic2="box wear empty voyage scout cheap arrive father wagon correct thought sand planet comfort also patient vast patient tide rather young cinnamon plastic abandon model";
+//    var account =  try! Account(mnemonic)
+//    var account1 = try! Account(mnemonic2)
+//    var address = account.getAddress()
+//    var address2 = account1.getAddress()
+//
+//    var localInts:Int64 = 1;
+//    var localBytes:Int64 = 1;
+//    var globalInts:Int64 = 1;
+//    var globalBytes:Int64 = 0;
+//
+//    var approvalProgram = try? TEALProgram(base64String: "AiAFAAIGAZBOIjEYEkAAGDIEIxIzABAkEhAzARAlEhAzAQghBA0QQyVD")
+//    var clearStateProgram = try? TEALProgram(base64String:"AiABASI=")
+//
+//
+//            algodClient.transactionParams().execute(){ paramResponse in
+//                if(!(paramResponse.isSuccessful)){
+//                print(paramResponse.errorDescription);
+//                return;
+//            }
+//
+//                var tx = try! Transaction.applicationDeleteTransactionBuilder()
+//                    .setSender(account1.getAddress())
+//                    .applicationId(applicationId: applicationId)
+//                    .suggestedParams(params: paramResponse.data!)
+//
+//                    .build()
+//
+//                var signedTransaction=account1.signTransaction(tx: tx)
+//
+//                   var encodedTrans:[Int8]=CustomEncoder.encodeToMsgPack(signedTransaction)
+//
+//                   print(CustomEncoder.encodeToJson(obj: signedTransaction))
+//
+//               //    return;
+//
+//
+//                   algodClient.rawTransaction().rawtxn(rawtaxn: encodedTrans).execute(){
+//                      response in
+//                       if(response.isSuccessful){
+//                           print(response.data!.txId)
+//
+//                       }else{
+//                           print(response.errorDescription)
+//                           print("Faled")
+//                       }
+//
+//                   }
+//
+//
+//            }
+//    dispatchMain()
+//}
+//

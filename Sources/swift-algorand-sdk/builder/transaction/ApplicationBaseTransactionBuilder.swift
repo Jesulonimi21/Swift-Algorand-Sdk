@@ -15,6 +15,16 @@ public class ApplicationBaseTransactionBuilder <T>:TransactionBuilder<T>{
     var applicationId:Int64?
     
     
+    
+    override func applyTo(_ txn: Transaction) throws {
+      txn.applicationId = applicationId;
+        txn.onCompletion = onCompletion
+            txn.applicationArgs = applicationArgs;
+             txn.accounts = accounts;
+           txn.foreignApps = foreignApps;
+            txn.foreignAssets = foreignAssets;
+    }
+    
     convenience init() {
         self.init(Transaction.type.ApplicationCall)
     }
@@ -54,7 +64,7 @@ public class ApplicationBaseTransactionBuilder <T>:TransactionBuilder<T>{
 //            return (T) this;
 //        }
     
-    func args(args:[[Int8]]) ->T{
+  public  func args(args:[[Int8]]) ->T{
         self.applicationArgs = args
         return self as! T
     }

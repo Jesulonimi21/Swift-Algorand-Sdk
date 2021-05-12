@@ -54,4 +54,7 @@ public class AddressTests: XCTestCase{
   
         XCTAssertEqual("VKM6KSCTDHEM6KGEAMSYCNEGIPFJMHDSEMIRAQLK76CJDIRMMDHKAIRMFQ", o.description)
     }
+
+    
 }
+

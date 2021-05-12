@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class ApplicationCreateTransactionBuilder : ApplicationUpdateTransactionBuilder<ApplicationCreateTransactionBuilder> {
+public class ApplicationCreateTransactionBuilder : ApplicationUpdateTransactionBaseBuilder<ApplicationCreateTransactionBuilder> {
     private var localStateSchema: StateSchema?
     private var globalStateSchema: StateSchema?
 
