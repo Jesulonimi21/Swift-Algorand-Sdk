@@ -495,15 +495,18 @@ public class Transaction : Codable,Equatable{
           
         self.assetParams = try? container.decode(AssetParams.self, forKey: .assetParams)
            
-           var senderAddress = try! container.decode(Data.self, forKey: .sender)
+           var senderAddress = try? container.decode(Data.self, forKey: .sender)
 
         var groupId = try? container.decode(Data.self, forKey: .group)
         if let group = groupId{
             self.group = try! Digest(CustomEncoder.convertToInt8Array(input: Array(group)))
         }
         self.assetSender = try? container.decode(Address.self, forKey: .assetSender)
-           self.sender = try! Address(CustomEncoder.convertToInt8Array(input: Array(senderAddress)))
-        
+        if let _ = senderAddress{
+            self.sender = try! Address(CustomEncoder.convertToInt8Array(input: Array(senderAddress!)))
+         
+        }
+         
         self.xferAsset = try? container.decode(Int64.self, forKey: .xferAsset)
         
         self.assetCloseTo = try? container.decode(Address.self, forKey: .assetCloseTo)
