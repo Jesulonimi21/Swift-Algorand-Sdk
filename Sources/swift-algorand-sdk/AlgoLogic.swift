@@ -224,13 +224,15 @@ public class AlgoLogic{
                             var opcode:Int=Int(program[pc] & unsafeBitCast(UInt8(255), to:Int8.self))
                            
                          
-                            if(opcode>=opcodes!.count||opcode<=0){
+//                            if(opcode>=opcodes!.count||opcode<=0){
+//                                throw Errors.illegalArgumentError("invalid instruction: \(opcode)")
+//                            }
+                           
+                            let isIndexValid = opcodes!.indices.contains(opcode)
+                            if(!isIndexValid){
                                 throw Errors.illegalArgumentError("invalid instruction: \(opcode)")
                             }
                             var op=opcodes?[opcode]
-                            if(op==nil){
-                                throw Errors.illegalArgumentError("invalid instruction: \(opcode)")
-                            }
                             cost = cost+op!.Cost!
                             size = op!.Size!
                             if size == 0{

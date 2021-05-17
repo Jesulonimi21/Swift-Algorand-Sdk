@@ -21,8 +21,10 @@ public class TEALProgram:Codable {
      */
     
     public init (program:[Int8]) throws{
+   
       try  AlgoLogic.readProgram(program: program, args: nil)
         self.program = program
+        
     }
 
 
