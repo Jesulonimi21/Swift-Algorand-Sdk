@@ -59,13 +59,12 @@ var mnemonic="cactus check vocal shuffle remember regret vanish spice problem pr
             return;
         }
 
-
-           var tx = Transaction.paymentTransactionBuilder().setSender(senderAddress)
-            .amount(10)
-            .receiver(receiverAddress)
-            .note("Swift Algo sdk is cool".bytes)
-            .suggestedParams(params: paramResponse.data!)
-            .build()
+    var tx = try! Transaction.paymentTransactionBuilder().setSender(senderAddress)
+                .amount(10)
+                .receiver(receiverAddress)
+               .note("Swift Algo sdk is cool".bytes)
+                .suggestedParams(params: paramResponse.data!)
+                .build()
 
            
             var signedTransaction=account.signTransaction(tx: tx)
@@ -88,6 +87,8 @@ var mnemonic="cactus check vocal shuffle remember regret vanish spice problem pr
 ```
 you can further query the pending transaction by doing the below
 ```swift
+
+
 algodClient.pendingTransactionInformation(txId: "PENDING-TRANSACTION-ID").execute(){ pendingTransactionResponse in
         if(pendingTransactionResponse.isSuccessful){
             print(pendingTransactionResponse.data!.confirmedRound)
