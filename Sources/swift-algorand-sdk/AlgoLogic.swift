@@ -34,6 +34,9 @@ public class AlgoLogic{
        private var MAX_LENGTH = 1000;
        private var INTCBLOCK_OPCODE = 32;
        private var BYTECBLOCK_OPCODE = 38;
+       private var PUSHBYTES_OPCODE = 128;
+       private var PUSHINT_OPCODE = 129;
+    
     private static var langSpec:LangSpec?
     private static var opcodes:[Operation?]?
     
@@ -243,6 +246,17 @@ public class AlgoLogic{
                                 case 38 : var bytesBlock=try! readByteConstBlock(program: program, pc: pc)
                                     size = size + bytesBlock.size
                                     bytes.append(contentsOf: bytesBlock.results)
+                                    
+                                case 129:
+                                    var pushInt=try! readPushIntOp(program: program, pc: pc)
+                                    size = size+pushInt.size
+                                    ints.append(contentsOf: pushInt.results)
+                                    
+                                case 128:
+                                    var pushBytes = try! readPushByteOp(program: program, pc: pc)
+                                    size = size + pushBytes.size
+                                    bytes.append(contentsOf: pushBytes.results)
+                                    
                                 default: throw Errors.illegalArgumentError("invalid instruction: ")
                                 }
                             }
