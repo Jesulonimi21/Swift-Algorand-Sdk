@@ -224,7 +224,14 @@ public class AlgoLogic{
                         pc=vlen
                         var size:Int=0;
                         while pc<program.count{
-                            var opcode:Int=Int(program[pc] & unsafeBitCast(UInt8(255), to:Int8.self))
+                            var opcode:Int
+//                            if(program[pc] < -126){
+//                                opcode = Int(program[pc]) & 255
+//                            }else{
+//                                opcode = Int(program[pc] & unsafeBitCast(UInt8(255), to:Int8.self))
+//                            }
+                            opcode = Int(program[pc]) & 255
+                 
                            
                          
 //                            if(opcode>=opcodes!.count||opcode<=0){
@@ -236,6 +243,9 @@ public class AlgoLogic{
                                 throw Errors.illegalArgumentError("invalid instruction: \(opcode)")
                             }
                             var op=opcodes?[opcode]
+                            if (op == nil){
+                                throw Errors.illegalArgumentError("invalid instruction: \(opcode)");
+                                     }
                             cost = cost+op!.Cost!
                             size = op!.Size!
                             if size == 0{

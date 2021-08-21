@@ -159,7 +159,7 @@ public class LogicTests:XCTestCase{
         }
         XCTAssertTrue(thrownError is Errors, "Unexpected error type: \(type(of: thrownError))")
         
-        XCTAssertEqual(thrownError as? Errors, .illegalArgumentError("invalid instruction: -1"))
+        XCTAssertEqual(thrownError as? Errors, .illegalArgumentError("invalid instruction: 255"))
     }
     
     func testCheckProgramTealV2(){
@@ -178,5 +178,72 @@ public class LogicTests:XCTestCase{
         var valid2 = try! AlgoLogic.checkProgram(program: program2, args: nil)
         XCTAssertTrue(valid2)
     }
+    
+    
+    func testCheckProgramTealV3(){
+        assert(try! AlgoLogic.getEvalMaxVersion()>=3)
+        assert(try! AlgoLogic.getLogicSigVersion()>=3)
+        
+        var program1:[Int8] = [3,32,1,0,34,120]
+        var valid1 = try! AlgoLogic.checkProgram(program: program1, args: nil);
+        assert(valid1==true)
+        
+        
+        var program2:[Int8] = [3,32,1,0,34,-128,2,104,105,72,]
+        var valid2 = try! AlgoLogic.checkProgram(program: program2, args: nil);
+        assert(valid2==true)
+        
+        
+        var program3:[Int8] = [3,32,1,0,34,-127,1,72,]
+        var valid3 = try! AlgoLogic.checkProgram(program: program3, args: nil);
+        assert(valid3==true)
+        
+        var program4:[Int8] = [3,32,2,0,1,34,35,76,72,]
+        var valid4 = try! AlgoLogic.checkProgram(program: program4, args: nil);
+        assert(valid4==true)
+    }
+ 
+    
+    func testCheckProgramTealV4(){
+        assert(try! AlgoLogic.getEvalMaxVersion()>=4)
+       
+        var program1:[Int8] = [4,32,3,1,0,2,34,-127,-48,15,35,36,31,]
+        var valid1 = try! AlgoLogic.checkProgram(program: program1, args: nil);
+        assert(valid1==true)
+        
+        
+        var program2:[Int8] = [4,32,1,0,34,59,0,]
+        var valid2 = try! AlgoLogic.checkProgram(program: program2, args: nil);
+        assert(valid2==true)
+        
+        
+        var program3:[Int8] = [4,32,2,1,2,34,-120,0,2,35,18,73,]
+        var valid3 = try! AlgoLogic.checkProgram(program: program3, args: nil);
+        assert(valid3==true)
+        
+        var program4:[Int8] = [4,38,2,1,17,1,16,40,41,-89,]
+        var valid4 = try! AlgoLogic.checkProgram(program: program4, args: nil);
+        assert(valid4==true)
+
+       
+        var program5:[Int8] = [4,38,2,1,17,1,16,40,41,-89,]
+        var valid5 = try! AlgoLogic.checkProgram(program: program5, args: nil);
+        assert(valid5==true)
+        
+        
+        var program6:[Int8] = [4,32,2,1,2,34,-120,0,3,35,18,67,73,8,-119,]
+        var valid6 = try! AlgoLogic.checkProgram(program: program6, args: nil);
+        assert(valid6==true)
+        
+        
+        var program7:[Int8] = [4,32,2,1,2,34,-120,0,2,35,18,73,]
+        var valid7 = try! AlgoLogic.checkProgram(program: program7, args: nil);
+        assert(valid3==true)
+        
+        var program8:[Int8] = [4,32,4,1,2,10,16,34,35,11,73,36,12,64,-1,-8,37,18,]
+        var valid8 = try! AlgoLogic.checkProgram(program: program8, args: nil);
+        assert(valid8==true)
+    }
+
 
 }
