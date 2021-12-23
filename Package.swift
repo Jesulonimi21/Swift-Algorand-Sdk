@@ -7,7 +7,7 @@ let package = Package(
     name: "swift-algorand-sdk",
     platforms: [
           .macOS(.v10_12),
-           .iOS(.v10),
+           .iOS(.v14),
            .tvOS(.v10),
            .watchOS(.v3)
       ],
@@ -28,7 +28,7 @@ let package = Package(
             url: "https://github.com/Flight-School/MessagePack",
             from: "1.2.3"
         ),
-        .package(name:"MessagePacker", url: "https://github.com/hirotakan/MessagePacker.git", from: "0.0.0"),
+        .package(name:"MessagePacker", url: "https://github.com/hirotakan/MessagePacker.git", from: "0.4.5"),
         .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.2.0")),
         .package(url: "https://github.com/bitflying/SwiftKeccak.git", from: "0.1.0")
     ],
