@@ -23,9 +23,11 @@ public class GetPendingTransactionsByAddress{
         request.validate()
         var customResponse:Response<PendingTransactionsResponse>=Response()
  
-     
+        print("pend requesturl = \(getRequestString())")
+        print("pend headers = \(headers)")
         request.responseDecodable(of:  PendingTransactionsResponse.self){  (response) in
-
+    
+           
     if(response.error != nil){
         
         customResponse.setIsSuccessful(value:false)
@@ -41,9 +43,13 @@ public class GetPendingTransactionsByAddress{
         }
         return
     }
-        
+            //let str = String(decoding: response.value ?? Data(), as: UTF8.self)
+            
                     let data=response.value
+            print("pend data = \(data?.toJson())")
                     var pendingTransactionsResponse:PendingTransactionsResponse=data!
+            let test = pendingTransactionsResponse.topTransactions?.first?.tx
+            print("pend txID = \(test?.txID())")
                     customResponse.setData(data:pendingTransactionsResponse)
                     customResponse.setIsSuccessful(value:true)
                     callback(customResponse)

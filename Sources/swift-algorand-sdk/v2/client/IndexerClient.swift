@@ -11,7 +11,7 @@ public class IndexerClient {
     var host:String
     var port:String
     var token:String
-    var apiKey="X-Algo-API-Token"//X-API-Key
+    var apiKey="x-api-key"//X-API-Key
     public init(host:String,  port:String,  token:String) {
         self.host=host
         self.port=port

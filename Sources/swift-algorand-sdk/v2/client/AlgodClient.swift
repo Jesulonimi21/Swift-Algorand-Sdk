@@ -12,7 +12,7 @@ public class AlgodClient {
     var host:String
     var port:String
     var token:String
-    var apiKey="X-Algo-API-Token"
+    var apiKey="x-api-key"
     public init(host:String,  port:String,  token:String) {
         self.host=host
         self.port=port
