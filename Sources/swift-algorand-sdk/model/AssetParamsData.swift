@@ -1,38 +1,38 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Jesulonimi on 3/1/21.
 //
 
 import Foundation
 
-public class AssetParamsData : Codable{
-         public var clawback:String?;
-           public var creator:String?;
-            public var decimals:Int64?;
-            public var defaultFrozen:Bool?;
-          public var freeze:String?;
-           public var manager:String?;
-            public var metadataHash:[Int8]?;
-        public var name:String?;
-           public var reserve:String?;
-         public var total:Int64?;
-             public var unitName:String?;
-       public var url:String?;
-    
-    enum CodingKeys:String,CodingKey{
-       
-           case clawback="clawback"
-           case creator="creator";
-           case decimals="decimals";
-           case defaultFrozen="default-frozen";
-           case freeze="freeze";
-           case manager="manager";
-          case name="name"
-          case reserve="reserve";
-           case total="total";
-           case unitName="unit-name";
-          case url="url";
+public class AssetParamsData: Codable {
+    public var clawback: String?
+    public var creator: String?
+    public var decimals: Int64?
+    public var defaultFrozen: Bool?
+    public var freeze: String?
+    public var manager: String?
+    public var metadataHash: [Int8]?
+    public var name: String?
+    public var reserve: String?
+    // Possibily breaking change if anyone have based their local implementations around Int64. However, this is leading some JSON decoding to failures due to really big amounts (overflowing Int64)
+    public var total: Double?
+    public var unitName: String?
+    public var url: String?
+
+    enum CodingKeys: String, CodingKey {
+        case clawback
+        case creator
+        case decimals
+        case defaultFrozen = "default-frozen"
+        case freeze
+        case manager
+        case name
+        case reserve
+        case total
+        case unitName = "unit-name"
+        case url
     }
 }
