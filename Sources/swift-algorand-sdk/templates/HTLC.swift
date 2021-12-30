@@ -7,7 +7,7 @@
 
 import Foundation
 import CommonCrypto
-import SwiftKeccak
+import CryptoSwift
 public class HTLC {
     private static var referenceProgram:String = "ASAEBQEABiYDIP68oLsUSlpOp7Q4pGgayA5soQW8tgf8VlMlyVaV9qITAQYg5pqWHm8tX3rIZgeSZVK+mCNe0zNjyoiRi7nJOKkVtvkxASIOMRAjEhAxBzIDEhAxCCQSEDEJKBItASkSEDEJKhIxAiUNEBEQ";
 
@@ -59,8 +59,9 @@ public class HTLC {
                 }
     
                 var decodedByte=CustomEncoder.decodeByteFromBase64(string: preImage)
-                var computedImageData=keccak256( Data(decodedByte))
-                computedImage=CustomEncoder.convertToInt8Array(input: Array(computedImageData))
+                let computedImageData = SHA3(variant: .keccak256)
+                    .calculate(for: decodedByte)
+                computedImage = CustomEncoder.convertToInt8Array(input: computedImageData)
                 if(computedImage==hashImage){
                  
                 }else{
