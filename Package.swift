@@ -30,7 +30,6 @@ let package = Package(
         ),
         .package(name:"MessagePacker", url: "https://github.com/hirotakan/MessagePacker.git", from: "0.0.0"),
         .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.2.0")),
-        .package(name: "CryptoSwift", url: "https://github.com/krzyzanowskim/CryptoSwift.git", from: "1.4.2")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.

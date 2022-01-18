@@ -34,5 +34,4 @@ Pod::Spec.new do |spec|
     spec.dependency "Alamofire", "~> 5.2"
     spec.dependency "MessagePacker"
     spec.dependency "MessagePack-FlightSchool", "~> 1.2"
-    spec.dependency "CryptoSwift", "~> 1.4"
 end
