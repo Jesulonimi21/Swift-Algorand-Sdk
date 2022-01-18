@@ -100,25 +100,11 @@ public class Address: Codable,Equatable{
         return self.bytes!
     }
     
-    //TODO: Add method to verify bytes
-    //TODO: Add Method to verify key
-    //TODO: Add constructor to create bytes from string
-    
-    
 
     public func verifyBytes(byte: [Int8], signature: Signature) -> Bool{
         var publicKey = self.toVerifyKey();
         var prefixBytes: [Int8] = Array(repeating: 0, count: byte.count + BYTES_SIGN_PREFIX.count);
-     
-        for i in 0..<byte.count{
-            prefixBytes[i] = byte[i];
-        }
-        var rowCounter=0
-        for i in byte.count..<BYTES_SIGN_PREFIX.count{
-            prefixBytes[i] = BYTES_SIGN_PREFIX[rowCounter];
-            rowCounter = rowCounter + 1
-        }
-        var isVerified = try! publicKey.verify(signature: CustomEncoder.convertToUInt8Array(input: signature.bytes!), message: CustomEncoder.convertToUInt8Array(input: prefixBytes))
+        var isVerified = try! publicKey.verify(signature: CustomEncoder.convertToUInt8Array(input: signature.bytes!), message: CustomEncoder.convertToUInt8Array(input: byte))
         return isVerified
     }
     

@@ -192,7 +192,8 @@ public class AccountTests : XCTestCase{
         var mnemonic="cactus check vocal shuffle remember regret vanish spice problem property diesel success easily napkin deposit gesture forum bag talent mechanic reunion enroll buddy about attract"
         var account = try! Account(mnemonic)
         var signedTx = account.keyPair.sign(bytes);
-        var isVerified = try! account.keyPair.verify(signature: signedTx, message: bytes)
+        var address = account.address;
+        var isVerified = try! address.verifyBytes(byte: CustomEncoder.convertToInt8Array(input: bytes) , signature: Signature(CustomEncoder.convertToInt8Array(input: signedTx)) );
         XCTAssertEqual( isVerified, true)
     }
     
