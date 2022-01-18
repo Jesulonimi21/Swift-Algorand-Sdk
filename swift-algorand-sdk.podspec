@@ -20,7 +20,7 @@ Pod::Spec.new do |spec|
     spec.watchos.deployment_target = "3.0"
     spec.tvos.deployment_target = "10.0"
     
-    spec.static_framework = true
+    # spec.static_framework = true
     
     spec.source = { :git => "https://github.com/Jesulonimi21/Swift-Algorand-Sdk.git", :tag => "#{spec.version}" }
     
@@ -33,5 +33,5 @@ Pod::Spec.new do |spec|
     spec.dependency "Ed25519", "~> 1.0"
     spec.dependency "Alamofire", "~> 5.2"
     spec.dependency "MessagePacker"
-    spec.dependency "MessagePack-FlightSchool", "~> 1.2"
+    # spec.dependency "MessagePack-FlightSchool", "~> 1.2"
 end
