@@ -1,7 +1,7 @@
 Pod::Spec.new do |spec|
 
     spec.name         = "swift-algorand-sdk"
-    spec.version      = "1.0.0"
+    spec.version      = "1.1.0"
     spec.summary      = "A Swift SDK to interact with Algorand blockchain"
 
     spec.description  = <<-DESC
