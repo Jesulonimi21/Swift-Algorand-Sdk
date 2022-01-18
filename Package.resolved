@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/Alamofire/Alamofire.git",
         "state": {
           "branch": null,
-          "revision": "eaf6e622dd41b07b251d8f01752eab31bc811493",
-          "version": "5.4.1"
+          "revision": "f82c23a8a7ef8dc1a49a8bfc6a96883e79121864",
+          "version": "5.5.0"
         }
       },
       {
@@ -20,30 +20,12 @@
         }
       },
       {
-        "package": "MessagePack",
-        "repositoryURL": "https://github.com/Flight-School/MessagePack",
-        "state": {
-          "branch": null,
-          "revision": "688d9c83e4e87070835fd45016e869e4e03e7319",
-          "version": "1.2.3"
-        }
-      },
-      {
         "package": "MessagePacker",
         "repositoryURL": "https://github.com/hirotakan/MessagePacker.git",
         "state": {
           "branch": null,
-          "revision": "47feef26d1367d4fbf7d5d636f1a0869541b4743",
-          "version": "0.4.4"
-        }
-      },
-      {
-        "package": "SwiftKeccak",
-        "repositoryURL": "https://github.com/bitflying/SwiftKeccak.git",
-        "state": {
-          "branch": null,
-          "revision": "5fc323d4b08a8c77cbb690505445b32a3b5a8aff",
-          "version": "0.1.2"
+          "revision": "d60363742752adc3e9efdf57dc26317945d0d2f4",
+          "version": "0.4.6"
         }
       }
     ]
