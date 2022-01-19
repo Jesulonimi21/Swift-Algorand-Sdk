@@ -52,23 +52,7 @@ public class LookUpAssetTransactions  {
 
         }
         
-       
-   
-        
     }
-
-//    }
-//
-//    public Response<HealthCheck> execute(String[] headers, String[] values) throws Exception {
-//        Response<HealthCheck> resp = this.baseExecute(headers, values);
-//        resp.setValueType(HealthCheck.class);
-//        return resp;
-//    }
-//
-    
-    
-   
-
     public func address(address:Address) ->LookUpAssetTransactions{
         self.queryItems["address"] = address.description
         return self;
