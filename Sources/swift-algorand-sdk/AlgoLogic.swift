@@ -401,3 +401,16 @@ public class AlgoLogic{
         }
     }
 }
+
+#if COCOAPODS
+extension Bundle {
+    static var module: Bundle {
+        guard let path = Bundle.main.path(forResource: "swift-algorand-sdk-bundle", ofType: "bundle"),
+              let bundle = Bundle(path: path)
+        else {
+            fatalError()
+        }
+        return bundle
+    }
+}
+#endif
