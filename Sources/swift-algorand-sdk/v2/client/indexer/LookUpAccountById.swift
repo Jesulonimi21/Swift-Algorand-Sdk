@@ -17,19 +17,15 @@ public class LookUpAccountById{
     }
 
     public func execute( callback: @escaping (_:Response<AccountResponse>) ->Void){
-//        print(getRequestString(parameter: self.address))
         let headers:HTTPHeaders=[client.apiKey:client.token]
         var request=AF.request(getRequestString(parameter: self.address),method: .get, parameters: nil, headers: headers,requestModifier: { $0.timeoutInterval = 120 })
 
         request.validate()
-        
-//        request.responseJSON(){response in
-//            debugPrint(response.value)
-//        }
         var customResponse:Response<AccountResponse>=Response()
         request.responseDecodable(of: AccountResponse.self){  (response) in
 
     if(response.error != nil){
+        print(response.error)
         customResponse.setIsSuccessful(value:false)
         var errorDescription=String(data:response.data ?? Data(response.error!.errorDescription!.utf8),encoding: .utf8)
         customResponse.setErrorDescription(errorDescription:errorDescription!)

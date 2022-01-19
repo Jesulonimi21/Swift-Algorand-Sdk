@@ -1,29 +1,31 @@
 //
 //  File.swift
+//  
 //
-//
-//  Created by Jesulonimi on 2/26/21.
+//  Created by Jesulonimi Akingbesote on 19/01/2022.
 //
 
 import Foundation
 import Alamofire
-public class LookUpApplicationsById{
+
+public class LookUpApplicationLogsById{
     var client:IndexerClient
     var rawTransaction:[Int8]?
-    var id:Int64
-    init(client:IndexerClient,id:Int64) {
+    var applicationId:Int64
+    
+    
+    init(client:IndexerClient,applicationId:Int64) {
         self.client=client
-        self.id=id
+        self.applicationId = applicationId
     }
-
-    public func execute( callback: @escaping (_:Response<ApplicationResponse>) ->Void){
+    
+    public func execute( callback: @escaping (_:Response<ApplicationLogResponse>) ->Void){
+        
         let headers:HTTPHeaders=[client.apiKey:client.token]
-      
-        var request=AF.request(getRequestString(parameter: self.id),method: .get, parameters: nil, headers: headers,requestModifier: { $0.timeoutInterval = 120 })
-
+        var request=AF.request(getRequestString(parameter: self.applicationId),method: .get, parameters: nil, headers: headers,requestModifier: { $0.timeoutInterval = 120 })
         request.validate()
-        var customResponse:Response<ApplicationResponse>=Response()
-  request.responseDecodable(of: ApplicationResponse.self){  (response) in
+        var customResponse:Response<ApplicationLogResponse>=Response()
+  request.responseDecodable(of: ApplicationLogResponse.self){  (response) in
 
     if(response.error != nil){
         customResponse.setIsSuccessful(value:false)
@@ -34,15 +36,13 @@ public class LookUpApplicationsById{
             if let message = String(data: response.data!,encoding: .utf8){
                 var errorDic = try! JSONSerialization.jsonObject(with: message.data, options: []) as? [String: Any]
                 customResponse.errorMessage = errorDic!["message"] as! String
-             
             }
-
         }
         return
     }
                     let data=response.value
-                    var applicationResponse:ApplicationResponse=data!
-                    customResponse.setData(data:applicationResponse)
+                    var applicationLogResponse:ApplicationLogResponse=data!
+                    customResponse.setData(data:applicationLogResponse)
                     customResponse.setIsSuccessful(value:true)
                     callback(customResponse)
 
@@ -51,8 +51,9 @@ public class LookUpApplicationsById{
 
     internal func getRequestString(parameter:Int64)->String {
         var component=client.connectString()
-        component.path = component.path+"/v2/applications/\(parameter)"
+        component.path = component.path+"/v2/applications/\(parameter)/logs"
         return component.url!.absoluteString;
         
     }
+
 }
