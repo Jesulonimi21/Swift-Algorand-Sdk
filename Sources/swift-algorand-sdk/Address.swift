@@ -20,13 +20,12 @@ extension Array where Element: Comparable {
 }
 public class Address: Codable,Equatable{
     
-   
+    static var APP_ID_PREFIX: [Int8] = [97, 112, 112, 73, 68]
     public var bytes:[Int8]?=Array(repeating:0,count:32)
 //    enum CodingKeys:CodingKey{
 //        case bytes
 //    }
     public var BYTES_SIGN_PREFIX: [Int8] = [77,88];
-    public var APP_ID_PREFIX: [Int8] = [97,112,112,73,68];
   public  var description:String{
         return try! self.encodeAsString()
     }
@@ -136,6 +135,9 @@ public class Address: Codable,Equatable{
         }
     }
     
-    
+    public static func forApplication(appId: UInt64) -> Address{
+        let digest = try SHA512_256().hash( APP_ID_PREFIX + CustomEncoder.encodeUInt64(appId))
+        return try! Address(digest)
+    }
     
 }
