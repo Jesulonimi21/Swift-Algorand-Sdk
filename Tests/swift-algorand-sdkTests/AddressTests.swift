@@ -55,6 +55,12 @@ public class AddressTests: XCTestCase{
         XCTAssertEqual("VKM6KSCTDHEM6KGEAMSYCNEGIPFJMHDSEMIRAQLK76CJDIRMMDHKAIRMFQ", o.description)
     }
 
+    func testAddressForApplication(){
+        var appId: UInt64 = 77
+        var expected: Address = try! Address("PCYUFPA2ZTOYWTP43MX2MOX2OWAIAXUDNC2WFCXAGMRUZ3DYD6BWFDL5YM")
+        var actual = Address.forApplication(appId: appId)
+        XCTAssertEqual(actual.description, expected.description)
+    }
     
 }
 
