@@ -19,7 +19,7 @@ public class AccountsResponse : Codable {
     }
     public func toJson()->String?{
         var jsonencoder=JSONEncoder()
-        var classData=try! jsonencoder.encode(self)
+        guard let classData=try? jsonencoder.encode(self)else { return nil }
         var classString=String(data: classData, encoding: .utf8)
        return classString
     }

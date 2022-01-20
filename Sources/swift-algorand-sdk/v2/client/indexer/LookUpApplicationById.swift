@@ -17,8 +17,8 @@ public class LookUpApplicationsById{
     }
 
     public func execute( callback: @escaping (_:Response<ApplicationResponse>) ->Void){
-//        print(getRequestString(parameter: self.id))
         let headers:HTTPHeaders=[client.apiKey:client.token]
+      
         var request=AF.request(getRequestString(parameter: self.id),method: .get, parameters: nil, headers: headers,requestModifier: { $0.timeoutInterval = 120 })
 
         request.validate()

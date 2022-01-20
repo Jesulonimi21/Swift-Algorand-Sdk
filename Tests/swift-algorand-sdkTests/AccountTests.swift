@@ -192,7 +192,8 @@ public class AccountTests : XCTestCase{
         var mnemonic="cactus check vocal shuffle remember regret vanish spice problem property diesel success easily napkin deposit gesture forum bag talent mechanic reunion enroll buddy about attract"
         var account = try! Account(mnemonic)
         var signedTx = account.keyPair.sign(bytes);
-        var isVerified = try! account.keyPair.verify(signature: signedTx, message: bytes)
+        var address = account.address;
+        var isVerified = try! address.verifyBytes(byte: CustomEncoder.convertToInt8Array(input: bytes) , signature: Signature(CustomEncoder.convertToInt8Array(input: signedTx)) );
         XCTAssertEqual( isVerified, true)
     }
     
@@ -257,12 +258,12 @@ public class AccountTests : XCTestCase{
     }
     
     
-    func testTealSign(){
+    func testTealSign() throws {
         var data = CustomEncoder.convertToInt8Array(input: CustomEncoder.decodeByteFromBase64(string: "Ux8jntyBJQarjKGF8A=="))
         var seed = CustomEncoder.convertToInt8Array(input: CustomEncoder.decodeByteFromBase64(string: "5Pf7eGMA52qfMT4R4/vYCt7con/7U3yejkdXkrcb26Q="))
         var prog = CustomEncoder.convertToInt8Array(input: CustomEncoder.decodeByteFromBase64(string: "ASABASI="))
-        var addr = try! Address("6Z3C3LDVWGMX23BMSYMANACQOSINPFIRF77H7N3AWJZYV6OH6GWTJKVMXY")
-        var acc = try! Account(seed)
+        var addr = try Address("6Z3C3LDVWGMX23BMSYMANACQOSINPFIRF77H7N3AWJZYV6OH6GWTJKVMXY")
+        var acc = try Account(seed)
         var sig1 = acc.tealSign(data:data,contractAddress:addr)
         var sig2 = acc.tealSignFromProgram(data: data, program: prog)
         XCTAssertEqual(sig1.bytes, sig2.bytes)
@@ -275,9 +276,9 @@ public class AccountTests : XCTestCase{
         message.append(contentsOf: data)
     
         
-        let publicKey = try! PublicKey(CustomEncoder.convertToUInt8Array(input: acc.address.getBytes()))
+        let publicKey = try PublicKey(CustomEncoder.convertToUInt8Array(input: acc.address.getBytes()))
         
-        var isVerified = try! publicKey.verify(signature: CustomEncoder.convertToUInt8Array(input: sig1.bytes!), message: CustomEncoder.convertToUInt8Array(input: message))
+        var isVerified = try publicKey.verify(signature: CustomEncoder.convertToUInt8Array(input: sig1.bytes!), message: CustomEncoder.convertToUInt8Array(input: message))
         XCTAssert(isVerified==true)
             
     }

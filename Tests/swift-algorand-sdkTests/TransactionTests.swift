@@ -515,7 +515,7 @@ static var DEFAULT_ACCOUNT = initializeDefaultAccount();
         XCTAssert(tx.lease == nil)
     }
     
-    
+
     
 
 }

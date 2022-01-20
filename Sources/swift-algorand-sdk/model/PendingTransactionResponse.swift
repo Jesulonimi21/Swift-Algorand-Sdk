@@ -28,6 +28,10 @@ public class PendingTransactionResponse : Codable {
     public var senderRewards:Int64?;
     
     var txn:SignedTransaction?;
+    
+    var innerTxns: [PendingTransactionResponse]?
+    
+    var logs: [[Int8]]?
 
    init() {
     }
@@ -55,6 +59,10 @@ public class PendingTransactionResponse : Codable {
         case senderRewards="sender-rewards"
  
         case txn="txn"
+        
+        case innerTxns = "inner-txns"
+        
+        case logs = "logs"
     }
     
     public func toJson()->String?{
@@ -62,6 +70,61 @@ public class PendingTransactionResponse : Codable {
         var classData=try! jsonencoder.encode(self)
         var classString=String(data: classData, encoding: .utf8)
        return classString
+    }
+    
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = try? encoder.container(keyedBy: CodingKeys.self)
+        try container?.encode(self.applicationIndex, forKey: .applicationIndex)
+        try container?.encode(self.assetIndex, forKey: .assetIndex)
+        try container?.encode(self.closeRewards, forKey: .closeRewards)
+        try container?.encode(self.closingAmount, forKey: .closingAmount)
+        try container?.encode(self.confirmedRound, forKey: .confirmedRound)
+        try container?.encode(self.globalStateDelta, forKey: .globalStateDelta)
+        try container?.encode(self.localStateDelta, forKey: .localStateDelta)
+        try container?.encode(self.poolError, forKey: .poolError)
+        try container?.encode(self.receiverRewards, forKey: .receiverRewards)
+        try container?.encode(self.txn, forKey: .txn)
+        try container?.encode(self.innerTxns, forKey: .innerTxns)
+        if let logs = self.logs{
+            
+            var ULogs:[Data]=Array()
+
+            for i in 0..<logs.count{
+
+                ULogs.append(Data(CustomEncoder.convertToUInt8Array(input:logs[i])))
+            }
+            
+            try container?.encode(ULogs, forKey: .logs)
+        }
+    }
+    
+    
+    
+    public required init(from decoder: Decoder) throws {
+        var container = try? decoder.container(keyedBy: CodingKeys.self)
+        self.applicationIndex = try? container?.decode(Int64.self, forKey: .applicationIndex)
+        self.assetIndex = try? container?.decode(Int64.self, forKey: .assetIndex)
+        self.closeRewards = try? container?.decode(Int64.self, forKey: .closeRewards)
+        self.closingAmount = try? container?.decode(Int64.self, forKey: .closingAmount)
+        self.confirmedRound = try? container?.decode(Int64.self, forKey: .confirmedRound)
+        self.globalStateDelta = try? container?.decode([EvalDeltaKeyValue].self, forKey: .globalStateDelta)
+        self.localStateDelta = try? container?.decode([AccountStateDelta].self, forKey: .localStateDelta)
+        self.poolError = try? container?.decode(String.self, forKey: .poolError)
+        self.receiverRewards = try? container?.decode(Int64.self, forKey: .receiverRewards)
+        self.senderRewards = try? container?.decode(Int64.self, forKey: .senderRewards)
+        self.innerTxns = try? container?.decode([PendingTransactionResponse].self, forKey: .innerTxns)
+        self.txn = try? container?.decode(SignedTransaction.self, forKey: .txn)
+        
+        
+        self.logs = Array()
+         let ULogs = try? container?.decode([Data].self, forKey: .logs)
+        if let uLogs=ULogs{
+            for i in 0..<uLogs.count{
+               self.logs?.append(CustomEncoder.convertToInt8Array(input: Array(ULogs![i])))
+            }
+        }
+
     }
 
   

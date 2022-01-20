@@ -128,6 +128,19 @@ public class CustomEncoder{
     public static func decodeFromJson<T>(json:String) throws ->T where T: Decodable{
         let decoded = try JSONDecoder().decode(T.self, from: (json.data(using: .utf8)!))
             return decoded
-        
     }
+    
+    
+    public static func encodeUInt64(_ data: UInt64) -> [Int8]{
+        var a =   unsafeBitCast(UInt8((data >> 56) & 0xff),to:Int8.self)
+        var b =      unsafeBitCast(UInt8((data >> 48) & 0xff),to:Int8.self)
+        var c =   unsafeBitCast(UInt8((data >> 40) & 0xff),to:Int8.self)
+      var d =       unsafeBitCast(UInt8((data >> 32) & 0xff),to:Int8.self)
+       var e =              unsafeBitCast(UInt8((data >> 24) & 0xff),to:Int8.self)
+         var f =  unsafeBitCast(UInt8((data >> 16) & 0xff),to:Int8.self)
+         var g =                     unsafeBitCast(UInt8((data >> 8) & 0xff),to:Int8.self)
+        var h =                    unsafeBitCast(UInt8((data >> 0) & 0xff),to:Int8.self)
+      return [a,b,c,d,e,f,g,h]
+    }
+
 }
