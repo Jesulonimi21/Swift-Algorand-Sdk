@@ -6,17 +6,19 @@
 //
 
 import Foundation
-
+import Alamofire
 
 public class AlgodClient {
     var host:String
     var port:String
     var token:String
     var apiKey="X-Algo-API-Token"
-    public init(host:String,  port:String,  token:String) {
+    let session: Alamofire.Session
+    public init(host:String, port:String, token:String, session: Session = .default) {
         self.host=host
         self.port=port
         self.token=token
+        self.session = session
     }
     
     func connectString()->URLComponents{
@@ -24,7 +26,7 @@ public class AlgodClient {
 //            components.scheme = "https"
 //            components.host = self.host
 //        components.port=self.port
-        var url=URL(string: host)!
+        var url = URL(string: host)!
         var components=URLComponents(url: url, resolvingAgainstBaseURL: false)
         components!.port=Int(self.port)
         return components!

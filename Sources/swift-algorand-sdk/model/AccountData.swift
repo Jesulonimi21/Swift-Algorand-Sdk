@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class AccountData : Codable{
+public struct AccountData : Codable{
     public var address:String?
 
     public var amount:Int64?

@@ -43,7 +43,7 @@ public struct RequestParameters {
         components.path += self.path
         components.queryItems = queryParameters.map { URLQueryItem(name: $0.key, value: $0.value) }
         let headers = self.headers.merging([client.apiKey: client.token]) { local, global in global  }
-        return AF.request(components.url?.absoluteString ?? "",
+        return client.session.request(components.url?.absoluteString ?? "",
                           method: method,
                           parameters: bodyParameters,
                           headers: .init(headers),
