@@ -598,7 +598,7 @@ public class Transaction : Codable,Equatable{
          let ULogs = try? container.decode([Data].self, forKey: .logs)
         if let uLogs=ULogs{
             for i in 0..<uLogs.count{
-               self.logs?.append(CustomEncoder.convertToInt8Array(input: Array(ULogs![i])))
+               self.logs?.append(CustomEncoder.convertToInt8Array(input: Array(uLogs[i])))
             }
         }else{
             self.logs = nil

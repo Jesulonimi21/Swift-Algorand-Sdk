@@ -258,12 +258,12 @@ public class AccountTests : XCTestCase{
     }
     
     
-    func testTealSign(){
+    func testTealSign() throws {
         var data = CustomEncoder.convertToInt8Array(input: CustomEncoder.decodeByteFromBase64(string: "Ux8jntyBJQarjKGF8A=="))
         var seed = CustomEncoder.convertToInt8Array(input: CustomEncoder.decodeByteFromBase64(string: "5Pf7eGMA52qfMT4R4/vYCt7con/7U3yejkdXkrcb26Q="))
         var prog = CustomEncoder.convertToInt8Array(input: CustomEncoder.decodeByteFromBase64(string: "ASABASI="))
-        var addr = try! Address("6Z3C3LDVWGMX23BMSYMANACQOSINPFIRF77H7N3AWJZYV6OH6GWTJKVMXY")
-        var acc = try! Account(seed)
+        var addr = try Address("6Z3C3LDVWGMX23BMSYMANACQOSINPFIRF77H7N3AWJZYV6OH6GWTJKVMXY")
+        var acc = try Account(seed)
         var sig1 = acc.tealSign(data:data,contractAddress:addr)
         var sig2 = acc.tealSignFromProgram(data: data, program: prog)
         XCTAssertEqual(sig1.bytes, sig2.bytes)
@@ -276,9 +276,9 @@ public class AccountTests : XCTestCase{
         message.append(contentsOf: data)
     
         
-        let publicKey = try! PublicKey(CustomEncoder.convertToUInt8Array(input: acc.address.getBytes()))
+        let publicKey = try PublicKey(CustomEncoder.convertToUInt8Array(input: acc.address.getBytes()))
         
-        var isVerified = try! publicKey.verify(signature: CustomEncoder.convertToUInt8Array(input: sig1.bytes!), message: CustomEncoder.convertToUInt8Array(input: message))
+        var isVerified = try publicKey.verify(signature: CustomEncoder.convertToUInt8Array(input: sig1.bytes!), message: CustomEncoder.convertToUInt8Array(input: message))
         XCTAssert(isVerified==true)
             
     }

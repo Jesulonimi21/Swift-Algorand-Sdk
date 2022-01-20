@@ -100,18 +100,23 @@ public class Address: Codable,Equatable{
     }
     
 
-    public func verifyBytes(byte: [Int8], signature: Signature) -> Bool{
-        var publicKey = self.toVerifyKey();
+    public func verifyBytes(byte: [Int8], signature: Signature)throws -> Bool{
+        var publicKey = try self.toVerifyKey();
         var prefixBytes: [Int8] = Array(repeating: 0, count: byte.count + BYTES_SIGN_PREFIX.count);
-        var isVerified = try! publicKey.verify(signature: CustomEncoder.convertToUInt8Array(input: signature.bytes!), message: CustomEncoder.convertToUInt8Array(input: byte))
+        var isVerified = try publicKey.verify(signature: CustomEncoder.convertToUInt8Array(input: signature.bytes!), message: CustomEncoder.convertToUInt8Array(input: byte))
         return isVerified
     }
     
     
     
-    public func toVerifyKey() -> PublicKey{
-        let publicKey = try! PublicKey(CustomEncoder.convertToUInt8Array(input: (self.bytes)!))
-        return publicKey
+    public func toVerifyKey() throws -> PublicKey{
+        if let bytes = self.bytes{
+            let publicKey = try PublicKey(CustomEncoder.convertToUInt8Array(input: (bytes)))
+            return publicKey
+        }else{
+            throw Errors.runtimeError("Address bytes was null")
+        }
+       
     }
     
     
@@ -135,9 +140,9 @@ public class Address: Codable,Equatable{
         }
     }
     
-    public static func forApplication(appId: UInt64) -> Address{
+    public static func forApplication(appId: UInt64) throws -> Address{
         let digest = try SHA512_256().hash( APP_ID_PREFIX + CustomEncoder.encodeUInt64(appId))
-        return try! Address(digest)
+        return try Address(digest)
     }
     
 }
