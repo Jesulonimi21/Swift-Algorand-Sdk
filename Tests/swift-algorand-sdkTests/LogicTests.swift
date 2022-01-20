@@ -247,15 +247,15 @@ public class LogicTests:XCTestCase{
     
     
     
-    func testProgramTealV5(){
+    func testProgramTealV5() throws{
         var program1: [Int8] = [5, 32, 1, -64, -124, 61, -79, -127, 1, -78, 16, 34, -78, 8, 49, 0, -78, 7, -77, -76, 8, 34, 18 ]
-        var valid1 = try! AlgoLogic.checkProgram(program: program1, args: nil);
+        var valid1 = try AlgoLogic.checkProgram(program: program1, args: nil);
         assert(valid1==true)
         var program2: [Int8] = [5, -128, 8, 116, 101, 115, 116, 100, 97, 116, 97, 3, -128, 32, 121, -65, -88, 36, 90, -22, -64, -25, 20, -73, -67, 43, 50, 82, -48, 57, 121, -27, -25, -92, 60, -80, 57, 113, 90, 95, -127, 9, -89, -35, -101, -95, -128, 32, 7, 83, -45, 23, -27, 67, 80, -47, -47, 2, 40, -102, -5, -34, 48, 2, -83, -44, 82, -97, 16, -71, -9, -45, -46, 35, -124, 57, -123, -34, 98, -32, -128, 33, 3, -85, -5, 94, 110, 51, 31, -72, 113, -28, 35, -13, 84, -30, -67, 120, -93, -124, -17, 124, -80, 122, -56, -69, -14, 125, 45, -47, -20, -96, 14, 115, -63, 6, 0, 5, 0]
-        var valid2 = try! AlgoLogic.checkProgram(program: program2, args: nil);
+        var valid2 = try AlgoLogic.checkProgram(program: program2, args: nil);
         assert(valid2==true)
         var program3: [Int8] = [5, -128, 1, 97, -128, 1, 98, -128, 1, 99, 78, 2, 79, 2, 80, 80, -80, -127, 1, ];
-        var valid3 = try! AlgoLogic.checkProgram(program: program3, args: nil);
+        var valid3 = try AlgoLogic.checkProgram(program: program3, args: nil);
         assert(valid3==true)
     }
 
