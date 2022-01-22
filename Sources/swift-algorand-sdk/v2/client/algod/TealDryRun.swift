@@ -16,8 +16,8 @@ public class TealDryRun: Request {
 
     init(client: AlgodClient, request: DryrunRequest) {
         self.client = client
-        parameters = .init(headers: ["Content-type":"application/x-binary"],
-                           path: "/v2/teal/dryrun",
+        parameters = .init(path: "/v2/teal/dryrun",
+                           headers: ["Content-type":"application/x-binary"],
                            method: .post,
                            encoding: ByteEncoding(data: Data(CustomEncoder.encodeToMsgPack(request))))
     }
@@ -30,8 +30,7 @@ public class TealDryRun: Request {
     
     @available(*, deprecated, message: "Use `init(client: AlgodClient, request: DryrunRequest)` instead")
     public func request(request: DryrunRequest) ->TealDryRun {
-        parameters = .init(headers: ["Content-type":"application/x-binary"],
-                           path: "/v2/teal/dryrun",
+        parameters = .init(path: "/v2/teal/dryrun", headers: ["Content-type":"application/x-binary"],
                            method: .post,
                            encoding: ByteEncoding(data: Data(CustomEncoder.encodeToMsgPack(request))))
         return self;

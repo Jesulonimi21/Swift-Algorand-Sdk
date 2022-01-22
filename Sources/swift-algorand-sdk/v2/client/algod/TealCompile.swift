@@ -16,8 +16,8 @@ public class TealCompile: Request {
     
     init(client: AlgodClient, source: [Int8]) {
         self.client = client
-        parameters = .init(headers: ["Content-type":"application/x-binary"],
-                           path: "/v2/teal/compile",
+        parameters = .init(path: "/v2/teal/compile",
+                           headers: ["Content-type":"application/x-binary"],
                            method: .post,
                            encoding: ByteEncoding(data: Data(CustomEncoder.convertToUInt8Array(input: source))))
     }
@@ -30,8 +30,7 @@ public class TealCompile: Request {
     
     @available(*, deprecated, message: "Use `init(client: AlgodClient, source: [Int8])` instead")
     public func source(source: [Int8]) -> TealCompile {
-        self.parameters = .init(headers: ["Content-type":"application/x-binary"],
-                                path: "/v2/teal/compile",
+        self.parameters = .init(path: "/v2/teal/compile", headers: ["Content-type":"application/x-binary"],
                                 method: .post,
                                 encoding: ByteEncoding(data: Data(CustomEncoder.convertToUInt8Array(input: source))))
         return self;

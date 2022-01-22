@@ -21,23 +21,22 @@ public class AlgodClient {
         self.session = session
     }
     
-    func connectString()->URLComponents{
-//        var components = URLComponents()
-//            components.scheme = "https"
-//            components.host = self.host
-//        components.port=self.port
-        var url = URL(string: host)!
-        var components=URLComponents(url: url, resolvingAgainstBaseURL: false)
-        components!.port=Int(self.port)
+    func connectString() -> URLComponents{
+        let url = URL(string: host) ?? URL(fileURLWithPath: "")
+        var components = URLComponents(url: url, resolvingAgainstBaseURL: false) ?? .init()
+        components.port = Int(port)
         return components!
     }
     
-    
-
+    @available(*, deprecated, message: "Use `rawTransaction(rawtxn: [Int8]) -> RawTransaction` instead")
     public func rawTransaction()->RawTransaction {
         return  RawTransaction(client: self);
     }
-//
+    
+    public func rawTransaction(rawtxn: [Int8]) -> RawTransaction {
+        return  RawTransaction(client: self, rawtxn: rawtxn);
+    }
+    
     public func transactionParams() -> TransactionParams{
         return  TransactionParams(client:self);
     }

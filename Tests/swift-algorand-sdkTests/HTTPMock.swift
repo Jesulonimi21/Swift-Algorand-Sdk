@@ -11,14 +11,40 @@ import XCTest
 @testable import swift_algorand_sdk
 
 extension XCTestCase {
-    func assertSuccessfulResponse<CustomRequest: swift_algorand_sdk.Request>(for request: CustomRequest,
-                                                                             with mock: CustomRequest.ResponseType,
-                                                                             file: StaticString = #filePath,
-                                                                             line: UInt = #line) {
+    func assertSuccessfulResponse<CustomRequest>(for request: CustomRequest,
+                                                 with mock: CustomRequest.ResponseType,
+                                                 file: StaticString = #filePath,
+                                                 line: UInt = #line,
+                                                 comparing compare: @escaping(CustomRequest.ResponseType?, CustomRequest.ResponseType?) -> Void)
+    where CustomRequest: swift_algorand_sdk.Request {
         MockURLProtocol.response(for: request, with: mock)
         let expectation = XCTestExpectation(description: "Performing request for \(request.self)")
         request.execute { response in
-            XCTAssertNotNil(response.data)
+            compare(response.data, mock)
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 1)
+    }
+    func assertSuccessfulResponse<CustomRequest>(for request: CustomRequest,
+                                                 with mock: CustomRequest.ResponseType,
+                                                 file: StaticString = #filePath,
+                                                 line: UInt = #line)
+    where CustomRequest: swift_algorand_sdk.Request, CustomRequest.ResponseType: Equatable {
+        assertSuccessfulResponse(for: request,
+                                    with: mock, file: file,
+                                    line: line,
+                                    comparing: { XCTAssertEqual($0, $1) })
+    }
+    
+    func assertErrorResponse<CustomRequest: swift_algorand_sdk.Request>(for request: CustomRequest,
+                                                                        code: Int = 400,
+                                                                        message: String = "There was some error",
+                                                                             file: StaticString = #filePath,
+                                                                             line: UInt = #line) {
+        MockURLProtocol.responseWithFailure(code: code, message: message)
+        let expectation = XCTestExpectation(description: "Performing request for \(request.self)")
+        request.execute { response in
+            XCTAssertEqual(response.errorMessage, message)
             expectation.fulfill()
         }
         wait(for: [expectation], timeout: 1)
@@ -75,16 +101,20 @@ final class MockURLProtocol: URLProtocol {
     }
     static var responseType: ResponseType!
     
-    enum MockError: Error {
-        case none
+
+    static func responseWithFailure(code: Int, message: String = "There was an error") {
+        let encoder = JSONEncoder()
+        let mock = ResponseError(message: message)
+        MockURLProtocol.responseType = MockURLProtocol.ResponseType
+            .success(HTTPURLResponse(url: URL(string: "https://something.useless")!,
+                                     statusCode: code,
+                                     httpVersion: nil, headerFields: nil)!,
+                     try? encoder.encode(mock))
     }
     
-    static func responseWithFailure() {
-        MockURLProtocol.responseType = MockURLProtocol.ResponseType.error(MockError.none)
-    }
-    
-    static func response<CustomRequest: swift_algorand_sdk.Request>(for request: CustomRequest,
-    with mock: CustomRequest.ResponseType) {
+    static func response<CustomRequest>(for request: CustomRequest,
+                                        with mock: CustomRequest.ResponseType)
+    where CustomRequest: swift_algorand_sdk.Request {
         let encoder = JSONEncoder()
         MockURLProtocol.responseType = MockURLProtocol.ResponseType
             .success(HTTPURLResponse(url: URL(string: "https://something.useless")!,

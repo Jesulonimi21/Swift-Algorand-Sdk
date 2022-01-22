@@ -24,8 +24,8 @@ public struct RequestParameters {
     let bodyParameters: [String: Any]?
     let encoding: ParameterEncoding
     
-    init(headers: [String : String] = [:],
-         path: String,
+    init(path: String,
+         headers: [String : String] = [:],
          method: HTTPMethod = .get,
          queryParameters: [String : String] = [:],
          bodyParameters: [String : Any]? = nil,
@@ -66,6 +66,10 @@ struct ByteEncoding: ParameterEncoding {
   }
 }
 
+struct ResponseError: Codable {
+    let message: String?
+}
+
 public extension Request {
 
     func execute( callback: @escaping (_:Response<ResponseType>) ->Void){
@@ -78,16 +82,25 @@ public extension Request {
                                               error.errorDescription?.data(using: .utf8) ??
                                               Data(), encoding: .utf8)
                 customResponse.setErrorDescription(errorDescription: errorDescription ?? "")
-                callback(customResponse)
+                
+                let decoder = JSONDecoder()
                 if let data = response.data,
-                   let message = String(data: data, encoding: .utf8),
-                   let dictionary = try? JSONSerialization.jsonObject(with: message.data, options: []) as? [String: Any] {
-                    customResponse.errorMessage = dictionary["message"] as? String
+                   let errorObject = try? decoder.decode(ResponseError.self, from: data) {
+                    customResponse.errorMessage = errorObject.message
                 }
+                callback(customResponse)
+//                if let data = response.data,
+//                   let message = String(data: data, encoding: .utf8),
+//                   let dictionary = try? JSONSerialization.jsonObject(with: message.data, options: []) as? [String: Any] {
+//                    customResponse.errorMessage = dictionary["message"] as? String
+//                }
                 return
             }
             
             guard let data = response.value else {
+                customResponse.errorMessage = "No valid data found"
+                customResponse.setIsSuccessful(value:true)
+                callback(customResponse)
                 return
             }
             
