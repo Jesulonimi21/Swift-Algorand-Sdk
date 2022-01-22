@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+import Ed25519
 
 enum AddressError:Error{
     case illegalArgumentException(String)
@@ -20,12 +20,12 @@ extension Array where Element: Comparable {
 }
 public class Address: Codable,Equatable{
     
-   
+    static var APP_ID_PREFIX: [Int8] = [97, 112, 112, 73, 68]
     public var bytes:[Int8]?=Array(repeating:0,count:32)
 //    enum CodingKeys:CodingKey{
 //        case bytes
 //    }
-    
+    public var BYTES_SIGN_PREFIX: [Int8] = [77,88];
   public  var description:String{
         return try! self.encodeAsString()
     }
@@ -99,10 +99,25 @@ public class Address: Codable,Equatable{
         return self.bytes!
     }
     
-    //TODO: Add method to verify bytes
-    //TODO: Add Method to verify key
-    //TODO: Add constructor to create bytes from string
+
+    public func verifyBytes(byte: [Int8], signature: Signature)throws -> Bool{
+        var publicKey = try self.toVerifyKey();
+        var prefixBytes: [Int8] = Array(repeating: 0, count: byte.count + BYTES_SIGN_PREFIX.count);
+        var isVerified = try publicKey.verify(signature: CustomEncoder.convertToUInt8Array(input: signature.bytes!), message: CustomEncoder.convertToUInt8Array(input: byte))
+        return isVerified
+    }
     
+    
+    
+    public func toVerifyKey() throws -> PublicKey{
+        if let bytes = self.bytes{
+            let publicKey = try PublicKey(CustomEncoder.convertToUInt8Array(input: (bytes)))
+            return publicKey
+        }else{
+            throw Errors.runtimeError("Address bytes was null")
+        }
+       
+    }
     
     
     public static func == (lhs:Address,rhs:Address)->Bool{
@@ -125,6 +140,9 @@ public class Address: Codable,Equatable{
         }
     }
     
-    
+    public static func forApplication(appId: UInt64) throws -> Address{
+        let digest = try SHA512_256().hash( APP_ID_PREFIX + CustomEncoder.encodeUInt64(appId))
+        return try Address(digest)
+    }
     
 }

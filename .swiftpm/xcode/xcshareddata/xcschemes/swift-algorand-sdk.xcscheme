@@ -89,9 +89,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "swift-algorand-sdk_swift-algorand-sdk"
-            BuildableName = "swift-algorand-sdk_swift-algorand-sdk"
-            BlueprintName = "swift-algorand-sdk_swift-algorand-sdk"
+            BlueprintIdentifier = "swift-algorand-sdk"
+            BuildableName = "swift-algorand-sdk"
+            BlueprintName = "swift-algorand-sdk"
             ReferencedContainer = "container:">
          </BuildableReference>
       </MacroExpansion>

@@ -11,7 +11,7 @@ public class Application :Codable{
     
     
 
-   public var createdAtRound:[Int64]?;
+   public var createdAtRound:Int64?;
 
     public var deleted:Bool?;
 

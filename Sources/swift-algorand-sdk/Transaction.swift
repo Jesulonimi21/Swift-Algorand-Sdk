@@ -232,6 +232,9 @@ public class Transaction : Codable,Equatable{
 
     public var clearStateProgram:TEALProgram?
     public var approvalProgram:TEALProgram?
+    public var innerTxns: [PendingTransactionResponse]?=nil
+    
+    public var logs: [[Int8]]?=nil
 
     
    
@@ -382,6 +385,8 @@ public class Transaction : Codable,Equatable{
         case globalStateSchema="apgs"
         case clearStateProgram = "apsu"
         case approvalProgram = "apap"
+        case innerTxns = "inner-txns"
+        case logs = "logs"
     }
     
     
@@ -588,6 +593,20 @@ public class Transaction : Codable,Equatable{
            self.selectionPK = try! VRFPublicKey(bytes:
                                                        CustomEncoder.convertToInt8Array(input: Array(sKey)))
         }
+        
+        self.logs = Array()
+         let ULogs = try? container.decode([Data].self, forKey: .logs)
+        if let uLogs=ULogs{
+            for i in 0..<uLogs.count{
+               self.logs?.append(CustomEncoder.convertToInt8Array(input: Array(uLogs[i])))
+            }
+        }else{
+            self.logs = nil
+        }
+        var innerTxns = try? container.decode([PendingTransactionResponse].self, forKey: .innerTxns)
+        if let UInnerTxns = innerTxns{
+            self.innerTxns = UInnerTxns
+        }
        }
     
     
@@ -747,10 +766,22 @@ public class Transaction : Codable,Equatable{
     }
 
         
-      
-        
         if let xferasset=self.xferAsset{
             try! container.encode(xferasset, forKey: .xferAsset)
+        }
+    if let logs = self.logs{
+            var ULogs:[Data]=Array()
+
+            for i in 0..<logs.count{
+
+                ULogs.append(Data(CustomEncoder.convertToUInt8Array(input:logs[i])))
+            }
+
+            try container.encode(ULogs, forKey: .logs)
+        }
+
+    if let innerTxns = self.innerTxns{
+        try container.encode(innerTxns, forKey: .innerTxns)
         }
     }
 

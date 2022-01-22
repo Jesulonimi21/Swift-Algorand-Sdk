@@ -54,6 +54,10 @@ public class IndexerClient {
         return LookUpAssetById(client: self, id: id)
     }
     
+    public func lookUpApplicationLogsById(id:Int64)-> LookUpApplicationLogsById{
+        return LookUpApplicationLogsById(client: self, applicationId: id)
+    }
+    
     public func searchForTransactions()->SearchForTransactions{
         return SearchForTransactions(client: self)
     }
