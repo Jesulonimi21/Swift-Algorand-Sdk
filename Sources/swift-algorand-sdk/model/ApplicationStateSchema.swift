@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class ApplicationStateSchema:Codable{
+public struct ApplicationStateSchema:Codable, Equatable {
 
     public var numByteSlice:Int64?
 

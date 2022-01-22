@@ -7,7 +7,10 @@
 
 import Foundation
 
-public class NodeStatusResponse : Codable {
+public struct NodeStatusResponse : Codable, Equatable {
+    
+    
+    
     
    
     public    var catchpoint:String?;
@@ -63,9 +66,37 @@ public class NodeStatusResponse : Codable {
         
     }
     
-   init() {
+   init() {}
+    
+    init(catchpoint: String? = nil,
+         catchpointAcquiredBlocks: Int64? = nil,
+         catchpointProcessedAccounts: Int64? = nil,
+         catchpointTotalAccounts: Int64? = nil,
+         catchpointTotalBlocks: Int64? = nil,
+         catchupTime: Int64? = nil,
+         lastCatchpoint: String? = nil,
+         lastRound: Int64? = nil,
+         lastVersion: String? = nil,
+         nextVersion: String? = nil,
+         nextVersionRound: Int64? = nil,
+         nextVersionSupported: Bool? = nil,
+         stoppedAtUnsupportedRound: Bool? = nil,
+         timeSinceLastRound: Int64? = nil) {
+        self.catchpoint = catchpoint
+        self.catchpointAcquiredBlocks = catchpointAcquiredBlocks
+        self.catchpointProcessedAccounts = catchpointProcessedAccounts
+        self.catchpointTotalAccounts = catchpointTotalAccounts
+        self.catchpointTotalBlocks = catchpointTotalBlocks
+        self.catchupTime = catchupTime
+        self.lastCatchpoint = lastCatchpoint
+        self.lastRound = lastRound
+        self.lastVersion = lastVersion
+        self.nextVersion = nextVersion
+        self.nextVersionRound = nextVersionRound
+        self.nextVersionSupported = nextVersionSupported
+        self.stoppedAtUnsupportedRound = stoppedAtUnsupportedRound
+        self.timeSinceLastRound = timeSinceLastRound
     }
-
     public func toJson()->String?{
         var jsonencoder=JSONEncoder()
         var classData=try! jsonencoder.encode(self)

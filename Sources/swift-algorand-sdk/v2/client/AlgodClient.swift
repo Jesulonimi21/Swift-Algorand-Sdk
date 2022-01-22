@@ -25,7 +25,7 @@ public class AlgodClient {
         let url = URL(string: host) ?? URL(fileURLWithPath: "")
         var components = URLComponents(url: url, resolvingAgainstBaseURL: false) ?? .init()
         components.port = Int(port)
-        return components!
+        return components
     }
     
     @available(*, deprecated, message: "Use `rawTransaction(rawtxn: [Int8]) -> RawTransaction` instead")

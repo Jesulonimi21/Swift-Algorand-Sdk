@@ -6,7 +6,8 @@
 //
 
 import Foundation
-public class BlockResponse:Codable{
+public struct BlockResponse:Codable {
+
     var block:[String:Any]?
     var cert :[String:Any]?
     
@@ -14,8 +15,15 @@ public class BlockResponse:Codable{
         case block = "block"
         case cert = "cert"
     }
+    init() {}
     
-    public required init(from decoder: Decoder) throws {
+    init(block: [String : Any]? = nil,
+         cert: [String : Any]? = nil) {
+        self.block = block
+        self.cert = cert
+    }
+    
+    public init(from decoder: Decoder) throws {
         var container = try! decoder.container(keyedBy: CodingKeys.self)
         self.block=try? container.decode([String:Any].self, forKey: .block)
         self.cert=try? container.decode([String: Any].self, forKey: .cert)

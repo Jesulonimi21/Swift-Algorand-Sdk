@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class ProofResponse :Codable{
+public struct ProofResponse :Codable, Equatable {
     
     /**
      * Index of the transaction in the block's payset.
@@ -32,8 +32,8 @@ public class ProofResponse :Codable{
         case stibhash = "stibhash"
         case idx = "idx"
     }
-    
-    public required init(from decoder: Decoder) throws {
+    init() {}
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         var proof = try? container.decode(String.self,forKey: .proof)
         if let p = proof{

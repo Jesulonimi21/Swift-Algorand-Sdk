@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class TealValue:Codable{
+public struct TealValue: Codable, Equatable {
     public var bytes:String?
     public var type:Int64?
     public var uint:Int64?

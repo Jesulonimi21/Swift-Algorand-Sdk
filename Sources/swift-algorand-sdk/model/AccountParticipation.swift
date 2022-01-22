@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class AccountParticipation : Codable{
+public struct AccountParticipation : Codable, Equatable {
     public var selectionParticipationKey:[Int8]?
     public var voteFirstValid:Int64?
     public var voteKeyDilution:Int64?
@@ -23,7 +23,7 @@ public class AccountParticipation : Codable{
     }
     
     
-    public required init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         var container =  try! decoder.container(keyedBy: CodingKeys.self)
         self.voteLastValid = try! container.decode(Int64.self, forKey: .voteLastValid)
         self.voteFirstValid = try! container.decode(Int64.self, forKey: .voteFirstValid)

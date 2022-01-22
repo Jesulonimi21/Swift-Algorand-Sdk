@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class DryrunSource : Codable{
+public struct DryrunSource : Codable, Equatable {
 
     public init(){
         

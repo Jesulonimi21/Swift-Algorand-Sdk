@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class DryrunState :Codable{
+public struct DryrunState :Codable, Equatable {
 
     /**
      * Evaluation error if any

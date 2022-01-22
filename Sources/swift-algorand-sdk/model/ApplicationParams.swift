@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class ApplicationParams:Codable{
+public struct ApplicationParams: Codable, Equatable {
     public var approvalProgram:[Int8]?
     public var clearStateProgram:[Int8]?
     public var creator:String?
@@ -33,7 +33,7 @@ public class ApplicationParams:Codable{
     
     
     
-    public required init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         var container = try? decoder.container(keyedBy: CodingKeys.self)
         self.creator = try? container?.decode(String.self, forKey: .creator)
         self.localStateSchema = try? container?.decode(ApplicationStateSchema.self, forKey: .localStateSchema)

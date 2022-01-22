@@ -8,6 +8,8 @@
 
 import Foundation
 import Alamofire
+
+// TODO: is this really needed? Swagger in a Swift application?
 public class SwaggerJson  {
     var client:AlgodClient
     init(client:AlgodClient) {

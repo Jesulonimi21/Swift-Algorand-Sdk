@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class TealKeyValue:Codable{
+public struct TealKeyValue:Codable, Equatable{
   
     public var key:String;
   

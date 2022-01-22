@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class AssetHolding : Codable{
+public struct AssetHolding : Codable, Equatable {
     public var amount:Int64?
     public var assetId:Int64?
     public var creator:String?

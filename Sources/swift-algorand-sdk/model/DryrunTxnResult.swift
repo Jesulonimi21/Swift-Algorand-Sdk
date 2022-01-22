@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class DryrunTxnResult :Codable {
+public struct DryrunTxnResult :Codable, Equatable {
 
   
     public var  appCallMessages:[String]?
@@ -75,7 +75,7 @@ public class DryrunTxnResult :Codable {
         }
     }
     
-    public required init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         var container = try? decoder.container(keyedBy: CodingKeys.self)
         self.appCallMessages = try? container?.decode([String].self, forKey: .appCallMessages)
         self.appCallTrace = try? container?.decode([DryrunState].self, forKey: .appCallTrace)

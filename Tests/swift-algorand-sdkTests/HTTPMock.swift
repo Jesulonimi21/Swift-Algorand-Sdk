@@ -31,7 +31,8 @@ extension XCTestCase {
                                                  line: UInt = #line)
     where CustomRequest: swift_algorand_sdk.Request, CustomRequest.ResponseType: Equatable {
         assertSuccessfulResponse(for: request,
-                                    with: mock, file: file,
+                                    with: mock,
+                                    file: file,
                                     line: line,
                                     comparing: { XCTAssertEqual($0, $1) })
     }

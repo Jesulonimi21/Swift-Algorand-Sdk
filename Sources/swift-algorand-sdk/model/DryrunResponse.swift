@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class DryrunResponse : Codable {
+public struct DryrunResponse : Codable, Equatable {
 
     public var error:String?;
 

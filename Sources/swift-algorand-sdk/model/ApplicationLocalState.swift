@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class ApplicationLocalState:Codable{
+public struct ApplicationLocalState:Codable, Equatable {
     public var id:Int64?
 
     public var keyValue :[TealKeyValue]?

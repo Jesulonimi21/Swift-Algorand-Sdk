@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class BuildVersion:Codable{
+public struct BuildVersion:Codable, Equatable {
     public var branch:String?
     public var build_number:Int64?
     public var channel:String?

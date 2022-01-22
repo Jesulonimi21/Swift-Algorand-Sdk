@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class SupplyResponse:Codable{
+public struct SupplyResponse:Codable, Equatable {
     
     /**
      * Round

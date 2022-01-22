@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class EvalDeltaKeyValue : Codable {
+public struct EvalDeltaKeyValue : Codable, Equatable {
 
     var key:String?;
     var value:EvalDelta?;
@@ -15,7 +15,5 @@ public class EvalDeltaKeyValue : Codable {
         case key="key"
         case value="value"
     }
-    init() {
-    }
-
-    }
+    init() {}
+}

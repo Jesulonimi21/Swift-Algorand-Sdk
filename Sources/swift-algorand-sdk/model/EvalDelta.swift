@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class EvalDelta : Codable {
+public struct EvalDelta : Codable, Equatable {
  
     var action:Int64?;
 
@@ -16,6 +16,4 @@ public class EvalDelta : Codable {
 
     init() {
     }
-
-   
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class Application :Codable{
+public struct Application :Codable, Equatable {
     
     
 
