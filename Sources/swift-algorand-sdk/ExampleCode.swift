@@ -183,7 +183,7 @@
 ////}
 //
 ////
-////indexerClient.searchForTransactions().txid(txid:"HPS2AQU26NNVTFIJVBYYZN2P2T73AONKWCS7HPT5JUQEQMXFHMJA").execute(){ response in
+////indexerClient.searchForTransactions(txid:"HPS2AQU26NNVTFIJVBYYZN2P2T73AONKWCS7HPT5JUQEQMXFHMJA").execute(){ response in
 ////    if response.isSuccessful{
 ////        print(response.data!.toJson()!)
 ////        print(12)
@@ -735,7 +735,7 @@
 //    }
 //}
 //public func testSearchForTransactions(){
-//    indexerClient.searchForTransactions().txid(txid:"HPS2AQU26NNVTFIJVBYYZN2P2T73AONKWCS7HPT5JUQEQMXFHMJA").execute(){ response in
+//    indexerClient.searchForTransactions(txid:"HPS2AQU26NNVTFIJVBYYZN2P2T73AONKWCS7HPT5JUQEQMXFHMJA").execute(){ response in
 //        if response.isSuccessful{
 //            print(response.data!.transactions![0].confirmedRound)
 //            print(response.data!.transactions![0].txType?.rawValue)
@@ -1779,6 +1779,7 @@
 //    dispatchMain()
 //}
 //
+
 //func testGetApplicationLogs(){
 //    var PURESTAKE_ALGOD_API_TESTNET_ADDRESS="https://testnet-algorand.api.purestake.io/ps2";
 //    var PURESTAKE_ALGOD_API_MAINNET_ADDRESS="https://mainnet-algorand.api.purestake.io/ps2";
@@ -1793,8 +1794,8 @@
 //    algodClient.set(key: "X-API-Key")
 //    var indexerClient=IndexerClient(host: "https://algoindexer.testnet.algoexplorerapi.io", port: PURESTAKE_API_PORT, token: "PURESTAKE_API_KEY")
 //    indexerClient.set(key:"X-API-Key");
-//    indexerClient.lookUpApplicationLogsById(id: 65647122).execute(){response in
-//    
+//    indexerClient.searchForTransactions(txid: "7GN67UMA67NULQQL2FMPTZINQIB4AXSU27ALFPF6ON7JTXUGASNA").execute(){response in
+//
 //        if response.isSuccessful{
 //            print("Successful get")
 //            print(response.data!.toJson()!)
@@ -1805,5 +1806,5 @@
 //        }
 //    }
 //    dispatchMain()
-//    
+//
 //}

@@ -58,8 +58,11 @@ public class IndexerClient {
         return LookUpApplicationLogsById(client: self, applicationId: id)
     }
     
-    public func searchForTransactions()->SearchForTransactions{
-        return SearchForTransactions(client: self)
+    public func searchForTransactions(address:Address? = nil, applicationId:Int64? = nil, assetId:Int64? = nil,
+                                      currencyGreaterThan:Int64? = nil,currencyLessThan:Int64? = nil, excludeCloseTo:Bool? = nil,
+                                      limit: Int64? = nil, maxRound: Int64? = nil, minRound: Int64? = nil, next: String? = nil,
+                                      notePrefix:Data? = nil, rekeyTo: Bool? = nil, round:Int64? = nil, txid:String? = nil)->SearchForTransactions{
+        return SearchForTransactions(client: self, address: address, applicationId: applicationId, assetId: assetId, currencyLessThan: currencyGreaterThan, excludeCloseTo: excludeCloseTo, limit: limit, maxRound: maxRound, minRound: minRound, next: next,notePrefix: notePrefix, rekeyTo: rekeyTo,round: round, txid: txid )
     }
 
     public func searchForAccounts()->SearchForAccounts{
