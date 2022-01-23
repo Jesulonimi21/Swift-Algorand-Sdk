@@ -1778,33 +1778,47 @@
 //            }
 //    dispatchMain()
 //}
-//
 
-//func testGetApplicationLogs(){
-//    var PURESTAKE_ALGOD_API_TESTNET_ADDRESS="https://testnet-algorand.api.purestake.io/ps2";
-//    var PURESTAKE_ALGOD_API_MAINNET_ADDRESS="https://mainnet-algorand.api.purestake.io/ps2";
-//    var PURESTAKE_INDEXER_API_ADDRESS="https://testnet-algorand.api.purestake.io/idx2";
-//    var PURESTAKE_API_KEY="ADRySlL0NK5trzqZGAE3q1xxIqlQdSfk1nbHxTNe";
-//    var PURESTAKE_API_PORT="443";
-//    var HACKATHON_API_PORT="9100";
-//    var HACKATHON_API_ADDRESS="http://hackathon.algodev.network";
-//    var HACKATHON_API_TOKEN="ef920e2e7e002953f4b29a8af720efe8e4ecc75ff102b165e0472834b25832c1";
-//    //var algodClient=AlgodClient(host: HACKATHON_API_ADDRESS, port: HACKATHON_API_PORT, token: HACKATHON_API_TOKEN)
-//    var algodClient=AlgodClient(host: PURESTAKE_ALGOD_API_TESTNET_ADDRESS, port: PURESTAKE_API_PORT, token: PURESTAKE_API_KEY)
-//    algodClient.set(key: "X-API-Key")
-//    var indexerClient=IndexerClient(host: "https://algoindexer.testnet.algoexplorerapi.io", port: PURESTAKE_API_PORT, token: "PURESTAKE_API_KEY")
-//    indexerClient.set(key:"X-API-Key");
-//    indexerClient.searchForTransactions(txid: "7GN67UMA67NULQQL2FMPTZINQIB4AXSU27ALFPF6ON7JTXUGASNA").execute(){response in
-//
-//        if response.isSuccessful{
-//            print("Successful get")
-//            print(response.data!.toJson()!)
-//     print(1)
-//        }else{
-//            print("Failed get")
-//            print(response.errorDescription)
+
+
+
+//    func testGetApplicationLogs(){
+//        var PURESTAKE_ALGOD_API_TESTNET_ADDRESS="https://testnet-algorand.api.purestake.io/ps2";
+//        var PURESTAKE_ALGOD_API_MAINNET_ADDRESS="https://mainnet-algorand.api.purestake.io/ps2";
+//        var PURESTAKE_INDEXER_API_ADDRESS="https://testnet-algorand.api.purestake.io/idx2";
+//        var PURESTAKE_API_KEY="ADRySlL0NK5trzqZGAE3q1xxIqlQdSfk1nbHxTNe";
+//        var PURESTAKE_API_PORT="443";
+//        var HACKATHON_API_PORT="9100";
+//        var HACKATHON_API_ADDRESS="http://hackathon.algodev.network";
+//        var HACKATHON_API_TOKEN="ef920e2e7e002953f4b29a8af720efe8e4ecc75ff102b165e0472834b25832c1";
+//        //var algodClient=AlgodClient(host: HACKATHON_API_ADDRESS, port: HACKATHON_API_PORT, token: HACKATHON_API_TOKEN)
+//        var algodClient=AlgodClient(host: PURESTAKE_ALGOD_API_TESTNET_ADDRESS, port: PURESTAKE_API_PORT, token: PURESTAKE_API_KEY)
+//        algodClient.set(key: "X-API-Key")
+//        var indexerClient=IndexerClient(host: "https://algoindexer.testnet.algoexplorerapi.io", port: PURESTAKE_API_PORT, token: "PURESTAKE_API_KEY")
+//        indexerClient.set(key:"X-API-Key");
+//        indexerClient.lookupAssetTransactions(assetId: 408947, txid: "JVTRWYHAXA7ZHGHCWMUXUPWJXDAWBZL37KHEROOB5VVVQ7D2NTTA").execute(){response in
+//            if response.isSuccessful{
+//                print("Successful get lookupAssetTransactions")
+//                print(response.data!.toJson()!)
+//         print(1)
+//            }else{
+//                print("Failed get")
+//                print(response.errorDescription)
+//            }
 //        }
-//    }
-//    dispatchMain()
 //
-//}
+//        indexerClient.lookUpAssetBalances(assetId: 408947).execute(){response in
+//            if response.isSuccessful{
+//                print("Successful get, lookUpAssetBalances")
+//                print(response.data!.toJson()!)
+//         print(1)
+//            }else{
+//                print("Failed get")
+//                print(response.errorDescription)
+//            }
+//        }
+//                }
+//        dispatchMain()
+//
+//
+//    }

@@ -14,9 +14,32 @@ public class LookUpApplicationLogsById{
     var applicationId:Int64
     var queryItems:[String:String]=[:]
     
-    init(client:IndexerClient,applicationId:Int64) {
+    
+
+    
+    init(client:IndexerClient,applicationId:Int64, limit:Int64? = nil, maxRound:Int64? = nil,
+         minRound:Int64? = nil, next:String? = nil, senderAddress:Address? = nil, txid:String? = nil ) {
         self.client=client
         self.applicationId = applicationId
+        if let uLimit = limit{
+            self.queryItems["limit"] = "\(uLimit)"
+        }
+        if let uMaxRound = maxRound{
+            self.queryItems["maxRound"] = "\(uMaxRound)"
+        }
+        if let uMinRound = minRound{
+            self.queryItems["minRound"] = "\(uMinRound)"
+        }
+        if let uNext = next{
+            self.queryItems["next"] = uNext
+        }
+        if let uSenderAddress = senderAddress{
+            self.queryItems["senderAddress"] = uSenderAddress.description
+        }
+        if let uTxid = txid{
+            self.queryItems["txid"] = uTxid
+        }
+        
     }
     
     public func execute( callback: @escaping (_:Response<ApplicationLogResponse>) ->Void){
@@ -49,38 +72,6 @@ public class LookUpApplicationLogsById{
     }
     }
     
-    
-  
-    public func limit(limit:Int64) ->LookUpApplicationLogsById{
-        self.queryItems["limit"] = "\(limit)"
-        return self;
-        }
-    public func maxRound(maxRound:Int64) ->LookUpApplicationLogsById{
-        self.queryItems["maxRound"] = "\(maxRound)"
-        return self;
-        }
-    
-    public func minRound(minRound:Int64) ->LookUpApplicationLogsById{
-        self.queryItems["minRound"] = "\(minRound)"
-        return self;
-        }
-    
-    public func next(next:String) ->LookUpApplicationLogsById{
-        self.queryItems["next"] = next
-        return self;
-        }
-
-    
-    public func senderAddress(senderAddress:Address) ->LookUpApplicationLogsById{
-        self.queryItems["senderAddress"] = senderAddress.description
-        return self;
-        }
-
-    public func txid(txid:String) ->LookUpApplicationLogsById{
-        self.queryItems["txid"] = txid
-        return self;
-        }
-
     
     
     internal func getRequestString(parameter:Int64)->String {
