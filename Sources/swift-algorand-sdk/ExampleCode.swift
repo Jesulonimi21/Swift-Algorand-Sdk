@@ -172,7 +172,7 @@
 ////    }
 ////}
 //
-////indexerClient.searchForAssets()/*.limit(limit:10).unit(unit:"LAT") */.assetId(assetId:14077815).execute(){ response in
+////indexerClient.searchForAssets(assetId: 408947).execute(){ response in
 ////    if response.isSuccessful{
 ////        print(response.data!.toJson()!)
 ////        print(11)
@@ -712,7 +712,7 @@
 //}
 //
 //public func testSearchForAssets(){
-//    indexerClient.searchForAssets()/*.limit(limit:10).unit(unit:"LAT") */.assetId(assetId:14077815).execute(){ response in
+//    indexerClient.searchForAssets(assetId: 408947).execute(){ response in
 //        if response.isSuccessful{
 //            print(response.data!.asset![0].params!.creator!)
 //        }else{

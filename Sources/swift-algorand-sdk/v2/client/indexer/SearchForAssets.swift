@@ -20,11 +20,32 @@ public class SearchForAssets  {
     var client:IndexerClient
     var urlComponent:URLComponents;
     var queryItems:[String:String]=[:]
-    init(client:IndexerClient) {
+    
+    init(client:IndexerClient, assetId:Int64? = nil, creator:String? = nil, limit:Int64? = nil, name:String? = nil, next:String? = nil, unit:String? = nil ) {
         self.client=client
         self.urlComponent=client.connectString()
         urlComponent.path = urlComponent.path + "/v2/assets"
-
+        if let assetid = assetId{
+            self.queryItems["asset-id"]="\(assetid)"
+        }
+        if let assetCreator = creator{
+            self.queryItems["creator"]="\(assetCreator)"
+        }
+        if let assetLimit = limit{
+            self.queryItems["limit"]="\(assetLimit)"
+        }
+        
+        if let assetName = name{
+            self.queryItems["name"]="\(assetName)"
+        }
+        
+        if let assetNext = next{
+            self.queryItems["next"]="\(assetNext)"
+        }
+        
+        if let assetUnit = unit{
+            self.queryItems["unit"]="\(assetUnit)"
+        }
     }
     public func execute( callback: @escaping (_:Response<AssetsResponse>)->Void) {
     
@@ -59,53 +80,16 @@ public class SearchForAssets  {
                         callback(customResponse)
 
         }
-        
-       
-   
-        
     }
-
-
-    
-    public func assetId(assetId:Int64)->SearchForAssets {
-        self.queryItems["assetId"]="\(assetId)"
-        return self;
-    }
-
-    public func creator(creator:String)->SearchForAssets {
-        self.queryItems["creator"]="\(creator)"
-        return self;
-    }
-
-    public func limit(limit:Int64)->SearchForAssets {
-        self.queryItems["limit"]="\(limit)"
-        return self;
-    }
-
-    public func name(name:String)->SearchForAssets {
-        self.queryItems["name"]="\(name)"
-        return self;
-    }
-
-    public func next(next:String)->SearchForAssets {
-        self.queryItems["next"]="\(next)"
-        return self;    }
-
-    public func unit(unit:String) ->SearchForAssets{
-        self.queryItems["unit"]="\(unit)"
-        return self;
-    }
-
     
     internal func getUrlComponent() ->URLComponents{
         var component=client.connectString()
         component.path = component.path + "/v2/assets"
-
 //        return component.url!.absoluteString;
         return component;
     }
     
-    func getRequestString()->String{
+     func getRequestString()->String{
         self.urlComponent.setQueryItems(with: queryItems)
         return urlComponent.url!.absoluteString;
     }

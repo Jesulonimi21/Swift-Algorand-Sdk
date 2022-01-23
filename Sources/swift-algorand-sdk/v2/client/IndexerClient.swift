@@ -46,8 +46,8 @@ public class IndexerClient {
         
     }
     
-    public func searchForAssets()->SearchForAssets{
-       return SearchForAssets(client: self)
+    public func searchForAssets( assetId:Int64? = nil, creator:String? = nil, limit:Int64? = nil, name:String? = nil, next:String? = nil, unit:String? = nil)->SearchForAssets{
+        return SearchForAssets(client: self,  assetId: assetId , creator: creator, limit: limit, name: name, next: next, unit: unit)
     }
     
     public func lookUpAssetById(id:Int64)-> LookUpAssetById{
