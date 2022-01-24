@@ -107,10 +107,80 @@ public class SearchForTransactions  {
 
         }
         
-       
-   
-        
     }
+    public func address(address:Address) ->SearchForTransactions{
+        self.queryItems["address"] = address.description
+        return self;
+        }
+
+    public func applicationId(applicationId:Int64)->SearchForTransactions {
+        self.queryItems["application-id"] = "\(applicationId)"
+            return self;
+        }
+
+    public func assetId(assetId:Int64)->SearchForTransactions {
+        self.queryItems["asset-id"]="\(assetId)"
+            return self;
+        }
+
+    public func currencyGreaterThan(currencyGreaterThan:Int64)->SearchForTransactions {
+        self.queryItems["currency-greater-than"] = "\(currencyGreaterThan)"
+            return self;
+        }
+
+    public func currencyLessThan( currencyLessThan:Int64)->SearchForTransactions {
+            self.queryItems["currency-less-than"] = "\(currencyLessThan)"
+            return self
+        }
+
+    public func excludeCloseTo(excludeCloseTo:Bool)->SearchForTransactions {
+        self.queryItems["exclude-close-to"] = "\(excludeCloseTo)"
+            return self
+        }
+
+    public func limit(limit:Int64)->SearchForTransactions {
+            self.queryItems["limit"] = "\(limit)"
+            return self
+        }
+
+    public func maxRound(maxRound:Int64) ->SearchForTransactions{
+            self.queryItems["max-round"]="\(maxRound)"
+            return self
+        }
+
+    public func minRound(minRound:Int64) ->SearchForTransactions{
+            self.queryItems["min-round"] = "\(minRound)"
+        return self
+        }
+
+    public func next(next:String)->SearchForTransactions {
+            self.queryItems["next"] = next
+            return self;
+        }
+
+    public func notePrefix(notePrefix:Data)->SearchForTransactions {
+            self.queryItems["note-prefix"] = CustomEncoder.encodeToBase64(notePrefix);
+            return self;
+        }
+
+    public func rekeyTo(rekeyTo:Bool)->SearchForTransactions {
+            self.queryItems["rekey-to"] = "\(rekeyTo)"
+            return self;
+        }
+
+    
+    public func round(round:Int64)->SearchForTransactions {
+        self.queryItems["round"] = "\(round)";
+            return self;
+        }
+
+        
+
+      
+    public func txid( txid:String)->SearchForTransactions {
+            self.queryItems["txid"] = txid
+            return self;
+        }
     
     
     internal func getUrlComponent() ->URLComponents{

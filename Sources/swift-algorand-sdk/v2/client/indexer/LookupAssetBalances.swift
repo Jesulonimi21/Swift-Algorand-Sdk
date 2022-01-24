@@ -67,7 +67,30 @@ public class LookUpAssetBalances  {
         }
     }
 
+    public func currencyGreaterThan(currencyGreaterThan:Int64)->LookUpAssetBalances {
+        self.queryItems["currency-greater-than"]="\(currencyGreaterThan)"
+        return self;
+    }
+    
+    public func currencyLessThan(currencyLessThan:Int64) ->LookUpAssetBalances{
+        self.queryItems["currency-less-than"]="\(currencyLessThan)"
+        return self;
+    }
 
+
+    public func limit(limit:Int64)->LookUpAssetBalances {
+        self.queryItems["limit"]="\(limit)"
+        return self;
+    }
+
+    public func name(round:Int64)->LookUpAssetBalances {
+        self.queryItems["round"]="\(round)"
+        return self;
+    }
+
+    public func next(next:String)->LookUpAssetBalances {
+        self.queryItems["next"]="\(next)"
+        return self;    }
 
     
     internal func getUrlComponent() ->URLComponents{

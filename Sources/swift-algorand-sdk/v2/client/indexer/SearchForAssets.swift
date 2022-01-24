@@ -82,6 +82,35 @@ public class SearchForAssets  {
         }
     }
     
+    public func assetId(assetId:Int64)->SearchForAssets {
+        self.queryItems["assetId"]="\(assetId)"
+        return self;
+    }
+
+    public func creator(creator:String)->SearchForAssets {
+        self.queryItems["creator"]="\(creator)"
+        return self;
+    }
+
+    public func limit(limit:Int64)->SearchForAssets {
+        self.queryItems["limit"]="\(limit)"
+        return self;
+    }
+
+    public func name(name:String)->SearchForAssets {
+        self.queryItems["name"]="\(name)"
+        return self;
+    }
+
+    public func next(next:String)->SearchForAssets {
+        self.queryItems["next"]="\(next)"
+        return self;    }
+
+    public func unit(unit:String) ->SearchForAssets{
+        self.queryItems["unit"]="\(unit)"
+        return self;
+    }
+    
     internal func getUrlComponent() ->URLComponents{
         var component=client.connectString()
         component.path = component.path + "/v2/assets"

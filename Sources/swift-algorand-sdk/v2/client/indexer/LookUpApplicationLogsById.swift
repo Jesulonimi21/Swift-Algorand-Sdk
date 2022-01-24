@@ -72,6 +72,36 @@ public class LookUpApplicationLogsById{
     }
     }
     
+    public func limit(limit:Int64) ->LookUpApplicationLogsById{
+        self.queryItems["limit"] = "\(limit)"
+        return self;
+        }
+    public func maxRound(maxRound:Int64) ->LookUpApplicationLogsById{
+        self.queryItems["maxRound"] = "\(maxRound)"
+        return self;
+        }
+    
+    public func minRound(minRound:Int64) ->LookUpApplicationLogsById{
+        self.queryItems["minRound"] = "\(minRound)"
+        return self;
+        }
+    
+    public func next(next:String) ->LookUpApplicationLogsById{
+        self.queryItems["next"] = next
+        return self;
+        }
+
+    
+    public func senderAddress(senderAddress:Address) ->LookUpApplicationLogsById{
+        self.queryItems["senderAddress"] = senderAddress.description
+        return self;
+        }
+
+    public func txid(txid:String) ->LookUpApplicationLogsById{
+        self.queryItems["txid"] = txid
+        return self;
+        }
+
     
     
     internal func getRequestString(parameter:Int64)->String {

@@ -79,6 +79,46 @@ public class SearchForAccounts  {
         }
 
     }
+    
+    public func applicationId(applicationId:Int64)->SearchForAccounts {
+           self.queryItems["application-id"] = "\(applicationId)"
+           return self;
+       }
+
+    public func assetId(assetId:Int64)->SearchForAccounts {
+           self.queryItems["asset-id"]="\(assetId)"
+           return self
+       }
+
+    public func authAddr(authAddr:Address) ->SearchForAccounts{
+        self.queryItems["auth-addr"]="\(authAddr.description)";
+           return self;
+       }
+
+    public func currencyGreaterThan(currencyGreaterThan:Int64)->SearchForAccounts {
+           self.queryItems["currency-greater-than"]="\(currencyGreaterThan)"
+           return self;
+       }
+
+    public func currencyLessThan(currencyLessThan:Int64) ->SearchForAccounts{
+           self.queryItems["currency-less-than"]="\(currencyLessThan)"
+           return self;
+       }
+
+    public func limit(limit:Int64) ->SearchForAccounts{
+           self.queryItems["limit"]="\(limit)"
+           return self;
+       }
+
+    public func next(next:String)->SearchForAccounts {
+           self.queryItems["next"] = next
+           return self;
+       }
+
+    public func round(round:Int64) ->SearchForAccounts{
+           self.queryItems["round"]="\(round)"
+           return self;
+       }
 
 
 
