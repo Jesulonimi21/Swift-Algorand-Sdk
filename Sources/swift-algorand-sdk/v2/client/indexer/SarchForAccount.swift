@@ -11,12 +11,41 @@ public class SearchForAccounts  {
     var client:IndexerClient
     var urlComponent:URLComponents;
     var queryItems:[String:String]=[:]
-    init(client:IndexerClient) {
+    
+    
+    init(client:IndexerClient, applicationId:Int64? = nil, assetId:Int64? = nil, authAddr:Address? = nil, currencyGreaterThan:Int64? = nil, currencyLessThan:Int64? = nil, limit:Int64? = nil, next:String? = nil, round:Int64? = nil) {
         self.client=client
         self.urlComponent=client.connectString()
         urlComponent.path = urlComponent.path + "/v2/accounts"
-
+        
+        if let uApplicationId = applicationId{
+            self.queryItems["application-id"] = "\(uApplicationId)"
+        }
+        
+        if let uAssetId = assetId{
+            self.queryItems["asset-id"]="\(assetId)"
+        }
+        if let uAuthAddr = authAddr{
+            self.queryItems["auth-addr"]="\(uAuthAddr.description)";
+        }
+        if let uCurrencyGreaterThan = currencyGreaterThan{
+            self.queryItems["currency-greater-than"]="\(uCurrencyGreaterThan)"
+        }
+        if let uCurrencyLessThan = currencyLessThan{
+            self.queryItems["currency-less-than"]="\(uCurrencyLessThan)"
+        }
+        if let uLimit = limit{
+            self.queryItems["limit"]="\(uLimit)"
+        }
+        if let uNext = next{
+            self.queryItems["next"] = uNext
+        }
+        if let uRound = round{
+            self.queryItems["round"]="\(uRound)"
+        }
     }
+    
+    
     public func execute( callback: @escaping (_:Response<AccountsResponse>)->Void) {
 
         let headers:HTTPHeaders=[client.apiKey:client.token]
@@ -47,15 +76,10 @@ public class SearchForAccounts  {
                         customResponse.setData(data:accountsResponse)
                         customResponse.setIsSuccessful(value:true)
                         callback(customResponse)
-
         }
 
-
-
-
     }
-
-
+    
     public func applicationId(applicationId:Int64)->SearchForAccounts {
            self.queryItems["application-id"] = "\(applicationId)"
            return self;
