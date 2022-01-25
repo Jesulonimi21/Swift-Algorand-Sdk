@@ -40,31 +40,30 @@ public class LookUpAssetBalances: Request {
     }
     
     @available(*, deprecated, message: "Use `init` instead")
-    public func currencyGreaterThan(currencyGreaterThan:Int64)->LookUpAssetBalances {
+    public func currencyGreaterThan(currencyGreaterThan: Int64) -> LookUpAssetBalances {
         self.queryItems["currency-greater-than"]="\(currencyGreaterThan)"
-        return self;
+        return self
     }
     
     @available(*, deprecated, message: "Use `init` instead")
-    public func currencyLessThan(currencyLessThan:Int64) ->LookUpAssetBalances{
+    public func currencyLessThan(currencyLessThan: Int64) -> LookUpAssetBalances {
         self.queryItems["currency-less-than"]="\(currencyLessThan)"
-        return self;
+        return self
     }
     
     @available(*, deprecated, message: "Use `init` instead")
-    public func limit(limit:Int64)->LookUpAssetBalances {
+    public func limit(limit: Int64) -> LookUpAssetBalances {
         self.queryItems["limit"]="\(limit)"
-        return self;
+        return self
     }
     @available(*, deprecated, message: "Use `init` instead")
-    public func name(round:Int64)->LookUpAssetBalances {
+    public func name(round: Int64) -> LookUpAssetBalances {
         self.queryItems["round"]="\(round)"
-        return self;
+        return self
     }
     @available(*, deprecated, message: "Use `init` instead")
-    public func next(next:String)->LookUpAssetBalances {
+    public func next(next: String) -> LookUpAssetBalances {
         self.queryItems["next"]="\(next)"
-        return self;
+        return self
     }
 }
-

@@ -73,7 +73,7 @@ public class SearchForAssets: Request {
     @available(*, deprecated, message: "Use `init` instead")
     public func next(next: String) -> SearchForAssets {
         self.queryItems["next"]="\(next)"
-        return self;
+        return self
     }
     
     @available(*, deprecated, message: "Use `init` instead")
