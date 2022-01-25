@@ -6,13 +6,12 @@
 //
 
 import Foundation
-public struct BlockUpgradeVote : Codable, Equatable {
-    public var upgradeApprove:Bool?
+public struct BlockUpgradeVote: Codable, Equatable {
+    public var upgradeApprove: Bool?
     public var upgradeDelay: Int64?
-    public var upgradePropose:String?
+    public var upgradePropose: String?
     
-    
-    enum CodingKeys:String,CodingKey{
+    enum CodingKeys: String, CodingKey {
         case upgradeApprove = "upgrade-approve"
         case upgradeDelay = "upgrade-delay"
         case upgradePropose = "upgrade-propose"

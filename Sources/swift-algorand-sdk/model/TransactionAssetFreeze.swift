@@ -6,13 +6,12 @@
 //
 
 import Foundation
-public struct TransactionAssetFreeze:Codable, Equatable {
-    public var address:String?;
-    public var assetId:Int64?;
-    public var newFreezeStatus:Bool?;
-
+public struct TransactionAssetFreeze: Codable, Equatable {
+    public var address: String?
+    public var assetId: Int64?
+    public var newFreezeStatus: Bool?
     
-    enum CodingKeys:String,CodingKey{
+    enum CodingKeys: String, CodingKey {
         case assetId="asset-id"
         case newFreezeStatus="new-freeze-status"
         case address="address"

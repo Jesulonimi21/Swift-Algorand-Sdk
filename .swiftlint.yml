@@ -3,9 +3,9 @@ disabled_rules: # rule identifiers to exclude from running
 - superfluous_disable_command
 opt_in_rules:
 - empty_count
-included:
-- Sources
-- Tests
+# included:
+# - Sources
+# - Tests
 excluded:
 - Carthage
 - Pods

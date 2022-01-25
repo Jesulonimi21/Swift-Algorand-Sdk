@@ -6,10 +6,10 @@
 //
 
 import Foundation
-public struct TealKeyValue:Codable, Equatable{
+public struct TealKeyValue: Codable, Equatable {
   
-    public var key:String;
+    public var key: String
   
-    public var value:TealValue;
+    public var value: TealValue
 
 }

@@ -6,13 +6,11 @@
 //
 
 import Foundation
-public struct DryrunTxnResult :Codable, Equatable {
-
+public struct DryrunTxnResult: Codable, Equatable {
   
-    public var  appCallMessages:[String]?
+    public var  appCallMessages: [String]?
 
-
-    public var appCallTrace:[DryrunState]?
+    public var appCallTrace: [DryrunState]?
     
     public var cost: Int64?
 
@@ -20,26 +18,23 @@ public struct DryrunTxnResult :Codable, Equatable {
      * Disassembled program line by line.
      */
  
-    public var disassembly:[String]?
+    public var disassembly: [String]?
 
     /**
      * Application state delta.
      */
 
-    public var globalDelta:[EvalDeltaKeyValue]?
+    public var globalDelta: [EvalDeltaKeyValue]?
 
+    public var localDeltas: [AccountStateDelta]?
 
-    public var localDeltas:[AccountStateDelta]?
-
-
-    public var  logicSigMessages:[String]?
-
+    public var  logicSigMessages: [String]?
 
     public var  logicSigTrace: [DryrunState]?
     
     public var logs: [[Int8]]?
 
-    enum CodingKeys:String,CodingKey{
+    enum CodingKeys: String, CodingKey {
         case appCallMessages = "app-call-messages"
         case disassembly = "disassembly"
         case globalDelta = "global-delta"
@@ -62,13 +57,13 @@ public struct DryrunTxnResult :Codable, Equatable {
         try container?.encode(self.appCallTrace, forKey: .appCallTrace)
         try container?.encode(self.cost, forKey: .cost)
         
-        if let logs = self.logs{
+        if let logs = self.logs {
             
-            var ULogs:[Data]=Array()
+            var ULogs: [Data]=Array()
 
-            for i in 0..<logs.count{
+            for i in 0..<logs.count {
 
-                ULogs.append(Data(CustomEncoder.convertToUInt8Array(input:logs[i])))
+                ULogs.append(Data(CustomEncoder.convertToUInt8Array(input: logs[i])))
             }
             
             try container?.encode(ULogs, forKey: .logs)
@@ -88,8 +83,8 @@ public struct DryrunTxnResult :Codable, Equatable {
         
         self.logs = Array()
          let ULogs = try? container?.decode([Data].self, forKey: .logs)
-        if let uLogs=ULogs{
-            for i in 0..<uLogs.count{
+        if let uLogs=ULogs {
+            for i in 0..<uLogs.count {
                self.logs?.append(CustomEncoder.convertToInt8Array(input: Array(ULogs![i])))
             }
         }

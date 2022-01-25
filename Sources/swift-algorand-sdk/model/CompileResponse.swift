@@ -7,6 +7,6 @@
 
 import Foundation
 public struct CompileResponse: Codable, Equatable {
-    public var result:String?
-    public var hash:String?
+    public var result: String?
+    public var hash: String?
 }

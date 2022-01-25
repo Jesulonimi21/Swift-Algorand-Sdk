@@ -6,12 +6,12 @@
 //
 
 import Foundation
-public struct EvalDeltaKeyValue : Codable, Equatable {
+public struct EvalDeltaKeyValue: Codable, Equatable {
 
-    var key:String?;
-    var value:EvalDelta?;
+    var key: String?
+    var value: EvalDelta?
 
-    enum CodingKeys:String,CodingKey {
+    enum CodingKeys: String, CodingKey {
         case key="key"
         case value="value"
     }

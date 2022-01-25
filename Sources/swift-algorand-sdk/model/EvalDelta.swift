@@ -6,13 +6,13 @@
 //
 
 import Foundation
-public struct EvalDelta : Codable, Equatable {
+public struct EvalDelta: Codable, Equatable {
  
-    var action:Int64?;
+    var action: Int64?
 
-    var bytes:String?;
+    var bytes: String?
 
-    var uint:UInt64?;
+    var uint: UInt64?
 
     init() {
     }

@@ -6,18 +6,18 @@
 //
 
 import Foundation
-public struct AccountsResponse : Codable, Equatable {
+public struct AccountsResponse: Codable, Equatable {
 
-    public var accounts:[AccountData]?
-    public var currentRound:Int64?
-    public var nextToken:String?
+    public var accounts: [AccountData]?
+    public var currentRound: Int64?
+    public var nextToken: String?
     
-    enum CodingKeys : String,CodingKey{
+    enum CodingKeys: String, CodingKey {
         case currentRound = "current-round"
         case accounts = "accounts"
         case nextToken = "next-token"
     }
-    public func toJson()->String?{
+    public func toJson() -> String? {
         var jsonencoder=JSONEncoder()
         guard let classData=try? jsonencoder.encode(self)else { return nil }
         var classString=String(data: classData, encoding: .utf8)

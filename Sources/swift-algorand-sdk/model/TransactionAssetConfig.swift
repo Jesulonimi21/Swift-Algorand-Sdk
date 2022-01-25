@@ -6,11 +6,11 @@
 //
 
 import Foundation
-public struct TransactionAssetConfig:Codable, Equatable{
-    public var assetId:Int64
-    public var assetParams:AssetParams
+public struct TransactionAssetConfig: Codable, Equatable {
+    public var assetId: Int64
+    public var assetParams: AssetParams
     
-    enum  CodingKeys:String,CodingKey{
+    enum  CodingKeys: String, CodingKey {
         case assetId="asset-id"
         case assetParams="params"
     }

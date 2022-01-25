@@ -6,16 +6,15 @@
 //
 
 import Foundation
-public struct BlockUpgradeState : Codable, Equatable {
-    public var currentProtocol:String?
-    public var nextProtocol:String?
-    public var nextProtocolApprovals:Int64?
-    public var nextProtocolSwitchOn:Int64?
+public struct BlockUpgradeState: Codable, Equatable {
+    public var currentProtocol: String?
+    public var nextProtocol: String?
+    public var nextProtocolApprovals: Int64?
+    public var nextProtocolSwitchOn: Int64?
   
-    public var nextProtocolVoteBefore:Int64?
+    public var nextProtocolVoteBefore: Int64?
     
-    
-    enum CodingKeys:String,CodingKey{
+    enum CodingKeys: String, CodingKey {
         case currentProtocol = "current-protocol"
         case nextProtocol = "next-protocol"
         case nextProtocolApprovals = "next-protocol-approvals"

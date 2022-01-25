@@ -7,11 +7,8 @@
 
 import Foundation
 public struct TealValue: Codable, Equatable {
-    public var bytes:String?
-    public var type:Int64?
-    public var uint:Int64?
-    
-    
-    
+    public var bytes: String?
+    public var type: Int64?
+    public var uint: Int64?
 
 }

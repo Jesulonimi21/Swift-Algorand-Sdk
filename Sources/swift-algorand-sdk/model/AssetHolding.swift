@@ -6,14 +6,13 @@
 //
 
 import Foundation
-public struct AssetHolding : Codable, Equatable {
-    public var amount:Int64?
-    public var assetId:Int64?
-    public var creator:String?
-    public var isFrozen:Bool?
+public struct AssetHolding: Codable, Equatable {
+    public var amount: Int64?
+    public var assetId: Int64?
+    public var creator: String?
+    public var isFrozen: Bool?
     
-    
-    enum CodingKeys:String,CodingKey{
+    enum CodingKeys: String, CodingKey {
         case amount="amount"
         case assetId="asset-id"
         case creator="creator"

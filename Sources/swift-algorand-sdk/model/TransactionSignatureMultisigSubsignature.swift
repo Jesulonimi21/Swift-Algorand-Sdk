@@ -6,11 +6,11 @@
 //
 
 import Foundation
-public struct TransactionSignatureMultisigSubsignature:Codable, Equatable {
-    public var publicKey:[Int8]?
-    public var signature:[Int8]?
+public struct TransactionSignatureMultisigSubsignature: Codable, Equatable {
+    public var publicKey: [Int8]?
+    public var signature: [Int8]?
     
-    enum CodingKeys:String,CodingKey{
+    enum CodingKeys: String, CodingKey {
         case publicKey="public-key"
         case signature="signature"
     }
@@ -23,6 +23,5 @@ public struct TransactionSignatureMultisigSubsignature:Codable, Equatable {
         self.publicKey=CustomEncoder.convertToInt8Array(input: CustomEncoder.convertBase64ToByteArray(data1: publicKeyString))
         self.signature=CustomEncoder.convertToInt8Array(input: CustomEncoder.convertBase64ToByteArray(data1: signatureString))
     }
-    
   
 }

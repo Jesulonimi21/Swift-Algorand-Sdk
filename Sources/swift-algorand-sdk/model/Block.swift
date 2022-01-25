@@ -8,21 +8,20 @@
 import Foundation
 public struct Block: Codable, Equatable {
     
-    public var genesisHash:[Int8]?
-    public var genesisId:String?
-    public var previousBlockHash:[Int8]?
-    public var rewards:BlockRewards?
-    public var round:Int64?
-    public var seed:[Int8]?
-    public var timestamp:Int64?
-    public var transactions : [TransactionData]?
+    public var genesisHash: [Int8]?
+    public var genesisId: String?
+    public var previousBlockHash: [Int8]?
+    public var rewards: BlockRewards?
+    public var round: Int64?
+    public var seed: [Int8]?
+    public var timestamp: Int64?
+    public var transactions: [TransactionData]?
     public var transactionsRoot: [Int8]?
-    public var txnCounter :Int64?
-    public var upgradeState : BlockUpgradeState?
-    public var upgradeVote : BlockUpgradeVote?
-
+    public var txnCounter: Int64?
+    public var upgradeState: BlockUpgradeState?
+    public var upgradeVote: BlockUpgradeVote?
     
-    enum CodingKeys:String,CodingKey{
+    enum CodingKeys: String, CodingKey {
     case genesisHash  = "genesis-hash"
     case genesisId  = "genesis-id"
     case previousBlockHash = "previous-block-hash"
@@ -68,7 +67,7 @@ public struct Block: Codable, Equatable {
         self.upgradeVote = try? container.decode(BlockUpgradeVote.self, forKey: .upgradeVote)
     }
     
-    public func toJson()->String?{
+    public func toJson() -> String? {
         let jsonencoder=JSONEncoder()
         let classData=try? jsonencoder.encode(self)
         let classString=String(data: classData ?? Data(), encoding: .utf8)

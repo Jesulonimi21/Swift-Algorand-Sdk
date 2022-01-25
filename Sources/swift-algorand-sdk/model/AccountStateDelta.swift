@@ -7,15 +7,15 @@
 
 import Foundation
 
-public struct AccountStateDelta : Codable, Equatable {
-    public var address:Address?;
+public struct AccountStateDelta: Codable, Equatable {
+    public var address: Address?
  
-    public  var delta:[EvalDeltaKeyValue]?;
+    public  var delta: [EvalDeltaKeyValue]?
 
     init() {
     }
     
-    enum CodingKeys:String,CodingKey{
+    enum CodingKeys: String, CodingKey {
         case address="address"
         case delta="delta"
     }

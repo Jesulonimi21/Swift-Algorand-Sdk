@@ -7,17 +7,16 @@
 
 import Foundation
 
-public struct TransactionParametersResponse:Codable, Equatable {
-
+public struct TransactionParametersResponse: Codable, Equatable {
     
-    public  var consensusVersion:String?;
-    public  var fee:Int64?;
-    public var genesisId:String?;
-    public    var lastRound:Int64?;
-    public   var minFee:Int64?;
+    public  var consensusVersion: String?
+    public  var fee: Int64?
+    public var genesisId: String?
+    public    var lastRound: Int64?
+    public   var minFee: Int64?
 
-    private var gHash64:String?
-    public var genesisHash:[Int8]? {
+    private var gHash64: String?
+    public var genesisHash: [Int8]? {
         get {
             if let gHash64 = gHash64 {
                 return CustomEncoder.convertToInt8Array(input: CustomEncoder.decodeByteFromBase64(string: gHash64))
@@ -26,7 +25,7 @@ public struct TransactionParametersResponse:Codable, Equatable {
         }
     }
     
-    enum CodingKeys:String,CodingKey{
+    enum CodingKeys: String, CodingKey {
         case consensusVersion="consensus-version"
         case fee="fee"
         case genesisId="genesis-id"
@@ -37,8 +36,8 @@ public struct TransactionParametersResponse:Codable, Equatable {
     
     init() {
     }
-    public  init(fee:Int64,genesisHash:[Int8],genesisId:String,lastRound:Int64){
-        //probably not the best solution with continuous conversion from/to base64, but guarantees compatibility with codable.
+    public  init(fee: Int64, genesisHash: [Int8], genesisId: String, lastRound: Int64) {
+        // probably not the best solution with continuous conversion from/to base64, but guarantees compatibility with codable.
         self.gHash64 = CustomEncoder.encodeToBase64(genesisHash)
         self.fee=fee
         self.lastRound=lastRound
@@ -56,7 +55,5 @@ public struct TransactionParametersResponse:Codable, Equatable {
 //        self.genesisHash=CustomEncoder.convertToInt8Array(input: CustomEncoder.convertBase64ToByteArray(data1: base64String))
 //
 //    }
-
-
   
 }

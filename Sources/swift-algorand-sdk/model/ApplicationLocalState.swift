@@ -6,15 +6,14 @@
 //
 
 import Foundation
-public struct ApplicationLocalState:Codable, Equatable {
-    public var id:Int64?
+public struct ApplicationLocalState: Codable, Equatable {
+    public var id: Int64?
 
-    public var keyValue :[TealKeyValue]?
+    public var keyValue: [TealKeyValue]?
 
-    public var schema:ApplicationStateSchema?
+    public var schema: ApplicationStateSchema?
     
-    
-    enum CodingKeys:String,CodingKey{
+    enum CodingKeys: String, CodingKey {
         case schema="schema"
         case keyValue="key-value"
         case id="id"

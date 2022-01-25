@@ -6,14 +6,13 @@
 //
 
 import Foundation
-public struct TransactionSignatureLogicsig:Codable, Equatable {
-    public var args:[[String]]?
-    public var logic:[Int8]?
-    public var multisigSignature:TransactionSignatureMultisig?
-    public var signature:[Int8]?
+public struct TransactionSignatureLogicsig: Codable, Equatable {
+    public var args: [[String]]?
+    public var logic: [Int8]?
+    public var multisigSignature: TransactionSignatureMultisig?
+    public var signature: [Int8]?
     
-    
-    enum CodingKeys:String,CodingKey{
+    enum CodingKeys: String, CodingKey {
         case args="args"
         case signature="signature"
         case logic="logic"
@@ -28,10 +27,10 @@ public struct TransactionSignatureLogicsig:Codable, Equatable {
         self.args = try? container.decode(Array.self, forKey: .args)
         self.multisigSignature = try? container.decode(TransactionSignatureMultisig.self, forKey: .multisigSignature)
         
-        if let logString = logicString{
+        if let logString = logicString {
             self.logic=CustomEncoder.convertToInt8Array(input: CustomEncoder.convertBase64ToByteArray(data1: logString))
         }
-        if let sigString = signatureString{
+        if let sigString = signatureString {
             self.signature=CustomEncoder.convertToInt8Array(input: CustomEncoder.convertBase64ToByteArray(data1: sigString))
         }
       

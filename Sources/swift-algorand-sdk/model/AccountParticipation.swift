@@ -6,22 +6,20 @@
 //
 
 import Foundation
-public struct AccountParticipation : Codable, Equatable {
-    public var selectionParticipationKey:[Int8]?
-    public var voteFirstValid:Int64?
-    public var voteKeyDilution:Int64?
-    public var voteLastValid:Int64?
-    public var voteParticipationKey:[Int8]?
+public struct AccountParticipation: Codable, Equatable {
+    public var selectionParticipationKey: [Int8]?
+    public var voteFirstValid: Int64?
+    public var voteKeyDilution: Int64?
+    public var voteLastValid: Int64?
+    public var voteParticipationKey: [Int8]?
     
-    
-    enum CodingKeys:String,CodingKey{
+    enum CodingKeys: String, CodingKey {
         case voteFirstValid = "vote-first-valid"
         case voteKeyDilution = "vote-key-dilution"
         case voteLastValid = "vote-last-valid"
         case selectionParticipationKey = "selection-participation-key"
         case voteParticipationKey = "vote-participation-key"
     }
-    
     
     public init(from decoder: Decoder) throws {
         var container =  try! decoder.container(keyedBy: CodingKeys.self)

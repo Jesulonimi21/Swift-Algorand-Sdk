@@ -6,13 +6,12 @@
 //
 
 import Foundation
-public struct PostTransactionsResponse:Codable, Equatable {
+public struct PostTransactionsResponse: Codable, Equatable {
     
-    public var txId:String
+    public var txId: String
     
-    public init(_ txId : String) {
+    public init(_ txId: String) {
         self.txId = txId
     }
-    
     
 }
