@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class BlockRewards : Codable{
+public struct BlockRewards : Codable, Equatable {
     public var feeSink:String?
     public var rewardsCalculationRound:Int64?
     public var rewardsLevel:Int64?

@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class ApplicationLogResponse: Codable{
+public struct ApplicationLogResponse: Codable, Equatable {
     var applicationId: Int64?
     var currentRound: Int64?
     var logData: [ApplicationLogData]?

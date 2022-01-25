@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class TransactionsResponse :  Codable {
+public struct TransactionsResponse :  Codable, Equatable {
     public var currentRound:Int64?;
     public var nextToken:String?;
     public var transactions:[TransactionData]?
@@ -17,14 +17,11 @@ public class TransactionsResponse :  Codable {
         case nextToken="next-token"
         case transactions="transactions"
     }
-    
-    init() {
-    }
-    
+
     public func toJson()->String?{
         var jsonencoder=JSONEncoder()
-        var classData=try! jsonencoder.encode(self)
-        var classString=String(data: classData, encoding: .utf8)
+        var classData=try? jsonencoder.encode(self)
+        var classString=String(data: classData ?? Data(), encoding: .utf8)
        return classString
     }
 

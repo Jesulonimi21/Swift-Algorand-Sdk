@@ -12,7 +12,7 @@ import Alamofire
 public struct GetBlock: Request {
     public typealias ResponseType = BlockResponse
     
-    public let client: AlgodClient
+    public let client: HTTPClient
     public let parameters: RequestParameters
     
     init(client: AlgodClient, round: Int64) {

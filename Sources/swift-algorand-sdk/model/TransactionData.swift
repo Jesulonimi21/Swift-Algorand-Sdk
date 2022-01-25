@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class TransactionData:Codable{
+public struct TransactionData: Codable, Equatable {
 
 public var applicationTransaction:TransactionApplication?
    

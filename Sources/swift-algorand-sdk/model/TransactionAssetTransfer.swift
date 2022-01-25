@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class TransactionAssetTranser:Codable{
+public struct TransactionAssetTranser:Codable, Equatable{
    
     public var amount:Int64?
     

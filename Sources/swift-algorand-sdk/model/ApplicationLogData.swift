@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class ApplicationLogData: Codable{
+public struct ApplicationLogData: Codable, Equatable {
     
     var logs: [[Int8]]?
     var txid: String?
@@ -17,7 +17,7 @@ public class ApplicationLogData: Codable{
         case txid = "txid"
     }
     
-    public required init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         var container = try? decoder.container(keyedBy: CodingKeys.self)
         self.txid=try? container?.decode(String.self, forKey: .txid)
         var base64Encoded = try? container?.decode([String].self, forKey: .logs)

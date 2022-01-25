@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class AssetBalancesResponse:Codable{
+public struct AssetBalancesResponse:Codable, Equatable {
     public var balances:[MiniAssetHolding]?
     public var currentRound:Int64;
     public var nextToken:String;

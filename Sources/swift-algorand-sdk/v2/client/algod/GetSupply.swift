@@ -10,7 +10,7 @@ import Alamofire
 
 public struct GetSupply: Request {
     public typealias ResponseType = SupplyResponse
-    public let client: AlgodClient
+    public let client: HTTPClient
     public let parameters: RequestParameters
     
     init(client: AlgodClient) {

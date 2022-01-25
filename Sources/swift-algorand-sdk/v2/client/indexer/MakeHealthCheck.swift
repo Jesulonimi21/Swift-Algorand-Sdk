@@ -7,50 +7,62 @@
 
 import Foundation
 import Alamofire
-public class MakeHealthCheck  {
-    var client:IndexerClient
+
+
+public class MakeHealthCheck: Request  {
+    public typealias ResponseType = HealthCheck
+    public let client: HTTPClient
+    public let parameters: RequestParameters
     init(client:IndexerClient) {
         self.client=client
-    }
-//
-    public func execute( callback: @escaping (_:Response<HealthCheck>)->Void) {
-    
-        let headers:HTTPHeaders=[client.apiKey:client.token]
-//        print(getRequestString())
-        var request=AF.request(getRequestString(), method: .get, headers: headers,requestModifier: { $0.timeoutInterval = 120 })
-        var customResponse:Response<HealthCheck>=Response()
-      request.responseDecodable(of: HealthCheck.self){ (response) in
-        if(response.error != nil){
-            customResponse.setIsSuccessful(value:false)
-            var errorDescription=String(data:response.data ?? Data(response.error!.errorDescription!.utf8),encoding: .utf8)
-            customResponse.setErrorDescription(errorDescription:errorDescription!)
-            callback(customResponse)
-            if(response.data != nil){
-                if let message = String(data: response.data!,encoding: .utf8){
-                    var errorDic = try! JSONSerialization.jsonObject(with: message.data, options: []) as? [String: Any]
-                    customResponse.errorMessage = errorDic!["message"] as! String
-                }
-
-            }
-            return
-        }
-                        let data=response.value
-                        var healthCheck:HealthCheck=data!
-                        customResponse.setData(data:healthCheck)
-                        customResponse.setIsSuccessful(value:true)
-                        callback(customResponse)
-             
-        }
-   
-        
-    }
-
-
-    internal func getRequestString() ->String{
-        var component=client.connectString()
-        component.path = component.path + "/health"
-      
-
-        return component.url!.absoluteString;
+        parameters = .init(path: "/health")
     }
 }
+//
+//public class MakeHealthCheck  {
+//    var client:IndexerClient
+//    init(client:IndexerClient) {
+//        self.client=client
+//    }
+////
+//    public func execute( callback: @escaping (_:Response<HealthCheck>)->Void) {
+//
+//        let headers:HTTPHeaders=[client.apiKey:client.token]
+////        print(getRequestString())
+//        var request=AF.request(getRequestString(), method: .get, headers: headers,requestModifier: { $0.timeoutInterval = 120 })
+//        var customResponse:Response<HealthCheck>=Response()
+//      request.responseDecodable(of: HealthCheck.self){ (response) in
+//        if(response.error != nil){
+//            customResponse.setIsSuccessful(value:false)
+//            var errorDescription=String(data:response.data ?? Data(response.error!.errorDescription!.utf8),encoding: .utf8)
+//            customResponse.setErrorDescription(errorDescription:errorDescription!)
+//            callback(customResponse)
+//            if(response.data != nil){
+//                if let message = String(data: response.data!,encoding: .utf8){
+//                    var errorDic = try! JSONSerialization.jsonObject(with: message.data, options: []) as? [String: Any]
+//                    customResponse.errorMessage = errorDic!["message"] as! String
+//                }
+//
+//            }
+//            return
+//        }
+//                        let data=response.value
+//                        var healthCheck:HealthCheck=data!
+//                        customResponse.setData(data:healthCheck)
+//                        customResponse.setIsSuccessful(value:true)
+//                        callback(customResponse)
+//
+//        }
+//
+//
+//    }
+//
+//
+//    internal func getRequestString() ->String{
+//        var component=client.connectString()
+//        component.path = component.path + "/health"
+//
+//
+//        return component.url!.absoluteString;
+//    }
+//}

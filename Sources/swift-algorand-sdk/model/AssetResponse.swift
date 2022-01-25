@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class  AssetResponse:Codable{
+public struct  AssetResponse:Codable, Equatable {
     public var asset:AssetData?;
     public var currentRound:Int64;
 

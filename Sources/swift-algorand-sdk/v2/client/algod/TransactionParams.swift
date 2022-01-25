@@ -10,7 +10,7 @@ import Alamofire
 
 public struct TransactionParams: Request {
     public typealias ResponseType = TransactionParametersResponse
-    public let client: AlgodClient
+    public let client: HTTPClient
     public let parameters: RequestParameters
     
     init(client: AlgodClient) {

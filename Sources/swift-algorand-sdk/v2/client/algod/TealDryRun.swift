@@ -10,7 +10,7 @@ import Alamofire
 
 public class TealDryRun: Request {
     public typealias ResponseType = DryrunResponse
-    public let client:AlgodClient
+    public let client:HTTPClient
     private(set) public var parameters: RequestParameters
     
 

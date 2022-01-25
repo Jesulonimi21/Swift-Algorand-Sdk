@@ -1,0 +1,213 @@
+//
+//  File.swift
+//
+//
+//  Created by Jesulonimi on 2/26/21.
+//
+
+import Foundation
+import Alamofire
+
+public class SearchForAccounts: Request {
+    public typealias ResponseType = AccountsResponse
+    public let client: HTTPClient
+    public private(set) var parameters: RequestParameters
+    
+    private var queryItems: [String: String] = [:] {
+        didSet { parameters.queryParameters = queryItems }
+    }
+    
+    init(client:IndexerClient,
+         applicationId:Int64? = nil,
+         assetId:Int64? = nil,
+         authAddr:Address? = nil,
+         currencyGreaterThan:Int64? = nil,
+         currencyLessThan:Int64? = nil,
+         limit:Int64? = nil,
+         next:String? = nil,
+         round:Int64? = nil) {
+        self.client = client
+        parameters = .init(path: "/v2/accounts")
+        let query: [String: CustomStringConvertible?] = ["application-id": applicationId,
+                                                        "asset-id": assetId,
+                                                         "auth-addr": authAddr?.description,
+                                                        "currency-greater-than": currencyGreaterThan,
+                                                        "currency-less-than": currencyLessThan,
+                                                        "limit": limit,
+                                                        "next": next,
+                                                        "round": round
+            ]
+        
+        queryItems = query.compactMapValues { $0?.description }
+    }
+    
+    public func applicationId(applicationId:Int64)->SearchForAccounts {
+           self.queryItems["application-id"] = "\(applicationId)"
+           return self;
+       }
+
+    public func assetId(assetId:Int64)->SearchForAccounts {
+           self.queryItems["asset-id"]="\(assetId)"
+           return self
+       }
+
+    public func authAddr(authAddr:Address) ->SearchForAccounts{
+        self.queryItems["auth-addr"]="\(authAddr.description)";
+           return self;
+       }
+
+    public func currencyGreaterThan(currencyGreaterThan:Int64)->SearchForAccounts {
+           self.queryItems["currency-greater-than"]="\(currencyGreaterThan)"
+           return self;
+       }
+
+    public func currencyLessThan(currencyLessThan:Int64) ->SearchForAccounts{
+           self.queryItems["currency-less-than"]="\(currencyLessThan)"
+           return self;
+       }
+
+    public func limit(limit:Int64) ->SearchForAccounts{
+           self.queryItems["limit"]="\(limit)"
+           return self;
+       }
+
+    public func next(next:String)->SearchForAccounts {
+           self.queryItems["next"] = next
+           return self;
+       }
+
+    public func round(round:Int64) ->SearchForAccounts{
+           self.queryItems["round"]="\(round)"
+           return self;
+       }
+
+}
+//
+//public class SearchForAccounts  {
+//    var client:IndexerClient
+//    var urlComponent:URLComponents;
+//    var queryItems:[String:String]=[:]
+//
+//
+//    init(client:IndexerClient, applicationId:Int64? = nil, assetId:Int64? = nil, authAddr:Address? = nil, currencyGreaterThan:Int64? = nil, currencyLessThan:Int64? = nil, limit:Int64? = nil, next:String? = nil, round:Int64? = nil) {
+//        self.client=client
+//        self.urlComponent=client.connectString()
+//        urlComponent.path = urlComponent.path + "/v2/accounts"
+//
+//        if let uApplicationId = applicationId{
+//            self.queryItems["application-id"] = "\(uApplicationId)"
+//        }
+//
+//        if let uAssetId = assetId{
+//            self.queryItems["asset-id"]="\(assetId)"
+//        }
+//        if let uAuthAddr = authAddr{
+//            self.queryItems["auth-addr"]="\(uAuthAddr.description)";
+//        }
+//        if let uCurrencyGreaterThan = currencyGreaterThan{
+//            self.queryItems["currency-greater-than"]="\(uCurrencyGreaterThan)"
+//        }
+//        if let uCurrencyLessThan = currencyLessThan{
+//            self.queryItems["currency-less-than"]="\(uCurrencyLessThan)"
+//        }
+//        if let uLimit = limit{
+//            self.queryItems["limit"]="\(uLimit)"
+//        }
+//        if let uNext = next{
+//            self.queryItems["next"] = uNext
+//        }
+//        if let uRound = round{
+//            self.queryItems["round"]="\(uRound)"
+//        }
+//    }
+//
+//
+//    public func execute( callback: @escaping (_:Response<AccountsResponse>)->Void) {
+//
+//        let headers:HTTPHeaders=[client.apiKey:client.token]
+////        print(getRequestString())
+//        var request=AF.request(getRequestString(), method: .get, headers: headers,requestModifier: { $0.timeoutInterval = 120 })
+////        request.responseJSON(){response in
+////            debugPrint(response.value)
+////        }
+//        var customResponse:Response<AccountsResponse>=Response()
+//      request.responseDecodable(of: AccountsResponse.self){ (response) in
+//        if(response.error != nil){
+//            customResponse.setIsSuccessful(value:false)
+//            var errorDescription=String(data:response.data ?? Data(response.error!.errorDescription!.utf8),encoding: .utf8)
+//            customResponse.setErrorDescription(errorDescription:errorDescription!)
+//            callback(customResponse)
+//            if(response.data != nil){
+//                if let message = String(data: response.data!,encoding: .utf8){
+//                    var errorDic = try! JSONSerialization.jsonObject(with: message.data, options: []) as? [String: Any]
+//                    customResponse.errorMessage = errorDic!["message"] as! String
+//
+//                }
+//
+//            }
+//            return
+//        }
+//                        let data=response.value
+//                        var accountsResponse:AccountsResponse=data!
+//                        customResponse.setData(data:accountsResponse)
+//                        customResponse.setIsSuccessful(value:true)
+//                        callback(customResponse)
+//        }
+//
+//    }
+//
+//    public func applicationId(applicationId:Int64)->SearchForAccounts {
+//           self.queryItems["application-id"] = "\(applicationId)"
+//           return self;
+//       }
+//
+//    public func assetId(assetId:Int64)->SearchForAccounts {
+//           self.queryItems["asset-id"]="\(assetId)"
+//           return self
+//       }
+//
+//    public func authAddr(authAddr:Address) ->SearchForAccounts{
+//        self.queryItems["auth-addr"]="\(authAddr.description)";
+//           return self;
+//       }
+//
+//    public func currencyGreaterThan(currencyGreaterThan:Int64)->SearchForAccounts {
+//           self.queryItems["currency-greater-than"]="\(currencyGreaterThan)"
+//           return self;
+//       }
+//
+//    public func currencyLessThan(currencyLessThan:Int64) ->SearchForAccounts{
+//           self.queryItems["currency-less-than"]="\(currencyLessThan)"
+//           return self;
+//       }
+//
+//    public func limit(limit:Int64) ->SearchForAccounts{
+//           self.queryItems["limit"]="\(limit)"
+//           return self;
+//       }
+//
+//    public func next(next:String)->SearchForAccounts {
+//           self.queryItems["next"] = next
+//           return self;
+//       }
+//
+//    public func round(round:Int64) ->SearchForAccounts{
+//           self.queryItems["round"]="\(round)"
+//           return self;
+//       }
+//
+//
+//
+//    internal func getUrlComponent() ->URLComponents{
+//        var component=client.connectString()
+//        component.path = component.path + "/v2/accounts"
+//
+////        return component.url!.absoluteString;
+//        return component;
+//    }
+//
+//    func getRequestString()->String{
+//        self.urlComponent.setQueryItems(with: queryItems)
+//        return urlComponent.url!.absoluteString;
+//    }
+//}

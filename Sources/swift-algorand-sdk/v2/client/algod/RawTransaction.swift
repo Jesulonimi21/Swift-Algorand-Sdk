@@ -10,7 +10,7 @@ import Alamofire
 
 public class RawTransaction: Request {
     public typealias ResponseType = PostTransactionsResponse
-    public let client: AlgodClient
+    public let client: HTTPClient
     private(set) public var parameters: RequestParameters
     
     @available(*, deprecated, message: "Use `init(client: AlgodClient, rawtxn: [Int8])` instead")

@@ -10,7 +10,7 @@ import Foundation
 
 public struct GetAssetById: Request {
     public typealias ResponseType = AssetData
-    public let client: AlgodClient
+    public let client: HTTPClient
     public let parameters: RequestParameters
     init(client: AlgodClient, assetId: Int64) {
         self.client = client

@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class ApplicationsResponse : Codable{
+public struct ApplicationsResponse : Codable, Equatable {
     public var applications: [Application]?
     public var currentRound: Int64?
     public var nextToken : String?

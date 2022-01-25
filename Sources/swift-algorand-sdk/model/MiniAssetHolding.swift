@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class MiniAssetHolding:Codable{
+public struct MiniAssetHolding:Codable, Equatable {
     public var address:Address?;
     public var amount:Int64?;
     public var isFrozen:Int?;
@@ -17,12 +17,12 @@ public class MiniAssetHolding:Codable{
         case isFrozen="is-frozen"
     }
     
-    public required init(from decoder: Decoder) throws {
-        var container = try?  decoder.container(keyedBy: CodingKeys.self)
-        var base32Addr=try? container!.decode(String.self, forKey: .address)
+    public init(from decoder: Decoder) throws {
+        var container = try  decoder.container(keyedBy: CodingKeys.self)
+        var base32Addr=try?  container.decode(String.self, forKey: .address)
         self.address = try? Address(base32Addr!);
-        self.amount = try? container!.decode(Int64.self, forKey: .amount)
-        self.isFrozen=try? container!.decode(Int.self, forKey: .isFrozen)
+        self.amount = try? container.decode(Int64.self, forKey: .amount)
+        self.isFrozen=try? container.decode(Int.self, forKey: .isFrozen)
     }
     
     

@@ -11,7 +11,7 @@ import Alamofire
 
 public struct GetApplicationById: Request {
     public typealias ResponseType = Application
-    public let client: AlgodClient
+    public let client: HTTPClient
     public let parameters: RequestParameters
     
     init(client: AlgodClient, applicationId: Int64) {

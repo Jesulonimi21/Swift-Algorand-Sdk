@@ -11,7 +11,7 @@ import Alamofire
 public struct AlgodHealthCheck: Request {
     
     public typealias ResponseType = String?
-    public let client: AlgodClient
+    public let client: HTTPClient
     public let parameters: RequestParameters
     
     init(client: AlgodClient) {

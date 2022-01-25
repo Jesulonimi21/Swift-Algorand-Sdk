@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class AccountsResponse : Codable {
+public struct AccountsResponse : Codable, Equatable {
 
     public var accounts:[AccountData]?
     public var currentRound:Int64?

@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class BlockUpgradeState : Codable{
+public struct BlockUpgradeState : Codable, Equatable {
     public var currentProtocol:String?
     public var nextProtocol:String?
     public var nextProtocolApprovals:Int64?

@@ -12,7 +12,7 @@ import Alamofire
 public class GetPendingTransactions: Request {
     
     public typealias ResponseType = PendingTransactionResponse
-    public let client: AlgodClient
+    public let client: HTTPClient
     public let parameters: RequestParameters
     
     init(client: AlgodClient) {

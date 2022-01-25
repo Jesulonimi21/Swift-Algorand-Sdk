@@ -6,7 +6,8 @@
 //
 
 import Foundation
-public class Block: Codable{
+public struct Block: Codable, Equatable {
+    
     public var genesisHash:[Int8]?
     public var genesisId:String?
     public var previousBlockHash:[Int8]?
@@ -36,37 +37,67 @@ public class Block: Codable{
     case upgradeVote = "upgrade-vote"
     }
     
-    public required init(from decoder: Decoder) throws {
-        var container = try! decoder.container(keyedBy: CodingKeys.self)
-        var genHashString = try! container.decode(String.self, forKey: .genesisHash)
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        if let genHashString = try? container.decode(String.self, forKey: .genesisHash) {
         self.genesisHash=CustomEncoder.convertToInt8Array(input: CustomEncoder.convertBase64ToByteArray(data1: genHashString))
-        self.genesisId = try! container.decode(String.self, forKey: .genesisId)
-        var previousBlockHashString = try! container.decode(String.self, forKey: .previousBlockHash)
+        }
+        self.genesisId = try? container.decode(String.self, forKey: .genesisId)
+        if let previousBlockHashString = try? container.decode(String.self, forKey: .previousBlockHash) {
         self.previousBlockHash=CustomEncoder.convertToInt8Array(input: CustomEncoder.convertBase64ToByteArray(data1: previousBlockHashString))
-        self.rewards = try! container.decode(BlockRewards.self, forKey: .rewards)
-        self.round = try! container.decode(Int64.self, forKey: .round)
+        }
+        self.rewards = try? container.decode(BlockRewards.self, forKey: .rewards)
+        self.round = try? container.decode(Int64.self, forKey: .round)
      
-        var seedString = try! container.decode(String.self, forKey: .seed)
+        if let seedString = try? container.decode(String.self, forKey: .seed) {
         self.seed=CustomEncoder.convertToInt8Array(input: CustomEncoder.convertBase64ToByteArray(data1: seedString))
+        }
         
-        self.timestamp = try! container.decode(Int64.self, forKey: .timestamp)
+        self.timestamp = try? container.decode(Int64.self, forKey: .timestamp)
         
-        self.transactions = try! container.decode([TransactionData].self, forKey: .transactions)
+        self.transactions = try? container.decode([TransactionData].self, forKey: .transactions)
         
-        var transactionRootString = try! container.decode(String.self, forKey: .transactionsRoot)
+        if let transactionRootString = try? container.decode(String.self, forKey: .transactionsRoot) {
         self.transactionsRoot=CustomEncoder.convertToInt8Array(input: CustomEncoder.convertBase64ToByteArray(data1: transactionRootString))
+        }
         
-        self.txnCounter = try! container.decode(Int64.self, forKey: .txnCounter)
+        self.txnCounter = try? container.decode(Int64.self, forKey: .txnCounter)
         
-        self.upgradeState =  try! container.decode(BlockUpgradeState.self, forKey: .upgradeState)
+        self.upgradeState =  try? container.decode(BlockUpgradeState.self, forKey: .upgradeState)
         
-        self.upgradeVote = try! container.decode(BlockUpgradeVote.self, forKey: .upgradeVote)
+        self.upgradeVote = try? container.decode(BlockUpgradeVote.self, forKey: .upgradeVote)
     }
     
     public func toJson()->String?{
-        var jsonencoder=JSONEncoder()
-        var classData=try! jsonencoder.encode(self)
-        var classString=String(data: classData, encoding: .utf8)
+        let jsonencoder=JSONEncoder()
+        let classData=try? jsonencoder.encode(self)
+        let classString=String(data: classData ?? Data(), encoding: .utf8)
        return classString
+    }
+    
+    init(genesisHash: [Int8]? = nil,
+                  genesisId: String? = nil,
+                  previousBlockHash: [Int8]? = nil,
+                  rewards: BlockRewards? = nil,
+                  round: Int64? = nil,
+                  seed: [Int8]? = nil,
+                  timestamp: Int64? = nil,
+                  transactions: [TransactionData]? = nil,
+                  transactionsRoot: [Int8]? = nil,
+                  txnCounter: Int64? = nil,
+                  upgradeState: BlockUpgradeState? = nil,
+                  upgradeVote: BlockUpgradeVote? = nil) {
+        self.genesisHash = genesisHash
+        self.genesisId = genesisId
+        self.previousBlockHash = previousBlockHash
+        self.rewards = rewards
+        self.round = round
+        self.seed = seed
+        self.timestamp = timestamp
+        self.transactions = transactions
+        self.transactionsRoot = transactionsRoot
+        self.txnCounter = txnCounter
+        self.upgradeState = upgradeState
+        self.upgradeVote = upgradeVote
     }
 }

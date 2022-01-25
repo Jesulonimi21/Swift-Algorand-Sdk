@@ -11,7 +11,7 @@ import Alamofire
 
 public class GetProof: Request {
     public typealias ResponseType = ProofResponse
-    public let client:AlgodClient
+    public let client: HTTPClient
     public let parameters: RequestParameters
     
     init(client: AlgodClient, round: Int64, txId: String) {

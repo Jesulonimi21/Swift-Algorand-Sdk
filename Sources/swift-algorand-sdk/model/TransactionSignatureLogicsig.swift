@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class TransactionSignatureLogicsig:Codable{
+public struct TransactionSignatureLogicsig:Codable, Equatable {
     public var args:[[String]]?
     public var logic:[Int8]?
     public var multisigSignature:TransactionSignatureMultisig?
@@ -20,7 +20,7 @@ public class TransactionSignatureLogicsig:Codable{
         case multisigSignature="multisig-signature"
     }
     
-    public required init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         var container = try! decoder.container(keyedBy: CodingKeys.self)
         var logicString = try? container.decode(String.self, forKey: .logic)
         var signatureString = try? container.decode(String.self, forKey: .signature)

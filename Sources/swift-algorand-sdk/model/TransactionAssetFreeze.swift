@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class TransactionAssetFreeze:Codable{
+public struct TransactionAssetFreeze:Codable, Equatable {
     public var address:String?;
     public var assetId:Int64?;
     public var newFreezeStatus:Bool?;

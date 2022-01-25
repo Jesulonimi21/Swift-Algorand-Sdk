@@ -11,7 +11,7 @@ import Alamofire
 public class TealCompile: Request {
     public typealias ResponseType = CompileResponse
     
-    public let client: AlgodClient
+    public let client: HTTPClient
     public private(set) var parameters: RequestParameters
     
     init(client: AlgodClient, source: [Int8]) {

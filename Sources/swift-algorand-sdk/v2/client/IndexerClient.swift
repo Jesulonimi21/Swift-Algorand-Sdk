@@ -6,23 +6,38 @@
 //
 
 import Foundation
+import Alamofire
 
-public class IndexerClient {
+public class IndexerClient: HTTPClient {
+    
+    
     var host:String
     var port:String
     var token:String
-    var apiKey="X-Algo-API-Token"//X-API-Key
-    public init(host:String,  port:String,  token:String) {
+    var apiKey: String//X-API-Key
+    public let session: Session
+    
+    public var defaultHTTPHeaders: [String : String] {
+        [apiKey: token]
+    }
+    
+    public init(host:String,
+                port:String,
+                apiKey: String = "X-Algo-API-Token",
+                token:String,
+                session: Alamofire.Session = .default) {
         self.host=host
+        self.apiKey = apiKey
+        self.session = session
         self.port=port
         self.token=token
     }
     
-    func connectString()->URLComponents{
-        var url=URL(string: host)!
-        var components=URLComponents(url: url, resolvingAgainstBaseURL: false)
-        components!.port=Int(self.port)
-        return components!
+    public func connectString() -> URLComponents{
+        let url = URL(string: host) ?? URL(fileURLWithPath: "")
+        var components = URLComponents(url: url, resolvingAgainstBaseURL: false) ?? .init()
+        components.port = Int(port)
+        return components
     }
     
     public func makeHealthCheck()->MakeHealthCheck{
@@ -83,6 +98,7 @@ public class IndexerClient {
         return LookUpAssetTransactions (client: self, assetId: assetId, address: address, currencyGreaterThan: currencyGreaterThan, currencyLessThan: currencyLessThan, excludeCloseTo: excludeCloseTo, limit: limit, maxRound: maxRound, minRound: minRound,next: next,notePrefix: notePrefix, rekeyTo: rekeyTo, round: round, txid: txid)
     }
     
+    @available(*, deprecated, message: "Use constructor (init) method to set the key")
     public func set(key:String){
         self.apiKey=key
     }

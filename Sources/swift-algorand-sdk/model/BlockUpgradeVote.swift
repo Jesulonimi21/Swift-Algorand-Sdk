@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class BlockUpgradeVote : Codable{
+public struct BlockUpgradeVote : Codable, Equatable {
     public var upgradeApprove:Bool?
     public var upgradeDelay: Int64?
     public var upgradePropose:String?

@@ -13,7 +13,7 @@ public struct PendingTransactionInformation: Request{
   
     public typealias ResponseType = PendingTransactionResponse
     
-    public let client: AlgodClient
+    public let client: HTTPClient
     
     public let parameters: RequestParameters
 

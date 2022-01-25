@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class TransactionAssetConfig:Codable{
+public struct TransactionAssetConfig:Codable, Equatable{
     public var assetId:Int64
     public var assetParams:AssetParams
     

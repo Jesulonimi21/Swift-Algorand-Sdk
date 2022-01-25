@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class TransactionSignatureMultisig:Codable{
+public struct TransactionSignatureMultisig:Codable, Equatable {
  
     public  var subsignature:[TransactionSignatureMultisigSubsignature]?
     public var threshold:Int64?

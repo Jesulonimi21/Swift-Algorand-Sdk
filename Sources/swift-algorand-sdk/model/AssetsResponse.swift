@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class  AssetsResponse:Codable{
+public struct  AssetsResponse:Codable, Equatable {
     public var asset:[AssetData]?;
     public var currentRound:Int64;
     public var nextToken:String?
@@ -18,8 +18,8 @@ public class  AssetsResponse:Codable{
     }
     public func toJson()->String?{
         var jsonencoder=JSONEncoder()
-        var classData=try! jsonencoder.encode(self)
-        var classString=String(data: classData, encoding: .utf8)
+        var classData=try? jsonencoder.encode(self)
+        var classString=String(data: classData ?? Data(), encoding: .utf8)
        return classString
     }
 }

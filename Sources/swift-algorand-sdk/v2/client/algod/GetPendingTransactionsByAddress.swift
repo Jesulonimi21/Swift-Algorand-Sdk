@@ -11,7 +11,7 @@ import Alamofire
 public class GetPendingTransactionsByAddress: Request {
     
     public typealias ResponseType = PendingTransactionResponse
-    public let client: AlgodClient
+    public let client: HTTPClient
     public let parameters: RequestParameters
     
     init(client: AlgodClient, address: Address) {

@@ -11,7 +11,7 @@ import Alamofire
 
 public struct WaitForBlock: Request {
     public typealias ResponseType = NodeStatusResponse
-    public let client: AlgodClient
+    public let client: HTTPClient
     public let parameters: RequestParameters
     
     init(client:AlgodClient,round:Int64) {

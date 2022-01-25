@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class TransactionApplication:Codable{
+public struct TransactionApplication:Codable, Equatable {
     public var accounts:[String]?
     public var applicationArgs:[String]?
     public var applicationId:Int64?

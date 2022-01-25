@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class StateSchema: Codable {
+public struct StateSchema: Codable, Equatable {
    
     var numUint:Int64=0;
 
@@ -29,7 +29,7 @@ public class StateSchema: Codable {
         self.numByteSlice = numByteSlice;
     }
 
- public convenience init( numUint:Int64,  numByteSlice:Int64) {
+ public init( numUint:Int64,  numByteSlice:Int64) {
         self.init(numUint,numByteSlice);
     }
     

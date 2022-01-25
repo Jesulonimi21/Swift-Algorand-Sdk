@@ -8,9 +8,15 @@
 import Foundation
 import Alamofire
 
+public protocol HTTPClient {
+    func connectString() -> URLComponents
+    var defaultHTTPHeaders: [String: String] { get }
+    var session: Alamofire.Session { get }
+}
+
 public protocol Request {
     associatedtype ResponseType: Codable
-    var client: AlgodClient { get }
+    var client: HTTPClient { get }
     var parameters: RequestParameters { get }
     func execute(callback: @escaping (_:Response<ResponseType>) -> Void)
 }
@@ -20,7 +26,7 @@ public struct RequestParameters {
     let headers: [String: String]
     let path: String
     let method: HTTPMethod
-    let queryParameters: [String: String]
+    var queryParameters: [String: String]
     let bodyParameters: [String: Any]?
     let encoding: ParameterEncoding
     
@@ -38,11 +44,11 @@ public struct RequestParameters {
         self.encoding = encoding
     }
     
-    func request(from client: AlgodClient) -> DataRequest {
+    func request(from client: HTTPClient) -> DataRequest {
         var components = client.connectString()
         components.path += self.path
         components.queryItems = queryParameters.map { URLQueryItem(name: $0.key, value: $0.value) }
-        let headers = self.headers.merging([client.apiKey: client.token]) { local, global in global  }
+        let headers = self.headers.merging(client.defaultHTTPHeaders) { local, global in global  }
         return client.session.request(components.url?.absoluteString ?? "",
                           method: method,
                           parameters: bodyParameters,

@@ -11,7 +11,7 @@ import Alamofire
 
 public struct GetVersion: Request {
     public typealias ResponseType = Version
-    public let client: AlgodClient
+    public let client: HTTPClient
     public var parameters: RequestParameters
     init(client: AlgodClient) {
         self.client = client

@@ -8,20 +8,30 @@
 import Foundation
 import Alamofire
 
-public class AlgodClient {
+public class AlgodClient: HTTPClient {
     var host:String
     var port:String
     var token:String
-    var apiKey="X-Algo-API-Token"
-    let session: Alamofire.Session
-    public init(host:String, port:String, token:String, session: Session = .default) {
+    var apiKey: String
+    public let session: Alamofire.Session
+    
+    public var defaultHTTPHeaders: [String : String] {
+        [apiKey: token]
+    }
+    
+    public init(host:String,
+                port:String,
+                apiKey: String = "X-Algo-API-Token",
+                token:String,
+                session: Session = .default) {
         self.host=host
         self.port=port
         self.token=token
         self.session = session
+        self.apiKey = apiKey
     }
     
-    func connectString() -> URLComponents{
+    public func connectString() -> URLComponents{
         let url = URL(string: host) ?? URL(fileURLWithPath: "")
         var components = URLComponents(url: url, resolvingAgainstBaseURL: false) ?? .init()
         components.port = Int(port)
@@ -108,6 +118,7 @@ public class AlgodClient {
         return GetPendingTransactionsByAddress(client: self,address: address)
     }
     
+    @available(*, deprecated, message: "Use constructor (init) method to set the key")
     public func set(key:String){
         self.apiKey=key
     }

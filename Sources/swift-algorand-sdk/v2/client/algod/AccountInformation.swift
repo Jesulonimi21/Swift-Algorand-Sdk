@@ -11,7 +11,7 @@ import Alamofire
 
 public struct AccountInformation: Request {
     public typealias ResponseType = AccountData
-    public let client: AlgodClient
+    public let client: HTTPClient
     public let parameters: RequestParameters
     
     init(client: AlgodClient, address: String) {
