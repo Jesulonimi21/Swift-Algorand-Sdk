@@ -12,12 +12,52 @@ public class LookUpAssetTransactions  {
     var urlComponent:URLComponents;
     var queryItems:[String:String]=[:]
     var assetId:Int64
-    init(client:IndexerClient,assetId:Int64) {
+    
+    
+    
+    init(client:IndexerClient, assetId:Int64, address:Address? = nil, currencyGreaterThan:Int64? = nil, currencyLessThan:Int64? = nil,
+         excludeCloseTo:Bool? = nil, limit:Int64? = nil, maxRound:Int64? = nil, minRound:Int64? = nil, next:String? = nil, notePrefix:Data? = nil, rekeyTo:Bool? = nil, round:Int64? = nil, txid:String? = nil  ) {
         self.assetId=assetId
         self.client=client
         self.urlComponent=client.connectString()
         urlComponent.path = urlComponent.path + "/v2/assets/\(assetId)/transactions"
-
+        if let uAddress = address{
+            self.queryItems["address"] = uAddress.description
+        }
+        if let uCurrencyGreaterThan = currencyGreaterThan{
+            self.queryItems["currency-greater-than"] = "\(uCurrencyGreaterThan)"
+        }
+        if let uCurrencyLessThan = currencyLessThan{
+            self.queryItems["currency-less-than"] = "\(currencyLessThan)"
+        }
+        if let uExcludeCloseTo = excludeCloseTo{
+            self.queryItems["exclude-close-to"] = "\(excludeCloseTo)"
+        }
+        if let uLimit = limit{
+            self.queryItems["limit"] = "\(uLimit)"
+        }
+        if let uMaxRound = maxRound{
+            self.queryItems["max-round"]="\(uMaxRound)"
+        }
+        if let uMinRound = minRound{
+            self.queryItems["min-round"] = "\(uMinRound)"
+        }
+        if let uNext = next{
+            self.queryItems["next"] = uNext
+        }
+        if let uNotePrefix = notePrefix{
+            self.queryItems["note-prefix"] = CustomEncoder.encodeToBase64(uNotePrefix);
+        }
+        if let uRekeyTo = rekeyTo{
+            self.queryItems["rekey-to"] = "\(uRekeyTo)"
+        }
+        if let uRound = round{
+            self.queryItems["round"] = "\(uRound)";
+        }
+        if let uTxId = txid{
+            self.queryItems["txid"] = uTxId
+        }
+        
     }
     public func execute( callback: @escaping (_:Response<TransactionsResponse>)->Void) {
     
@@ -111,9 +151,6 @@ public class LookUpAssetTransactions  {
             return self;
         }
 
-        
-
-      
     public func txid( txid:String)->LookUpAssetTransactions {
             self.queryItems["txid"] = txid
             return self;

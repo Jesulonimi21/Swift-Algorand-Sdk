@@ -11,12 +11,28 @@ public class LookUpAssetBalances  {
     var urlComponent:URLComponents;
     var queryItems:[String:String]=[:]
     var assetId:Int64
-    init(client:IndexerClient,assetId:Int64) {
+    
+    
+    init(client:IndexerClient,assetId:Int64, currencyGreaterThan:Int64? = nil, currencyLessThan:Int64? = nil, limit:Int64? = nil, round:Int64? = nil, next:String? = nil ) {
         self.assetId=assetId
         self.client=client
         self.urlComponent=client.connectString()
         urlComponent.path = urlComponent.path + "/v2/assets/\(assetId)/balances"
-
+        if let uCurrencyGreaterThan = currencyGreaterThan{
+            self.queryItems["currency-greater-than"]="\(uCurrencyGreaterThan)"
+        }
+        if let uCurrencyLessThan = currencyLessThan{
+            self.queryItems["currency-less-than"]="\(uCurrencyLessThan)"
+        }
+        if let uLimit = limit{
+            self.queryItems["limit"]="\(uLimit)"
+        }
+        if let uRound = round{
+            self.queryItems["round"]="\(round)"
+        }
+        if let uNext = next{
+            self.queryItems["next"]="\(next)"
+        }
     }
     public func execute( callback: @escaping (_:Response<AssetBalancesResponse>)->Void) {
     
@@ -48,17 +64,8 @@ public class LookUpAssetBalances  {
                         customResponse.setData(data:assetBalancesResponse)
                         customResponse.setIsSuccessful(value:true)
                         callback(customResponse)
-
         }
-        
-       
-   
-        
     }
-
-    
-    
-   
 
     public func currencyGreaterThan(currencyGreaterThan:Int64)->LookUpAssetBalances {
         self.queryItems["currency-greater-than"]="\(currencyGreaterThan)"
