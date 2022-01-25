@@ -12,7 +12,7 @@ import XCTest
 
 public class AlgodClientTests: XCTestCase {
     
-    let client = AlgodClient (host: "https://somewhere.mocked", port: "8080", token: "t0k€n", session: .mocked)
+    let client = AlgodClient(host: "https://somewhere.mocked", port: "8080", token: "t0k€n", session: .mocked)
     func testAccountInformationRequests() {
         let object = AccountData(address: "address")
         let request = AccountInformation(client: client, address: "abc")
@@ -56,7 +56,7 @@ public class AlgodClientTests: XCTestCase {
 
     func testGenesisRequests() {
         assertSuccessfulResponse(for: GetGenesis(client: client), with: "{\"test\": \"TEST\"}") { response, _ in
-            //TODO: Not quite sure about this internal conversion, need further investigation
+            // TODO: Not quite sure about this internal conversion, need further investigation
             XCTAssertEqual(response, "\"{\\\"test\\\": \\\"TEST\\\"}\"")
         }
     }
@@ -119,7 +119,7 @@ public class AlgodClientTests: XCTestCase {
     
     func testRawTransaction() {
         let object = PostTransactionsResponse("response")
-        let request = RawTransaction(client: client, rawtxn:[1, 2, 3])
+        let request = RawTransaction(client: client, rawtxn: [1, 2, 3])
         assertSuccessfulResponse(for: request, with: object)
         assertErrorResponse(for: request)
     }

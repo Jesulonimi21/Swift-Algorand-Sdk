@@ -22,22 +22,22 @@ public class RawTransaction: Request {
     init(client: AlgodClient, rawtxn: [Int8]) {
         self.client = client
         parameters = .init(path: "/v2/transactions/",
-                           headers: ["Content-type":"application/x-binary"],
+                           headers: ["Content-type": "application/x-binary"],
                             method: .post,
                             encoding: ByteEncoding(data: Data(CustomEncoder.convertToUInt8Array(input: rawtxn))))
     }
     
     @available(*, deprecated, message: "Use `init(client: AlgodClient, rawtxn: [Int8])` instead")
-    func rawtxn(rawtaxn:[Int8]) ->RawTransaction {
-        self.parameters = .init(path: "/v2/transactions/", headers: ["Content-type":"application/x-binary"],
+    func rawtxn(rawtaxn: [Int8]) -> RawTransaction {
+        self.parameters = .init(path: "/v2/transactions/", headers: ["Content-type": "application/x-binary"],
                                 method: .post,
                                 encoding: ByteEncoding(data: Data(CustomEncoder.convertToUInt8Array(input: rawtaxn))))
-        return self;
+        return self
     }
     
 }
 
-//public class RawTransaction{
+// public class RawTransaction{
 //    var client:AlgodClient
 //    var rawTransaction:[Int8]?
 //    init(client:AlgodClient) {
@@ -94,4 +94,4 @@ public class RawTransaction: Request {
 //        return component.url!.absoluteString;
 //
 //    }
-//}
+// }

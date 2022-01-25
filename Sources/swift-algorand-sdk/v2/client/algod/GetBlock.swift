@@ -5,7 +5,6 @@
 //  Created by Jesulonimi on 3/15/21.
 //
 
-
 import Foundation
 import Alamofire
 
@@ -20,7 +19,7 @@ public struct GetBlock: Request {
         parameters = .init(path: "/v2/blocks/\(round)")
     }
 }
-//public class GetBlock{
+// public class GetBlock{
 //    var client:AlgodClient
 //    var rawTransaction:[Int8]?
 //    var round:Int64
@@ -72,4 +71,4 @@ public struct GetBlock: Request {
 //        return component.url!.absoluteString;
 //
 //    }
-//}
+// }

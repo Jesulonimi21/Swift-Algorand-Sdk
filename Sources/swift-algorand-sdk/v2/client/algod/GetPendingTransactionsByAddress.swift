@@ -19,7 +19,7 @@ public class GetPendingTransactionsByAddress: Request {
         self.parameters = .init(path: "/v2/accounts/\(address.description)/transactions/pending")
     }
 }
-//public class GetPendingTransactionsByAddress{
+// public class GetPendingTransactionsByAddress{
 //    var client:AlgodClient
 //
 //    var address:Address
@@ -69,5 +69,5 @@ public class GetPendingTransactionsByAddress: Request {
 //        return component.url!.absoluteString;
 //
 //    }
-//}
+// }
 //

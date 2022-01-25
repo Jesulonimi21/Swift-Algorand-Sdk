@@ -20,7 +20,7 @@ public struct GetSupply: Request {
 }
 //
 
-//public class GetSupply  {
+// public class GetSupply  {
 //    var client:AlgodClient
 //    init(client:AlgodClient) {
 //        self.client=client
@@ -67,4 +67,4 @@ public struct GetSupply: Request {
 //
 //        return component.url!.absoluteString;
 //    }
-//}
+// }

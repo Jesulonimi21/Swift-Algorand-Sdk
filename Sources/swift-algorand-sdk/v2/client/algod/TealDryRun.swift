@@ -10,14 +10,13 @@ import Alamofire
 
 public class TealDryRun: Request {
     public typealias ResponseType = DryrunResponse
-    public let client:HTTPClient
+    public let client: HTTPClient
     private(set) public var parameters: RequestParameters
-    
 
     init(client: AlgodClient, request: DryrunRequest) {
         self.client = client
         parameters = .init(path: "/v2/teal/dryrun",
-                           headers: ["Content-type":"application/x-binary"],
+                           headers: ["Content-type": "application/x-binary"],
                            method: .post,
                            encoding: ByteEncoding(data: Data(CustomEncoder.encodeToMsgPack(request))))
     }
@@ -29,14 +28,14 @@ public class TealDryRun: Request {
     }
     
     @available(*, deprecated, message: "Use `init(client: AlgodClient, request: DryrunRequest)` instead")
-    public func request(request: DryrunRequest) ->TealDryRun {
-        parameters = .init(path: "/v2/teal/dryrun", headers: ["Content-type":"application/x-binary"],
+    public func request(request: DryrunRequest) -> TealDryRun {
+        parameters = .init(path: "/v2/teal/dryrun", headers: ["Content-type": "application/x-binary"],
                            method: .post,
                            encoding: ByteEncoding(data: Data(CustomEncoder.encodeToMsgPack(request))))
-        return self;
+        return self
     }
 }
-//public class TealDryRun{
+// public class TealDryRun{
 //    var client:AlgodClient
 //    var request:DryrunRequest?
 //    init(client:AlgodClient) {
@@ -94,4 +93,4 @@ public class TealDryRun: Request {
 //        return component.url!.absoluteString;
 //
 //    }
-//}
+// }

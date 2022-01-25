@@ -31,10 +31,10 @@ public struct RequestParameters {
     let encoding: ParameterEncoding
     
     init(path: String,
-         headers: [String : String] = [:],
+         headers: [String: String] = [:],
          method: HTTPMethod = .get,
-         queryParameters: [String : String] = [:],
-         bodyParameters: [String : Any]? = nil,
+         queryParameters: [String: String] = [:],
+         bodyParameters: [String: Any]? = nil,
          encoding: ParameterEncoding = URLEncoding.default) {
         self.headers = headers
         self.path = path
@@ -48,7 +48,7 @@ public struct RequestParameters {
         var components = client.connectString()
         components.path += self.path
         components.queryItems = queryParameters.map { URLQueryItem(name: $0.key, value: $0.value) }
-        let headers = self.headers.merging(client.defaultHTTPHeaders) { local, global in global  }
+        let headers = self.headers.merging(client.defaultHTTPHeaders) { _, global in global  }
         return client.session.request(components.url?.absoluteString ?? "",
                           method: method,
                           parameters: bodyParameters,
@@ -78,10 +78,10 @@ struct ResponseError: Codable {
 
 public extension Request {
 
-    func execute( callback: @escaping (_:Response<ResponseType>) ->Void){
+    func execute( callback: @escaping (_:Response<ResponseType>) -> Void) {
         let request = parameters.request(from: client)
         let customResponse: Response<ResponseType> = Response()
-        request.responseDecodable(of: ResponseType.self){  (response) in
+        request.responseDecodable(of: ResponseType.self) {  (response) in
             if let error = response.error {
                 customResponse.setIsSuccessful(value: false)
                 let errorDescription = String(data: response.data ??
@@ -105,18 +105,15 @@ public extension Request {
             
             guard let data = response.value else {
                 customResponse.errorMessage = "No valid data found"
-                customResponse.setIsSuccessful(value:true)
+                customResponse.setIsSuccessful(value: true)
                 callback(customResponse)
                 return
             }
             
             customResponse.setData(data: data)
-            customResponse.setIsSuccessful(value:true)
+            customResponse.setIsSuccessful(value: true)
             callback(customResponse)
             
         }
     }
 }
-
-
-

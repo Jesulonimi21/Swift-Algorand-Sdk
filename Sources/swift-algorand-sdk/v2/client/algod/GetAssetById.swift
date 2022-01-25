@@ -18,7 +18,7 @@ public struct GetAssetById: Request {
     }
 }
 
-//public class GetAssetById {
+// public class GetAssetById {
 //    var client: AlgodClient
 //
 //    var assetId: Int64
@@ -71,4 +71,4 @@ public struct GetAssetById: Request {
 //        component.path = component.path + "/v2/assets/\(assetId)"
 //        return component.url?.absoluteString ?? ""
 //    }
-//}
+// }

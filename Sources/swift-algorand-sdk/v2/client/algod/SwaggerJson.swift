@@ -5,24 +5,22 @@
 //  Created by Jesulonimi on 5/3/21.
 //
 
-
 import Foundation
 import Alamofire
 
 // TODO: is this really needed? Swagger in a Swift application?
-public class SwaggerJson  {
-    var client:AlgodClient
-    init(client:AlgodClient) {
+public class SwaggerJson {
+    var client: AlgodClient
+    init(client: AlgodClient) {
         self.client=client
     }
 //
-    public func execute( callback: @escaping (_:Response<String>)->Void) {
-        
+    public func execute( callback: @escaping (_:Response<String>) -> Void) {
     
-        let headers:HTTPHeaders=[client.apiKey:client.token]
+        let headers: HTTPHeaders=[client.apiKey: client.token]
         
-        var request=AF.request(getRequestString(), method: .get, headers: headers,requestModifier: { $0.timeoutInterval = 120 })
-        var customResponse:Response<String>=Response()
+        var request=AF.request(getRequestString(), method: .get, headers: headers, requestModifier: { $0.timeoutInterval = 120 })
+        var customResponse: Response<String>=Response()
 //      request.responseDecodable(of: String.self){ (response) in
 //        if(response.error != nil){
 //            customResponse.setIsSuccessful(value:false)
@@ -46,26 +44,24 @@ public class SwaggerJson  {
 //                        callback(customResponse)
 //
 //        }
-        request.responseJSON(){response in
+        request.responseJSON {response in
 //            print(String(bytes: response.data!,encoding: .utf8))
-            switch(response.result){
-            case .success(_): customResponse.setData(data: String(bytes: response.data!,encoding: .utf8) ?? "nil")
-                customResponse.setIsSuccessful(value:true)
+            switch response.result {
+            case .success: customResponse.setData(data: String(bytes: response.data!, encoding: .utf8) ?? "nil")
+                customResponse.setIsSuccessful(value: true)
                 callback(customResponse)
             case .failure(let error): customResponse.setErrorDescription(errorDescription: error.localizedDescription)
-                customResponse.setIsSuccessful(value:false)
+                customResponse.setIsSuccessful(value: false)
                 callback(customResponse)
             }
         }
-   
         
     }
 
-
-    internal func getRequestString() ->String{
+    internal func getRequestString() -> String {
         var component=client.connectString()
         component.path = component.path + "/swagger.json"
 
-        return component.url!.absoluteString;
+        return component.url!.absoluteString
     }
 }

@@ -20,7 +20,7 @@ public struct AlgodHealthCheck: Request {
     }
 }
 
-//public class AlgodHealthCheck  {
+// public class AlgodHealthCheck  {
 //    var client:AlgodClient
 //    init(client:AlgodClient) {
 //        self.client=client
@@ -68,4 +68,4 @@ public struct AlgodHealthCheck: Request {
 //
 //        return component.url!.absoluteString;
 //    }
-//}
+// }

@@ -5,11 +5,10 @@
 //  Created by Jesulonimi on 2/20/21.
 //
 
-
 import Foundation
 import Alamofire
 
-public struct PendingTransactionInformation: Request{
+public struct PendingTransactionInformation: Request {
   
     public typealias ResponseType = PendingTransactionResponse
     
@@ -23,7 +22,7 @@ public struct PendingTransactionInformation: Request{
     }
 }
 
-//public class PendingTransactionInformation{
+// public class PendingTransactionInformation{
 //    var client:AlgodClient
 //    var rawTransaction:[Int8]?
 //    var txId:String
@@ -74,5 +73,4 @@ public struct PendingTransactionInformation: Request{
 //        return component.url!.absoluteString;
 //
 //    }
-//}
-
+// }

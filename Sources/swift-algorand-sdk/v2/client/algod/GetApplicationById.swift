@@ -5,7 +5,6 @@
 //  Created by Jesulonimi on 5/3/21.
 //
 
-
 import Foundation
 import Alamofire
 
@@ -20,7 +19,7 @@ public struct GetApplicationById: Request {
     }
 }
 //
-//public class GetApplicationById{
+// public class GetApplicationById{
 //    var client:AlgodClient
 //
 //    var applicationId:Int64
@@ -71,4 +70,4 @@ public struct GetApplicationById: Request {
 //        return component.url!.absoluteString;
 //
 //    }
-//}
+// }

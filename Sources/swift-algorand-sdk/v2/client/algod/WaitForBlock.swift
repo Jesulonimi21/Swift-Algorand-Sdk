@@ -5,7 +5,6 @@
 //  Created by Jesulonimi on 5/3/21.
 //
 
-
 import Foundation
 import Alamofire
 
@@ -14,7 +13,7 @@ public struct WaitForBlock: Request {
     public let client: HTTPClient
     public let parameters: RequestParameters
     
-    init(client:AlgodClient,round:Int64) {
+    init(client: AlgodClient, round: Int64) {
         self.client=client
         parameters = .init(path: "/v2/status/wait-for-block-after/\(round)")
         
@@ -22,7 +21,7 @@ public struct WaitForBlock: Request {
     
 }
 
-//public class WaitForBlock{
+// public class WaitForBlock{
 //    var client:AlgodClient
 //
 //    var round:Int64
@@ -73,4 +72,4 @@ public struct WaitForBlock: Request {
 //        return component.url!.absoluteString;
 //
 //    }
-//}
+// }

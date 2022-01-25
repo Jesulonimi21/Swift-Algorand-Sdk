@@ -12,7 +12,7 @@ import XCTest
 
 public class IndexerClientTests: XCTestCase {
     
-    let client = IndexerClient (host: "https://somewhere.mocked",
+    let client = IndexerClient(host: "https://somewhere.mocked",
                                 port: "8081",
                                 token: "t0k€n",
                                 session: .mocked)

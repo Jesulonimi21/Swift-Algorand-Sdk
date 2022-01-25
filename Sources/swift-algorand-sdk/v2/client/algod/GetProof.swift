@@ -5,7 +5,6 @@
 //  Created by Jesulonimi on 5/3/21.
 //
 
-
 import Foundation
 import Alamofire
 
@@ -17,11 +16,11 @@ public class GetProof: Request {
     init(client: AlgodClient, round: Int64, txId: String) {
         self.client=client
         parameters = .init(path: "/v2/blocks/\(round)/transactions/\(txId)/proof",
-                           queryParameters: ["format":"msgpack"])
+                           queryParameters: ["format": "msgpack"])
     }
 }
 
-//public class GetProof{
+// public class GetProof{
 //    var client:AlgodClient
 //    var txId:String
 //    var round:Int64
@@ -75,4 +74,4 @@ public class GetProof: Request {
 //        return component.url!.absoluteString;
 //
 //    }
-//}
+// }

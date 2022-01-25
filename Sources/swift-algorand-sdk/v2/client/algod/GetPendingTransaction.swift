@@ -5,7 +5,6 @@
 //  Created by Jesulonimi on 5/3/21.
 //
 
-
 import Foundation
 import Alamofire
 
@@ -21,7 +20,7 @@ public class GetPendingTransactions: Request {
                                 queryParameters: ["max": "0"])
     }
 }
-//public class GetPendingTransactions  {
+// public class GetPendingTransactions  {
 //    var client:AlgodClient
 //    init(client:AlgodClient) {
 //        self.client=client
@@ -68,4 +67,4 @@ public class GetPendingTransactions: Request {
 //        component.setQueryItems(with: ["max":"0"])
 //        return component.url!.absoluteString;
 //    }
-//}
+// }

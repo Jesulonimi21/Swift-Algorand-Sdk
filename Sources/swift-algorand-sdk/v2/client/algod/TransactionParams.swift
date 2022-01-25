@@ -19,7 +19,7 @@ public struct TransactionParams: Request {
     }
 }
 
-//public class TransactionParams  {
+// public class TransactionParams  {
 //    var client:AlgodClient
 //    init(client:AlgodClient) {
 //        self.client=client
@@ -66,4 +66,4 @@ public struct TransactionParams: Request {
 //
 //        return component.url!.absoluteString;
 //    }
-//}
+// }

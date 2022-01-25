@@ -5,7 +5,6 @@
 //  Created by Jesulonimi on 5/3/21.
 //
 
-
 import Foundation
 import Alamofire
 
@@ -18,7 +17,7 @@ public struct GetVersion: Request {
         parameters = .init(path: "/versions")
     }
 }
-//public class GetVersion  {
+// public class GetVersion  {
 //    var client:AlgodClient
 //    init(client:AlgodClient) {
 //        self.client=client
@@ -65,4 +64,4 @@ public struct GetVersion: Request {
 //
 //        return component.url!.absoluteString;
 //    }
-//}
+// }

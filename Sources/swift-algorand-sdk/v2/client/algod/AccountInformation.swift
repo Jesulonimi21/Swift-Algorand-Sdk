@@ -5,7 +5,6 @@
 //  Created by Jesulonimi on 3/15/21.
 //
 
-
 import Foundation
 import Alamofire
 
@@ -21,7 +20,7 @@ public struct AccountInformation: Request {
 }
 
 //
-//public class AccountInformation{
+// public class AccountInformation{
 //    var client:AlgodClient
 //    var rawTransaction:[Int8]?
 //    var address:String
@@ -70,5 +69,5 @@ public struct AccountInformation: Request {
 //        return component.url!.absoluteString;
 //
 //    }
-//}
+// }
 //

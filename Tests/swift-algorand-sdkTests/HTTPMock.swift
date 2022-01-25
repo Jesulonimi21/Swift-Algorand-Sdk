@@ -101,7 +101,6 @@ final class MockURLProtocol: URLProtocol {
         case success(HTTPURLResponse, Data?)
     }
     static var responseType: ResponseType!
-    
 
     static func responseWithFailure(code: Int, message: String = "There was an error") {
         let encoder = JSONEncoder()

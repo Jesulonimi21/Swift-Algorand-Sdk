@@ -20,7 +20,7 @@ public class GetStatus: Request {
     }
 }
 
-//public class GetStatus{
+// public class GetStatus{
 //    var client:AlgodClient
 //    var rawTransaction:[Int8]?
 //    init(client:AlgodClient) {
@@ -65,5 +65,5 @@ public class GetStatus: Request {
 //        return component.url!.absoluteString;
 //
 //    }
-//}
+// }
 //
