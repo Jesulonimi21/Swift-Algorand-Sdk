@@ -34,8 +34,8 @@ public struct SupplyResponse:Codable, Equatable {
     }
     public func toJson()->String?{
         var jsonencoder=JSONEncoder()
-        var classData=try! jsonencoder.encode(self)
-        var classString=String(data: classData, encoding: .utf8)
+        var classData=try? jsonencoder.encode(self)
+        var classString=String(data: classData ?? Data(), encoding: .utf8)
        return classString
     }
 }
