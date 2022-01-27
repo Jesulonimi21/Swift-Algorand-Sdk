@@ -105,7 +105,7 @@ public extension Request {
             
             guard let data = response.value else {
                 customResponse.errorMessage = "No valid data found"
-                customResponse.setIsSuccessful(value: true)
+                customResponse.setIsSuccessful(value: false)
                 callback(customResponse)
                 return
             }
