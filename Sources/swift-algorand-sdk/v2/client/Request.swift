@@ -50,10 +50,11 @@ public struct RequestParameters {
         components.queryItems = queryParameters.map { URLQueryItem(name: $0.key, value: $0.value) }
         let headers = self.headers.merging(client.defaultHTTPHeaders) { _, global in global  }
         return client.session.request(components.url?.absoluteString ?? "",
-                          method: method,
-                          parameters: bodyParameters,
-                          headers: .init(headers),
-                          requestModifier: { $0.timeoutInterval = 120.0 })
+                                      method: method,
+                                      parameters: bodyParameters,
+                                      encoding: encoding,
+                                      headers: .init(headers),
+                                      requestModifier: { $0.timeoutInterval = 120.0 })
             .validate()
     }
 }
