@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Alamofire
 
 public struct AlgodHealthCheck: Request {
     

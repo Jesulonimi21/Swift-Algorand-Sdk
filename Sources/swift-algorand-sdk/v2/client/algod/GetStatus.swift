@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Alamofire
+
 
 public class GetStatus: Request {
     public typealias ResponseType = NodeStatusResponse

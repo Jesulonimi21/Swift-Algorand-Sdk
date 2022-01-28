@@ -5,7 +5,7 @@
 //  Created by Jesulonimi on 3/1/21.
 //
 import Foundation
-import Alamofire
+
 
 public class LookUpAssetBalances: Request {
     public typealias ResponseType = AssetBalancesResponse

@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Alamofire
+
 
 public class LookUpAssetTransactions: Request {
     public typealias ResponseType = TransactionsResponse
@@ -36,6 +36,23 @@ public class LookUpAssetTransactions: Request {
          txid: String? = nil) {
         self.client = client
         parameters = .init(path: "/v2/assets/\(assetId)/balances")
+        
+        let query: [String: CustomStringConvertible?] =
+        [
+            "address": address?.description,
+            "currency-greater-than": currencyGreaterThan,
+            "currency-less-than": currencyLessThan,
+            "exclude-close-to": excludeCloseTo,
+            "limit": limit,
+            "max-round": maxRound,
+            "min-round": minRound,
+            "next": next,
+            "note-prefix": notePrefix,
+            "rekey-to": rekeyTo,
+            "round": round,
+            "txid": txid
+        ]
+        self.queryItems = query.compactMapValues { $0?.description }
     }
     
     @available(*, deprecated, message: "Use `init` instead")

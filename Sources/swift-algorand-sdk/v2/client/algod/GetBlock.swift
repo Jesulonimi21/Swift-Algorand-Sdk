@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Alamofire
+
 
 public struct GetBlock: Request {
     public typealias ResponseType = BlockResponse

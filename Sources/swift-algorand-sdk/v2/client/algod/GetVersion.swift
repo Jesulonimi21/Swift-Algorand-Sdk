@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Alamofire
+
 
 public struct GetVersion: Request {
     public typealias ResponseType = Version

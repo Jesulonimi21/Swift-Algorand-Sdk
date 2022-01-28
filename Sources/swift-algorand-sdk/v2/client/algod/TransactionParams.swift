@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Alamofire
+
 
 public struct TransactionParams: Request {
     public typealias ResponseType = TransactionParametersResponse

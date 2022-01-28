@@ -5,7 +5,7 @@
 //  Created by Jesulonimi on 5/3/21.
 //
 
-import Alamofire
+
 import Foundation
 
 public struct GetAssetById: Request {

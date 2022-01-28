@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Alamofire
+
 
 public class LookUpApplicationLogsById: Request {
     public typealias ResponseType = ApplicationLogResponse

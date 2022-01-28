@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Alamofire
+
 
 public struct GetSupply: Request {
     public typealias ResponseType = SupplyResponse

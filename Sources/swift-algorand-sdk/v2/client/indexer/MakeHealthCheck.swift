@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Alamofire
+
 
 public class MakeHealthCheck: Request {
     public typealias ResponseType = HealthCheck

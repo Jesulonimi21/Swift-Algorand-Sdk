@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Alamofire
+
 
 public struct LookUpAssetById: Request {
     public typealias ResponseType = AssetResponse

@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Alamofire
 
 public struct AccountInformation: Request {
     public typealias ResponseType = AccountData

@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Alamofire
+
 
 public class TealCompile: Request {
     public typealias ResponseType = CompileResponse

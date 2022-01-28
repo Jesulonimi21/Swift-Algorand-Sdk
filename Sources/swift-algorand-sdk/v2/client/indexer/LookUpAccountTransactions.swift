@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Alamofire
+
 
 public struct LookUpAccountTransactions: Request {
     public typealias ResponseType = TransactionsResponse

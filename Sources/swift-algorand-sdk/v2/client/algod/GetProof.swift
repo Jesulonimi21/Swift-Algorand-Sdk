@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Alamofire
+
 
 public class GetProof: Request {
     public typealias ResponseType = ProofResponse

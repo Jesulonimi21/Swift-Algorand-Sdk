@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Alamofire
+
 
 public struct LookUpApplicationsById: Request {
     public typealias ResponseType = ApplicationResponse

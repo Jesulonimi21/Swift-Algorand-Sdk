@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Alamofire
+
 
 public class SearchForAccounts: Request {
     public typealias ResponseType = AccountsResponse

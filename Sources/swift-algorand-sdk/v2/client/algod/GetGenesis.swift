@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Alamofire
+
 
 public struct GetGenesis: Request {
     public typealias ResponseType = String

@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Alamofire
+
 
 public class SearchForTransactions: Request {
     public typealias ResponseType = TransactionsResponse

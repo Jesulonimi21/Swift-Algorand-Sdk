@@ -13,7 +13,7 @@
 // }
 
 import Foundation
-import Alamofire
+
 
 public class SearchForAssets: Request {
     public typealias ResponseType = AssetsResponse

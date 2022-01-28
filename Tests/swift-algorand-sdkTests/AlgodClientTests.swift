@@ -60,6 +60,12 @@ public class AlgodClientTests: XCTestCase {
             XCTAssertEqual(response, "\"{\\\"test\\\": \\\"TEST\\\"}\"")
         }
     }
+    func testSwaggerJSON() {
+        assertSuccessfulResponse(for: SwaggerJson(client: client), with: "{\"test\": \"TEST\"}") { response, _ in
+            // TODO: Not quite sure about this internal conversion, need further investigation
+            XCTAssertEqual(response, "\"{\\\"test\\\": \\\"TEST\\\"}\"")
+        }
+    }
     
     func testGetPendingTransactions() {
         var object = PendingTransactionResponse()

@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Alamofire
+
 
 public class RawTransaction: Request {
     public typealias ResponseType = PostTransactionsResponse

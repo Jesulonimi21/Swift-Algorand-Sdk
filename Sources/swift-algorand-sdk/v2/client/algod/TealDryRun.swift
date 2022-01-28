@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Alamofire
+
 
 public class TealDryRun: Request {
     public typealias ResponseType = DryrunResponse

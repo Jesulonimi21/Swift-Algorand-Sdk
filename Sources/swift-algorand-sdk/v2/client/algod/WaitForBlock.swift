@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Alamofire
+
 
 public struct WaitForBlock: Request {
     public typealias ResponseType = NodeStatusResponse
