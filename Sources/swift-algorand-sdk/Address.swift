@@ -27,7 +27,7 @@ public class Address: Codable,Equatable{
 //    }
     public var BYTES_SIGN_PREFIX: [Int8] = [77,88];
   public  var description:String{
-        return try! self.encodeAsString()
+        return (try? self.encodeAsString()) ?? ""
     }
     public init(_ bytes:[Int8]) throws{
         if(bytes.count != 32){

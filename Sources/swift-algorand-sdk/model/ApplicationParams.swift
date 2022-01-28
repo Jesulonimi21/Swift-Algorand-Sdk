@@ -6,19 +6,18 @@
 //
 
 import Foundation
-public class ApplicationParams:Codable{
-    public var approvalProgram:[Int8]?
-    public var clearStateProgram:[Int8]?
-    public var creator:String?
+public struct ApplicationParams: Codable, Equatable {
+    public var approvalProgram: [Int8]?
+    public var clearStateProgram: [Int8]?
+    public var creator: String?
   
-    public var globalState:[TealKeyValue]?
+    public var globalState: [TealKeyValue]?
   
-    public var globalStateSchema:ApplicationStateSchema?;
+    public var globalStateSchema: ApplicationStateSchema?
   
-    public var localStateSchema:ApplicationStateSchema?;
-
+    public var localStateSchema: ApplicationStateSchema?
     
-    enum CodingKeys:String,CodingKey{
+    enum CodingKeys: String, CodingKey {
     case globalState="global-state"
    
      case globalStateSchema="global-state-schema"
@@ -30,10 +29,7 @@ public class ApplicationParams:Codable{
 
     }
     
-    
-    
-    
-    public required init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         var container = try? decoder.container(keyedBy: CodingKeys.self)
         self.creator = try? container?.decode(String.self, forKey: .creator)
         self.localStateSchema = try? container?.decode(ApplicationStateSchema.self, forKey: .localStateSchema)
@@ -41,13 +37,12 @@ public class ApplicationParams:Codable{
         self.globalState = try? container?.decode([TealKeyValue].self, forKey: .globalState)
         
         var approvalProgramString = try? container?.decode(String.self, forKey: .approvalProgram)
-        if let approvalProgramstr=approvalProgramString{
-            self.approvalProgram = CustomEncoder.convertToInt8Array(input:  CustomEncoder.convertBase64ToByteArray(data1: approvalProgramstr))
+        if let approvalProgramstr=approvalProgramString {
+            self.approvalProgram = CustomEncoder.convertToInt8Array(input: CustomEncoder.convertBase64ToByteArray(data1: approvalProgramstr))
         }
-    
 
         var clearStateProgramString = try? container?.decode(String.self, forKey: .clearStateProgram)
-        if let clearStateProgramStr = clearStateProgramString{
+        if let clearStateProgramStr = clearStateProgramString {
             self.clearStateProgram = CustomEncoder.convertToInt8Array(input: CustomEncoder.convertBase64ToByteArray(data1: clearStateProgramStr))
         }
        

@@ -10,13 +10,13 @@ import Foundation
 
 
 
-public class Account {
+public struct Account {
     public var address:Address
    public var keyPair:KeyPair
    public var seed:Seed?
     var PROGDATA_SIGN_PREFIX:[Int8]=[80, 114, 111, 103, 68, 97, 116, 97, ]
    public static var MIN_TX_FEE_UALGOS:Int64 = 1000
-    public  convenience init() throws{
+    public  init() throws{
       try  self.init(nil)
     }
     
@@ -36,7 +36,7 @@ public class Account {
         }
         self.address=try! Address(ed25519PubKey)
     }
-    public   convenience init( _ mnemonic:String) throws{
+    public   init( _ mnemonic:String) throws{
       try  self.init(Mnemonic.toKey(mnemonic))
     }
     

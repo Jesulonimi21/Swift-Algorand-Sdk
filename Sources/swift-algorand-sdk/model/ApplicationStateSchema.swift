@@ -6,14 +6,13 @@
 //
 
 import Foundation
-public class ApplicationStateSchema:Codable{
+public struct ApplicationStateSchema: Codable, Equatable {
 
-    public var numByteSlice:Int64?
+    public var numByteSlice: Int64?
 
-    public var numUint:Int64?
+    public var numUint: Int64?
 
-
-    enum CodingKeys:String,CodingKey{
+    enum CodingKeys: String, CodingKey {
         case numByteSlice="num-byte-slice"
         case numUint="num-uint"
     }

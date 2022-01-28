@@ -6,29 +6,29 @@
 //
 
 import Foundation
-public class  AssetResponse:Codable{
-    public var asset:AssetData?;
-    public var currentRound:Int64;
+public struct  AssetResponse: Codable, Equatable {
+    public var asset: AssetData?
+    public var currentRound: Int64
 
     /**
      * Round during which this asset was created.
      */
 
-    public var createdAtRound:Int64?
+    public var createdAtRound: Int64?
 
     /**
      * Whether or not this asset is currently deleted.
      */
 
-    public var deleted:Bool?
+    public var deleted: Bool?
 
     /**
      * Round during which this asset was destroyed.
      */
 
-    public var destroyedAtRound:Int64?
+    public var destroyedAtRound: Int64?
 
-    enum CodingKeys:String,CodingKey{
+    enum CodingKeys: String, CodingKey {
         case asset="asset"
         case currentRound="current-round"
         case destroyedAtRound = "destroyed-at-round"
@@ -36,11 +36,10 @@ public class  AssetResponse:Codable{
         case deleted = "deleted"
     }
     
-    public func toJson()->String?{
+    public func toJson() -> String? {
         var jsonencoder=JSONEncoder()
         var classData=try! jsonencoder.encode(self)
         var classString=String(data: classData, encoding: .utf8)
        return classString
     }
 }
-

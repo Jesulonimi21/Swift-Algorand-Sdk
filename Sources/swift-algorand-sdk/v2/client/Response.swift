@@ -6,28 +6,28 @@
 //
 
 import Foundation
-public class Response<T>{
+public class Response<T> {
         
     init() {
         self.isSuccessful=false
     }
     
-  public  var isSuccessful:Bool
-   public var data:T?
-   public var errorDescription:String?
+  public  var isSuccessful: Bool
+   public var data: T?
+   public var errorDescription: String?
     
-    public var errorMessage:String?
+    public var errorMessage: String?
 
-    func setIsSuccessful(value:Bool){
+    func setIsSuccessful(value: Bool) {
         self.isSuccessful=value
-        self.errorDescription="";
+        self.errorDescription=""
     }
-    func setData(data:T){
+    func setData(data: T) {
   
         self.data=data
     }
     
-    func setErrorDescription(errorDescription:String){
+    func setErrorDescription(errorDescription: String) {
         self.errorDescription=errorDescription
         self.errorMessage = errorDescription
     }

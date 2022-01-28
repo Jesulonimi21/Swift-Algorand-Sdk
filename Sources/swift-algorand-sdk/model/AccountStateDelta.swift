@@ -7,20 +7,20 @@
 
 import Foundation
 
-public class AccountStateDelta : Codable {
-    public var address:Address?;
+public struct AccountStateDelta: Codable, Equatable {
+    public var address: Address?
  
-    public  var delta:[EvalDeltaKeyValue]?;
+    public  var delta: [EvalDeltaKeyValue]?
 
     init() {
     }
     
-    enum CodingKeys:String,CodingKey{
+    enum CodingKeys: String, CodingKey {
         case address="address"
         case delta="delta"
     }
     
-    public required init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         var container=try! decoder.container(keyedBy: CodingKeys.self)
         let strAddr=try! container.decode(String.self, forKey: .address)
         self.address=try! Address(strAddr)

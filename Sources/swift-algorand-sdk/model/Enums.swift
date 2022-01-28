@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum OnCompletionData:String{
+enum OnCompletionData: String {
     case NOOP="noop"
     case OPTIN="optin"
     case CLOSEOUT="closeout"
@@ -17,16 +17,15 @@ enum OnCompletionData:String{
 }
 
  extension OnCompletionData: Codable {
-    enum Key:CodingKey{
+    enum Key: CodingKey {
         case rawValue
     }
-   
     
     public init(from decoder: Decoder) throws {
 //        var container = try! decoder.container(keyedBy: Key.self)
         var container = try! decoder.singleValueContainer()
         var rawValue = try! container.decode(String.self)
-        switch rawValue{
+        switch rawValue {
         case "noop": self = .NOOP
         case "optin":self = .OPTIN
         case "closeout":self = .CLOSEOUT
@@ -39,24 +38,22 @@ enum OnCompletionData:String{
     }
 }
 
-
-
-public enum AddressRole{
+public enum AddressRole {
     case SENDER
     case RECEIVER
     case FREEZETARGET
 }
 
-extension AddressRole : Decodable{
+extension AddressRole: Decodable {
     
-    enum Key:CodingKey{
+    enum Key: CodingKey {
         case rawValue
     }
     public init(from decoder: Decoder) throws {
         var container = try! decoder.container(keyedBy: Key.self)
         var rawValue = try! container.decode(String.self, forKey: .rawValue)
         
-        switch rawValue{
+        switch rawValue {
         case "sender":self = .SENDER
         case "receiver":self = .RECEIVER
         case "freeze-target":self = .FREEZETARGET
@@ -67,17 +64,16 @@ extension AddressRole : Decodable{
     }
 }
 
-
-public enum SigType{
+public enum SigType {
     case SIG
     case MSIG
     case LSIG
 }
 
-extension SigType : Codable{
+extension SigType: Codable {
     public func encode(to encoder: Encoder) throws {
         var container = try! encoder.singleValueContainer()
-        switch self{
+        switch self {
         case .SIG: try! container.encode("sig")
         case .MSIG:try! container.encode("msig")
         case .LSIG:try! container.encode("LSIG")
@@ -85,15 +81,14 @@ extension SigType : Codable{
         }
     }
     
-    
-    enum Key:CodingKey{
+    enum Key: CodingKey {
         case rawValue
     }
     public init(from decoder: Decoder) throws {
         var container = try! decoder.singleValueContainer()
         var rawValue = try! container.decode(String.self)
         
-        switch rawValue{
+        switch rawValue {
         case "sig" : self = .SIG
         case "msig" : self = .MSIG
         case "lsig" : self = .LSIG
@@ -104,10 +99,7 @@ extension SigType : Codable{
     
 }
 
-
-
-
-public enum TxType:String{
+public enum TxType: String {
     case PAY="pay"
     case KEYREG="keyreg"
     case ACFG="acfg"
@@ -116,9 +108,9 @@ public enum TxType:String{
     case APPL="appl"
 }
 
-extension TxType : Codable{
+extension TxType: Codable {
      
-    enum Key:String,CodingKey{
+    enum Key: String, CodingKey {
         case rawValue
     }
     
@@ -127,7 +119,7 @@ extension TxType : Codable{
         var container = try! decoder.singleValueContainer()
         var rawValue = try! container.decode(String.self)
         
-        switch rawValue{
+        switch rawValue {
         case "pay" : self = .PAY
         case "keyreg" : self = .KEYREG
         case "acfg" : self = .ACFG

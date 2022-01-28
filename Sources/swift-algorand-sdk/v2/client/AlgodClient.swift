@@ -6,108 +6,119 @@
 //
 
 import Foundation
+import Alamofire
 
-
-public class AlgodClient {
-    var host:String
-    var port:String
-    var token:String
-    var apiKey="X-Algo-API-Token"
-    public init(host:String,  port:String,  token:String) {
+public class AlgodClient: HTTPClient {
+    var host: String
+    var port: String
+    var token: String
+    var apiKey: String
+    public let session: Alamofire.Session
+    
+    public var defaultHTTPHeaders: [String: String] {
+        [apiKey: token]
+    }
+    
+    public init(host: String,
+                port: String,
+                apiKey: String = "X-Algo-API-Token",
+                token: String,
+                session: Session = .default) {
         self.host=host
         self.port=port
         self.token=token
+        self.session = session
+        self.apiKey = apiKey
     }
     
-    func connectString()->URLComponents{
-//        var components = URLComponents()
-//            components.scheme = "https"
-//            components.host = self.host
-//        components.port=self.port
-        var url=URL(string: host)!
-        var components=URLComponents(url: url, resolvingAgainstBaseURL: false)
-        components!.port=Int(self.port)
-        return components!
+    public func connectString() -> URLComponents {
+        let url = URL(string: host) ?? URL(fileURLWithPath: "")
+        var components = URLComponents(url: url, resolvingAgainstBaseURL: false) ?? .init()
+        components.port = Int(port)
+        return components
     }
     
+    @available(*, deprecated, message: "Use `rawTransaction(rawtxn: [Int8]) -> RawTransaction` instead")
+    public func rawTransaction() -> RawTransaction {
+        return  RawTransaction(client: self)
+    }
     
-
-    public func rawTransaction()->RawTransaction {
-        return  RawTransaction(client: self);
+    public func rawTransaction(rawtxn: [Int8]) -> RawTransaction {
+        return  RawTransaction(client: self, rawtxn: rawtxn)
     }
-//
-    public func transactionParams() -> TransactionParams{
-        return  TransactionParams(client:self);
+    
+    public func transactionParams() -> TransactionParams {
+        return  TransactionParams(client: self)
     }
-    public func getStatus()->GetStatus{
+    public func getStatus() -> GetStatus {
         return GetStatus(client: self)
     }
-    public func pendingTransactionInformation(txId:String) ->PendingTransactionInformation{
+    public func pendingTransactionInformation(txId: String) -> PendingTransactionInformation {
         return PendingTransactionInformation(client: self, txId: txId)
     }
     
-    public func accountInformation(address:String) ->AccountInformation{
+    public func accountInformation(address: String) -> AccountInformation {
         return AccountInformation(client: self, address: address)
     }
     
-    public func getBlock(round:Int64) ->GetBlock{
+    public func getBlock(round: Int64) -> GetBlock {
         return GetBlock(client: self, round: round)
     }
     
-    public func tealCompile()->TealCompile {
-        return  TealCompile(client: self);
+    public func tealCompile() -> TealCompile {
+        return  TealCompile(client: self)
     }
     
-    public func tealDryRun()->TealDryRun {
-        return  TealDryRun(client: self);
+    public func tealDryRun() -> TealDryRun {
+        return  TealDryRun(client: self)
     }
     
-    public func getProof(round:Int64,txId:String) ->GetProof{
-        return GetProof(client: self, round: round,txId: txId)
+    public func getProof(round: Int64, txId: String) -> GetProof {
+        return GetProof(client: self, round: round, txId: txId)
     }
     
-    public func getSupply() -> GetSupply{
-        return  GetSupply(client:self);
+    public func getSupply() -> GetSupply {
+        return  GetSupply(client: self)
     }
     
-    public func getVersion() -> GetVersion{
-        return  GetVersion(client:self);
+    public func getVersion() -> GetVersion {
+        return  GetVersion(client: self)
     }
     
-    public func healthCheck() -> AlgodHealthCheck{
-        return  AlgodHealthCheck(client:self);
+    public func healthCheck() -> AlgodHealthCheck {
+        return  AlgodHealthCheck(client: self)
     }
     
-    public func swaggerJson() -> SwaggerJson{
+    public func swaggerJson() -> SwaggerJson {
         return SwaggerJson(client: self)
     }
-    
 
-    public func waitForBlock(round:Int64) ->WaitForBlock{
+    public func waitForBlock(round: Int64) -> WaitForBlock {
         return WaitForBlock(client: self, round: round)
     }
     
-    public func getApplicationById(applicationId:Int64) -> GetApplicationById{
+    public func getApplicationById(applicationId: Int64) -> GetApplicationById {
         return GetApplicationById(client: self, applicationId: applicationId)
     }
     
-    public func getAssetById(assetId:Int64)->GetAssetById{
+    public func getAssetById(assetId: Int64) -> GetAssetById {
         return GetAssetById(client: self, assetId: assetId)
     }
     
-    public func getGenesis() -> GetGenesis{
+    public func getGenesis() -> GetGenesis {
         return GetGenesis(client: self)
     }
     
-    public func getPendingTransactions() -> GetPendingTransactions{
+    public func getPendingTransactions() -> GetPendingTransactions {
         return GetPendingTransactions(client: self)
     }
     
-    public func getPendingTransactionsByAddress(address:Address) -> GetPendingTransactionsByAddress{
-        return GetPendingTransactionsByAddress(client: self,address: address)
+    public func getPendingTransactionsByAddress(address: Address) -> GetPendingTransactionsByAddress {
+        return GetPendingTransactionsByAddress(client: self, address: address)
     }
     
-    public func set(key:String){
+    @available(*, deprecated, message: "Use constructor (init) method to set the key")
+    public func set(key: String) {
         self.apiKey=key
     }
 

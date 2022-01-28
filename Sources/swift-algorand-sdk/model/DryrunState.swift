@@ -6,31 +6,28 @@
 //
 
 import Foundation
-public class DryrunState :Codable{
+public struct DryrunState: Codable, Equatable {
 
     /**
      * Evaluation error if any
      */
   
-    public var error:String?
+    public var error: String?
 
     /**
      * Line number
      */
  
-    public var line:Int64?
+    public var line: Int64?
 
     /**
      * Program counter
      */
 
-    public var pc:Int64?
+    public var pc: Int64?
 
-
-    public var scratch:[TealValue]?
-
+    public var scratch: [TealValue]?
  
-    public var stack:[TealValue]?
-
+    public var stack: [TealValue]?
     
 }

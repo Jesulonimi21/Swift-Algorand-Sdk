@@ -6,28 +6,28 @@
 //
 
 import Foundation
-public class PendingTransactionResponse : Codable {
+public struct PendingTransactionResponse: Codable, Equatable {
 
-    public  var  applicationIndex:Int64?;
-    public var assetIndex:Int64?;
+    public  var  applicationIndex: Int64?
+    public var assetIndex: Int64?
    
-    public var closeRewards:Int64?
+    public var closeRewards: Int64?
 
-    public   var closingAmount:Int64?
+    public   var closingAmount: Int64?
   
-    public  var confirmedRound:Int64?
+    public  var confirmedRound: Int64?
  
-    public  var globalStateDelta:[EvalDeltaKeyValue]?;
+    public  var globalStateDelta: [EvalDeltaKeyValue]?
    
-    public  var localStateDelta:[AccountStateDelta]?
+    public  var localStateDelta: [AccountStateDelta]?
 
-    public  var poolError:String?;
+    public  var poolError: String?
    
-    public var receiverRewards:Int64?;
+    public var receiverRewards: Int64?
   
-    public var senderRewards:Int64?;
+    public var senderRewards: Int64?
     
-    var txn:SignedTransaction?;
+    var txn: SignedTransaction?
     
     var innerTxns: [PendingTransactionResponse]?
     
@@ -36,11 +36,11 @@ public class PendingTransactionResponse : Codable {
    init() {
     }
 
-    enum CodingKeys:String,CodingKey {
+    enum CodingKeys: String, CodingKey {
     
-        case  applicationIndex="application-index";
+        case  applicationIndex="application-index"
   
-        case assetIndex="asset-index";
+        case assetIndex="asset-index"
      
         case closeRewards="close-rewards"
 
@@ -65,13 +65,12 @@ public class PendingTransactionResponse : Codable {
         case logs = "logs"
     }
     
-    public func toJson()->String?{
+    public func toJson() -> String? {
         var jsonencoder=JSONEncoder()
         var classData=try! jsonencoder.encode(self)
         var classString=String(data: classData, encoding: .utf8)
        return classString
     }
-    
     
     public func encode(to encoder: Encoder) throws {
         var container = try? encoder.container(keyedBy: CodingKeys.self)
@@ -86,22 +85,15 @@ public class PendingTransactionResponse : Codable {
         try container?.encode(self.receiverRewards, forKey: .receiverRewards)
         try container?.encode(self.txn, forKey: .txn)
         try container?.encode(self.innerTxns, forKey: .innerTxns)
-        if let logs = self.logs{
-            
-            var ULogs:[Data]=Array()
-
-            for i in 0..<logs.count{
-
-                ULogs.append(Data(CustomEncoder.convertToUInt8Array(input:logs[i])))
-            }
-            
-            try container?.encode(ULogs, forKey: .logs)
+        
+        let logs = logs?.map {
+            Data(CustomEncoder.convertToUInt8Array(input: $0))
         }
+        try container?.encode(logs, forKey: .logs)
+        
     }
     
-    
-    
-    public required init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         var container = try? decoder.container(keyedBy: CodingKeys.self)
         self.applicationIndex = try? container?.decode(Int64.self, forKey: .applicationIndex)
         self.assetIndex = try? container?.decode(Int64.self, forKey: .assetIndex)
@@ -116,16 +108,14 @@ public class PendingTransactionResponse : Codable {
         self.innerTxns = try? container?.decode([PendingTransactionResponse].self, forKey: .innerTxns)
         self.txn = try? container?.decode(SignedTransaction.self, forKey: .txn)
         
-        
-        self.logs = Array()
          let ULogs = try? container?.decode([Data].self, forKey: .logs)
-        if let uLogs=ULogs{
-            for i in 0..<uLogs.count{
+        if let uLogs=ULogs {
+            self.logs = Array()
+            for i in 0..<uLogs.count {
                self.logs?.append(CustomEncoder.convertToInt8Array(input: Array(ULogs![i])))
             }
         }
 
     }
-
   
 }

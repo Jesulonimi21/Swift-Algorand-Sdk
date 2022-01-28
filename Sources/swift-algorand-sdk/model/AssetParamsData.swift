@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class AssetParamsData: Codable {
+public struct AssetParamsData: Codable, Equatable {
     public var clawback: String?
     public var creator: String?
     public var decimals: Int64?

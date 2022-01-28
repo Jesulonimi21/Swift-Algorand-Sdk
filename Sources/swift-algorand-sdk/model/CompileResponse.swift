@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class CompileResponse: Codable{
-    public var result:String?
-    public var hash:String?
+public struct CompileResponse: Codable, Equatable {
+    public var result: String?
+    public var hash: String?
 }

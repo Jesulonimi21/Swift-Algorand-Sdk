@@ -6,27 +6,25 @@
 //
 
 import Foundation
-public class DryrunResponse : Codable {
+public struct DryrunResponse: Codable, Equatable {
 
-    public var error:String?;
+    public var error: String?
 
     /**
      * Protocol version is the protocol version Dryrun was operated under.
      */
 
-    public var protocolVersion:String?
+    public var protocolVersion: String?
 
+    public var txns: [DryrunTxnResult]?
 
-    public var txns:[DryrunTxnResult]?
-
-    enum CodingKeys:String,CodingKey{
+    enum CodingKeys: String, CodingKey {
         case txns = "txns"
         case protocolVersion = "protocol-version"
         case error = "error"
     }
     
-    
-    public func toJson()->String?{
+    public func toJson() -> String? {
         var jsonencoder=JSONEncoder()
         var classData=try! jsonencoder.encode(self)
         var classString=String(data: classData, encoding: .utf8)

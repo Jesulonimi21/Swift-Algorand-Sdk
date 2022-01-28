@@ -6,18 +6,26 @@
 //
 
 import Foundation
-public class BlockResponse:Codable{
-    var block:[String:Any]?
-    var cert :[String:Any]?
+public struct BlockResponse: Codable {
+
+    var block: [String: Any]?
+    var cert: [String: Any]?
     
-    enum CodingKeys:String,CodingKey{
+    enum CodingKeys: String, CodingKey {
         case block = "block"
         case cert = "cert"
     }
+    init() {}
     
-    public required init(from decoder: Decoder) throws {
+    init(block: [String: Any]? = nil,
+         cert: [String: Any]? = nil) {
+        self.block = block
+        self.cert = cert
+    }
+    
+    public init(from decoder: Decoder) throws {
         var container = try! decoder.container(keyedBy: CodingKeys.self)
-        self.block=try? container.decode([String:Any].self, forKey: .block)
+        self.block=try? container.decode([String: Any].self, forKey: .block)
         self.cert=try? container.decode([String: Any].self, forKey: .cert)
     }
     
@@ -27,7 +35,7 @@ public class BlockResponse:Codable{
         try? container.encode(self.cert?.description, forKey: .cert)
         
     }
-    public func toJson()->String?{
+    public func toJson() -> String? {
         var jsonencoder=JSONEncoder()
         var classData=try! jsonencoder.encode(self)
         var classString=String(data: classData, encoding: .utf8)
@@ -35,7 +43,6 @@ public class BlockResponse:Codable{
     }
 
 }
-
 
 private struct JSONCodingKeys: CodingKey {
     var stringValue: String
@@ -107,7 +114,7 @@ extension UnkeyedDecodingContainer {
             } else if let nestedArray = try? decodeNestedArray([Any].self) {
                 array.append(nestedArray)
             } else if let isValueNil = try? decodeNil(), isValueNil == true {
-                array.append(Optional<Any>.none as Any)
+                array.append(Any?.none as Any)
             } else {
                 throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: codingPath, debugDescription: "Unable to decode value"))
             }
@@ -125,7 +132,6 @@ extension UnkeyedDecodingContainer {
         return try container.decode(type)
     }
 }
-
 
 extension KeyedEncodingContainerProtocol where Key == JSONCodingKeys {
     mutating func encode(_ value: [String: Any]) throws {

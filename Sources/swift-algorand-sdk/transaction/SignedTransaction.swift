@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class SignedTransaction: Codable,Equatable {
+public class SignedTransaction: Codable, Equatable {
    public var  tx:Transaction?;
     public var sig:Signature?=Signature();
     public var transactionID:String?
@@ -34,7 +34,7 @@ public class SignedTransaction: Codable,Equatable {
     
    
     public required init(from decoder: Decoder) throws {
-                var container = try! decoder.container(keyedBy: CodingKeys.self);
+                var container = try decoder.container(keyedBy: CodingKeys.self);
                 self.tx =  try? container.decode(Transaction.self, forKey: .tx)
                 self.sig = try? container.decode(Signature.self, forKey: .sig)
                 self.mSig = try? container.decode(MultisigSignature.self, forKey: .mSig)

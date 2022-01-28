@@ -6,40 +6,39 @@
 //
 
 import Foundation
-public class AccountData : Codable{
-    public var address:String?
+public struct AccountData: Codable, Equatable {
+    public var address: String?
 
-    public var amount:Int64?
+    public var amount: Int64?
      
-    public var amountWithoutPendingRewards:Int64?
+    public var amountWithoutPendingRewards: Int64?
     
-    public var appsLocalState:[ApplicationLocalState]?
+    public var appsLocalState: [ApplicationLocalState]?
       
-    public var appsTotalSchema:ApplicationStateSchema?
+    public var appsTotalSchema: ApplicationStateSchema?
        
-    public var assets:[AssetHolding]?
-    public var authAddr:String?
+    public var assets: [AssetHolding]?
+    public var authAddr: String?
 
-    public var createdApps:[Application]?
+    public var createdApps: [Application]?
 
-    public var createdAssets:[AssetData]?
+    public var createdAssets: [AssetData]?
     
-    public var participation:AccountParticipation?
+    public var participation: AccountParticipation?
      
     public var pendingRewards: Int64?
      
-    public var rewardBase:Int64?
+    public var rewardBase: Int64?
     
-    public var rewards:Int64?
+    public var rewards: Int64?
      
-    public var round:Int64?
+    public var round: Int64?
       
-    public var sigType:SigType?
+    public var sigType: SigType?
      
-    public var status:String?
+    public var status: String?
     
-    
-    enum CodingKeys:String,CodingKey{
+    enum CodingKeys: String, CodingKey {
        case address = "address"
        case amount = "amount"
       case  amountWithoutPendingRewards = "amount-without-pending-rewards"

@@ -7,64 +7,64 @@
 
 import Foundation
 
-public class TransactionData:Codable{
+public struct TransactionData: Codable, Equatable {
 
-public var applicationTransaction:TransactionApplication?
+public var applicationTransaction: TransactionApplication?
    
-public var assetConfigTransaction:TransactionAssetConfig?
+public var assetConfigTransaction: TransactionAssetConfig?
 
-public var assetFreezeTransaction:TransactionAssetFreeze?
+public var assetFreezeTransaction: TransactionAssetFreeze?
 
-public var assetTransferTransaction:TransactionAssetTranser?
-public var authAddr:String?
+public var assetTransferTransaction: TransactionAssetTranser?
+public var authAddr: String?
 
-public var closeRewards:Int64?
+public var closeRewards: Int64?
 
-public var closingAmount:Int64?
+public var closingAmount: Int64?
 
-public var confirmedRound:Int64?
+public var confirmedRound: Int64?
 
-public var createdApplicationIndex:Int64?
+public var createdApplicationIndex: Int64?
 
-public var createdAssetIndex:Int64?
+public var createdAssetIndex: Int64?
 
-public var fee:Int64?
+public var fee: Int64?
 
-public var firstValid:Int64?
-public var genesisHash:String?
+public var firstValid: Int64?
+public var genesisHash: String?
 
-public var genesisId:String?
+public var genesisId: String?
 
-public var globalStateDelta:[EvalDeltaKeyValue]?
-public var group:String?
+public var globalStateDelta: [EvalDeltaKeyValue]?
+public var group: String?
 
-public var id:String?
+public var id: String?
 
-public var intraRoundOffset:Int64?
+public var intraRoundOffset: Int64?
 
-//public var keyregTransaction:TransactionKeyreg?
+// public var keyregTransaction:TransactionKeyreg?
    
-public var lastValid:Int64?
-public var lease:String?
+public var lastValid: Int64?
+public var lease: String?
 
-public  var localStateDelta:[AccountStateDelta]?
-public var note:String?
+public  var localStateDelta: [AccountStateDelta]?
+public var note: String?
  
-//public var paymentTransaction:TransactionPayment?
+// public var paymentTransaction:TransactionPayment?
 
-public var receiverRewards:Int64?
-public var rekeyTo:String?
+public var receiverRewards: Int64?
+public var rekeyTo: String?
 
-public var roundTime:Int64?
-public var sender:String?
+public var roundTime: Int64?
+public var sender: String?
  
-public var senderRewards:Int64?
+public var senderRewards: Int64?
 
-public var signature:TransactionSignature?
+public var signature: TransactionSignature?
 
-public var txType:TxType?
+public var txType: TxType?
     
-    enum CodingKeys:String,CodingKey{
+    enum CodingKeys: String, CodingKey {
         case txType="tx-type"
         case signature="signature"
         case senderRewards="sender-rewards"
@@ -105,4 +105,3 @@ public var txType:TxType?
 //     }
     
 }
-
