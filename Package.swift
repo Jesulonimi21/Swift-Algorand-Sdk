@@ -46,7 +46,8 @@ let package = Package(
       
         .testTarget(
             name: "swift-algorand-sdkTests",
-            dependencies: ["swift-algorand-sdk"]
+            dependencies: ["swift-algorand-sdk"],
+            resources: [.process("mocks")]
         ),
         
     ]
