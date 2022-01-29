@@ -109,9 +109,17 @@ public class AlgodClientTests: XCTestCase {
     }
     
     func testGetVersion() {
-        let object = Version(build: .init(build_number: 1234))
+        let object = Version(build: .init(branch: "theBranch",
+                                          build_number: 123, 
+                                          channel: "theChannel",
+                                          commit_hash: "theCommitHash",
+                                          major: 123,
+                                          minor: 123),
+                             genesis_hash_string: "123",
+                             genesis_id: "1234",
+                             versions: ["1.0", "2.0"])
         let request = GetVersion(client: client)
-        assertSuccessfulResponse(for: request, with: object)
+        assertSuccessfulResponse(for: request, json: "versions", with: object)
         assertErrorResponse(for: request)
     }
     

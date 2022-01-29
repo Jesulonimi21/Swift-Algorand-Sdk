@@ -1,0 +1,16 @@
+{
+  "genesis_hash_b64": "123",
+  "genesis_id": "1234",
+  "versions": [
+    "1.0",
+    "2.0"
+  ],
+  "build": {
+    "branch": "theBranch",
+    "build_number": 123,
+    "channel": "theChannel",
+    "commit_hash": "theCommitHash",
+    "major": 123,
+    "minor": 123
+  }
+}
