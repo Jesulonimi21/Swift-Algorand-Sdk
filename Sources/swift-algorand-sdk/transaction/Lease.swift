@@ -11,13 +11,13 @@ public class Lease {
     public var LEASE_LENGTH:Int = 32;
     private var data:[Int8];
 
-    public convenience init() {
-        try!  self.init(lease: Self.makeRandomLease());
+    public convenience init() throws {
+        try  self.init(lease: Self.makeRandomLease());
     }
 
-    public convenience init(lease:String) {
+    public convenience init(lease:String) throws {
         var base64Array=CustomEncoder.convertBase64ToByteArray(data1: lease)
-      try!  self.init(lease:CustomEncoder.convertToInt8Array(input: base64Array));
+      try  self.init(lease:CustomEncoder.convertToInt8Array(input: base64Array));
     }
 
 

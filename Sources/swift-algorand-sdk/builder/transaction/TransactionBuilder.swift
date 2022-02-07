@@ -91,7 +91,7 @@ public  class TransactionBuilder<T>{
             throw Errors.illegalArgumentError("Cannot set both fee and flatFee.")
         } else {
             if (self.fee != nil) {
-               try! Account.setFeeByFeePerByte(tx: txn, suggestedFeePerByte: fee!)
+               try Account.setFeeByFeePerByte(tx: txn, suggestedFeePerByte: fee!)
             }
 
             if (self.flatFee != nil) {

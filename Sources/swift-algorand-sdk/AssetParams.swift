@@ -102,50 +102,50 @@ public class AssetParams: Codable,Equatable {
     public func encode(to encoder: Encoder) throws {
         var container=encoder.container(keyedBy: CodingKeys.self)
         if let metadatahash=self.metadataHash{
-            try!container.encode(Data(CustomEncoder.convertToUInt8Array(input: metadatahash))  , forKey: .metadataHash)
+            try container.encode(Data(CustomEncoder.convertToUInt8Array(input: metadatahash))  , forKey: .metadataHash)
         }
         if let assetName=self.assetName{
-            try!container.encode(assetName, forKey: .assetName)
+            try container.encode(assetName, forKey: .assetName)
         }
     
         if let url=self.url{
-            try!container.encode(url, forKey: .url)
+            try container.encode(url, forKey: .url)
         }
       
         if let assetClawBack=self.assetClawback{
-            try!container.encode(Data(CustomEncoder.convertToUInt8Array(input: assetClawBack.getBytes())), forKey: .assetClawback)
+            try container.encode(Data(CustomEncoder.convertToUInt8Array(input: assetClawBack.getBytes())), forKey: .assetClawback)
           
         }
        
         if let assetDecimals=self.assetDecimals{
             if self.assetDecimals != 0{
-                    try!container.encode(assetDecimals , forKey: .assetDecimals)
+                    try container.encode(assetDecimals , forKey: .assetDecimals)
                 }
         }
         
         
         if let assetDefaultFrozen=self.assetDefaultFrozen{
             if assetDefaultFrozen != false{
-                    try!container.encode(assetDefaultFrozen, forKey: .assetDefaultFrozen)
+                    try container.encode(assetDefaultFrozen, forKey: .assetDefaultFrozen)
                 }
         }
    
         if let assetFreeze=self.assetFreeze{
-             try!container.encode(Data(CustomEncoder.convertToUInt8Array(input: assetFreeze.getBytes())), forKey: .assetFreeze)
+             try container.encode(Data(CustomEncoder.convertToUInt8Array(input: assetFreeze.getBytes())), forKey: .assetFreeze)
         }
        
         if let assetManager=self.assetManager{
-            try!container.encode(Data(CustomEncoder.convertToUInt8Array(input: assetManager.getBytes())), forKey: .assetManager)
+            try container.encode(Data(CustomEncoder.convertToUInt8Array(input: assetManager.getBytes())), forKey: .assetManager)
         }
        
         if let assetReserve=self.assetReserve{
-            try!container.encode(Data(CustomEncoder.convertToUInt8Array(input: assetReserve.getBytes())), forKey: .assetReserve)
+            try container.encode(Data(CustomEncoder.convertToUInt8Array(input: assetReserve.getBytes())), forKey: .assetReserve)
         }
         if let assetTotal=self.assetTotal{
-            try!container.encode(assetTotal, forKey: .assetTotal)
+            try container.encode(assetTotal, forKey: .assetTotal)
         }
         if let assetUnitName=self.assetUnitName{
-            try!container.encode(assetUnitName , forKey: .assetUnitName)
+            try container.encode(assetUnitName , forKey: .assetUnitName)
           
           
         }

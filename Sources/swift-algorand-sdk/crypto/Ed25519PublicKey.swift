@@ -22,8 +22,8 @@ public class Ed25519PublicKey : Codable,Equatable {
     }
     
     public func encode(to encoder: Encoder) throws {
-        var container = try! encoder.singleValueContainer()
-        try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: self.bytes)))
+        var container = try encoder.singleValueContainer()
+        try container.encode(Data(CustomEncoder.convertToUInt8Array(input: self.bytes)))
     }
 
     public required init(from decoder: Decoder) throws {

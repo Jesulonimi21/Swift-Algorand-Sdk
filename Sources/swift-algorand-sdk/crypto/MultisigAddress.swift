@@ -61,12 +61,12 @@ public class MultisigAddress: Codable,Equatable {
             }
         }
 
-        return try! Address(SHA512_256().hash(hashable));
+        return try Address(SHA512_256().hash(hashable));
     }
 
-    public func  toString()->String {
+    public func  toString() throws ->String {
       
-        return try! self.toAddress().description;
+        return try self.toAddress().description;
       
     }
     

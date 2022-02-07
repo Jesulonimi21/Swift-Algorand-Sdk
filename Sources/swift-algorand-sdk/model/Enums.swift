@@ -22,9 +22,8 @@ enum OnCompletionData: String {
     }
     
     public init(from decoder: Decoder) throws {
-//        var container = try! decoder.container(keyedBy: Key.self)
-        var container = try! decoder.singleValueContainer()
-        var rawValue = try! container.decode(String.self)
+        var container = try decoder.singleValueContainer()
+        var rawValue = try container.decode(String.self)
         switch rawValue {
         case "noop": self = .NOOP
         case "optin":self = .OPTIN
@@ -50,8 +49,8 @@ extension AddressRole: Decodable {
         case rawValue
     }
     public init(from decoder: Decoder) throws {
-        var container = try! decoder.container(keyedBy: Key.self)
-        var rawValue = try! container.decode(String.self, forKey: .rawValue)
+        var container = try decoder.container(keyedBy: Key.self)
+        var rawValue = try container.decode(String.self, forKey: .rawValue)
         
         switch rawValue {
         case "sender":self = .SENDER
@@ -72,12 +71,12 @@ public enum SigType {
 
 extension SigType: Codable {
     public func encode(to encoder: Encoder) throws {
-        var container = try! encoder.singleValueContainer()
+        var container = try encoder.singleValueContainer()
         switch self {
-        case .SIG: try! container.encode("sig")
-        case .MSIG:try! container.encode("msig")
-        case .LSIG:try! container.encode("LSIG")
-        default: try! container.encode("sig")
+        case .SIG: try container.encode("sig")
+        case .MSIG:try container.encode("msig")
+        case .LSIG:try container.encode("LSIG")
+        default: try container.encode("sig")
         }
     }
     
@@ -85,8 +84,8 @@ extension SigType: Codable {
         case rawValue
     }
     public init(from decoder: Decoder) throws {
-        var container = try! decoder.singleValueContainer()
-        var rawValue = try! container.decode(String.self)
+        var container = try decoder.singleValueContainer()
+        var rawValue = try container.decode(String.self)
         
         switch rawValue {
         case "sig" : self = .SIG
@@ -115,9 +114,9 @@ extension TxType: Codable {
     }
     
     public init(from decoder: Decoder) throws {
-//        var container = try! decoder.container(keyedBy:Key.self )
-        var container = try! decoder.singleValueContainer()
-        var rawValue = try! container.decode(String.self)
+//        var container = try decoder.container(keyedBy:Key.self )
+        var container = try decoder.singleValueContainer()
+        var rawValue = try container.decode(String.self)
         
         switch rawValue {
         case "pay" : self = .PAY

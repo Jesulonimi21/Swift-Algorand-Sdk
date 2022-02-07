@@ -43,7 +43,7 @@ public class LogicsigSignature:Codable,Equatable {
             try container.encode(Data(CustomEncoder.convertToUInt8Array(input: sig.bytes!)), forKey: .sig)
         }
         if let msig = self.msig{
-            try! container.encode(msig, forKey: .msig)
+            try container.encode(msig, forKey: .msig)
         }
         
 
@@ -132,7 +132,7 @@ public class LogicsigSignature:Codable,Equatable {
         return prefixedEncoded;
     }
     
-    public func verify (address:Address)->Bool{
+    public func verify (address:Address) throws ->Bool{
         
         if(self.logic==nil){
             return false
@@ -157,14 +157,14 @@ public class LogicsigSignature:Codable,Equatable {
 
                 if(self.sig != nil){
             
-                    let publicKey = try! PublicKey(CustomEncoder.convertToUInt8Array(input: address.getBytes()))
+                    let publicKey = try PublicKey(CustomEncoder.convertToUInt8Array(input: address.getBytes()))
                 
-                    var isVerified = try! publicKey.verify(signature: CustomEncoder.convertToUInt8Array(input: self.sig!.bytes!), message: CustomEncoder.convertToUInt8Array(input: self.bytesToSign()))
+                    var isVerified = try publicKey.verify(signature: CustomEncoder.convertToUInt8Array(input: self.sig!.bytes!), message: CustomEncoder.convertToUInt8Array(input: self.bytesToSign()))
                     
                     return isVerified
                 }else{
                  
-                    return msig!.verify(message: self.bytesToSign())
+                    return try msig!.verify(message: self.bytesToSign())
                 }
              
             }

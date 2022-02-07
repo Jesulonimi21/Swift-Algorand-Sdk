@@ -87,18 +87,18 @@ public class AlgoLogic{
           return VarintResult();
       }
     
-    public static func loadLangSpec()   {
+    public static func loadLangSpec() throws  {
         let configURL = Bundle.module.path(forResource: "Langspec", ofType: "txt")
-        let contensts = try! String(contentsOfFile: configURL!.description)
+        let contensts = try String(contentsOfFile: configURL!.description)
         let jsonData = contensts.data(using: .utf8)!
-        let langspec = try! JSONDecoder().decode(LangSpec.self, from: jsonData)
+        let langspec = try JSONDecoder().decode(LangSpec.self, from: jsonData)
         self.langSpec=langspec
        }
     
     
     public static func getLogicSigVersion() throws -> Int {
         if (langSpec == nil) {
-            loadLangSpec();
+            try loadLangSpec();
         }
 
         return langSpec!.LogicSigVersion!;
@@ -106,7 +106,7 @@ public class AlgoLogic{
 
     public static func getEvalMaxVersion() throws ->Int {
            if (langSpec == nil) {
-               loadLangSpec();
+              try loadLangSpec();
            }
 
            return langSpec!.EvalMaxVersion!;
@@ -181,7 +181,7 @@ public class AlgoLogic{
         var bytes:[[Int8]] = Array();
         var funcArgs=args
             if langSpec == nil {
-                loadLangSpec();
+               try loadLangSpec();
             }
 
         var result:VarintResult = getUVarint(buffer: program, bufferOffset: 0);
@@ -225,18 +225,7 @@ public class AlgoLogic{
                         var size:Int=0;
                         while pc<program.count{
                             var opcode:Int
-//                            if(program[pc] < -126){
-//                                opcode = Int(program[pc]) & 255
-//                            }else{
-//                                opcode = Int(program[pc] & unsafeBitCast(UInt8(255), to:Int8.self))
-//                            }
                             opcode = Int(program[pc]) & 255
-                 
-                           
-                         
-//                            if(opcode>=opcodes!.count||opcode<=0){
-//                                throw Errors.illegalArgumentError("invalid instruction: \(opcode)")
-//                            }
                            
                             let isIndexValid = opcodes!.indices.contains(opcode)
                             if(!isIndexValid){
@@ -250,20 +239,20 @@ public class AlgoLogic{
                             size = op!.Size!
                             if size == 0{
                                 switch(op!.Opcode){
-                                case 32 : var intsBlock=try! readIntConstBlock(program: program, pc: pc)
+                                case 32 : var intsBlock=try readIntConstBlock(program: program, pc: pc)
                                     size = size + intsBlock.size
                                     ints.append(contentsOf: intsBlock.results)
-                                case 38 : var bytesBlock=try! readByteConstBlock(program: program, pc: pc)
+                                case 38 : var bytesBlock=try readByteConstBlock(program: program, pc: pc)
                                     size = size + bytesBlock.size
                                     bytes.append(contentsOf: bytesBlock.results)
                                     
                                 case 129:
-                                    var pushInt=try! readPushIntOp(program: program, pc: pc)
+                                    var pushInt=try readPushIntOp(program: program, pc: pc)
                                     size = size+pushInt.size
                                     ints.append(contentsOf: pushInt.results)
                                     
                                 case 128:
-                                    var pushBytes = try! readPushByteOp(program: program, pc: pc)
+                                    var pushBytes = try readPushByteOp(program: program, pc: pc)
                                     size = size + pushBytes.size
                                     bytes.append(contentsOf: pushBytes.results)
                                     

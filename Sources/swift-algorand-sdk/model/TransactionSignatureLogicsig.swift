@@ -20,7 +20,7 @@ public struct TransactionSignatureLogicsig: Codable, Equatable {
     }
     
     public init(from decoder: Decoder) throws {
-        var container = try! decoder.container(keyedBy: CodingKeys.self)
+        var container = try decoder.container(keyedBy: CodingKeys.self)
         var logicString = try? container.decode(String.self, forKey: .logic)
         var signatureString = try? container.decode(String.self, forKey: .signature)
         

@@ -15,7 +15,7 @@ public class Split {
 
     
     public static  func MakeSplit(owner: Address, receiver1:Address, receiver2:Address,rat1:Int,rat2:Int,expiryRound:Int,minPay:Int, maxFee:Int) throws -> ContractTemplate {
-        var values:[ContractTemplate.ParameterValue] = [ ContractTemplate.IntParameterValue(offset: 4, value: maxFee),  ContractTemplate.IntParameterValue(offset: 7, value: expiryRound),  ContractTemplate.IntParameterValue(offset: 8, value: rat2),  ContractTemplate.IntParameterValue(offset: 9, value: rat1),  ContractTemplate.IntParameterValue(offset: 10, value: minPay),  ContractTemplate.AddressParameterValue(offset: 14, address: owner),  ContractTemplate.AddressParameterValue(offset: 47, address: receiver1),  ContractTemplate.AddressParameterValue(offset: 80, address: receiver2)]
+        var values:[ContractTemplate.ParameterValue] = [ try ContractTemplate.IntParameterValue(offset: 4, value: maxFee),  try ContractTemplate.IntParameterValue(offset: 7, value: expiryRound),  try ContractTemplate.IntParameterValue(offset: 8, value: rat2),  try ContractTemplate.IntParameterValue(offset: 9, value: rat1),  try ContractTemplate.IntParameterValue(offset: 10, value: minPay),  try ContractTemplate.AddressParameterValue(offset: 14, address: owner),  try ContractTemplate.AddressParameterValue(offset: 47, address: receiver1),  try ContractTemplate.AddressParameterValue(offset: 80, address: receiver2)]
         
         return try ContractTemplate.inject(program: CustomEncoder.convertToInt8Array(input: CustomEncoder.convertBase64ToByteArray(data1: referenceProgram)), values: values);
         }
@@ -25,7 +25,7 @@ public class Split {
     
      
     public static func GetSplitTransactions(contract:ContractTemplate,  amount:Int64,firstValid:Int64, lastValid:Int64,feePerByte:Int64, genesisHash:Digest) throws ->[Int8] {
-        var data:AlgoLogic.ProgramData = try! ContractTemplate.readAndVerifyContract(program: contract.program, numInts: 8, numByteArrays: 3);
+        var data:AlgoLogic.ProgramData = try ContractTemplate.readAndVerifyContract(program: contract.program, numInts: 8, numByteArrays: 3);
             var maxFee = data.intBlock[1]
             var rat1 = data.intBlock[6]
             var rat2 = data.intBlock[5];
@@ -43,11 +43,11 @@ public class Split {
                 if ( rcv1 != rcv2) {
                     throw Errors.runtimeError("The token split must be exactly \(rat1)  / \(rat2), received  \(receiverOneAmount) / \(receiverTwoAmount)");
                 } else {
-                    var receiver1 =  try! Address(data.byteBlock[1]);
-                    var receiver2 = try!  Address(data.byteBlock[2]);
+                    var receiver1 =  try Address(data.byteBlock[1]);
+                    var receiver2 = try  Address(data.byteBlock[2]);
              
                     
-                    var tx1 = try! Transaction.paymentTransactionBuilder().setSender(contract.address)
+                    var tx1 = try Transaction.paymentTransactionBuilder().setSender(contract.address)
                      .amount(receiverOneAmount)
                      .receiver(receiver1)
                         .genesisHash(genesisHash.bytes!)
@@ -56,7 +56,7 @@ public class Split {
                         .fee(Int64(feePerByte))
                          .build()
 
-                    var tx2 = try! Transaction.paymentTransactionBuilder().setSender(contract.address)
+                    var tx2 = try Transaction.paymentTransactionBuilder().setSender(contract.address)
                      .amount(receiverTwoAmount)
                      .receiver(receiver2)
                         .genesisHash(genesisHash.bytes!)
@@ -68,14 +68,14 @@ public class Split {
                     
                     
                     if (tx1.fee! <= Int64(maxFee) && tx2.fee! <= Int64(maxFee)) {
-                        var lsig = try! LogicsigSignature(logicsig: contract.program);
-                        var gid = try! TxGroup.computeGroupID(txns: [tx1,tx2])
+                        var lsig = try LogicsigSignature(logicsig: contract.program);
+                        var gid = try TxGroup.computeGroupID(txns: [tx1,tx2])
                         tx1.assignGroupID(gid: gid)
                         tx2.assignGroupID(gid: gid)
                     
-                        var stx1 =  SignedTransaction(tx: tx1, lSig: lsig, txId: tx1.txID());
-                        var stx2 =  SignedTransaction(tx: tx2, lSig: lsig, txId: tx2.txID());
-                    var encodedTrans:[Int8]=CustomEncoder.encodeToMsgPack(stx1)+CustomEncoder.encodeToMsgPack(stx2)
+                        var stx1 =  SignedTransaction(tx: tx1, lSig: lsig, txId: try tx1.txID());
+                        var stx2 =  SignedTransaction(tx: tx2, lSig: lsig, txId: try tx2.txID());
+                    var encodedTrans:[Int8] = try CustomEncoder.encodeToMsgPack(stx1)+CustomEncoder.encodeToMsgPack(stx2)
                     return encodedTrans
                     } else {
                         var fee:Int64

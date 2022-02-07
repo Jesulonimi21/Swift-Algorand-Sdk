@@ -12,16 +12,16 @@ public class ContractTemplate {
     public var address:Address
     public var program:[Int8]
 
-    public convenience init(prog:String) {
-        self.init(prog: CustomEncoder.convertToInt8Array(input: CustomEncoder.convertBase64ToByteArray(data1: prog)));
+    public convenience init(prog:String) throws {
+        try self.init(prog: CustomEncoder.convertToInt8Array(input: CustomEncoder.convertBase64ToByteArray(data1: prog)));
     }
 
-    public convenience init (prog:[Int8]){
-      try!  self.init(lsig: LogicsigSignature(logicsig: prog));
+    public convenience init (prog:[Int8]) throws {
+      try  self.init(lsig: LogicsigSignature(logicsig: prog));
     }
 
-    public init(lsig:LogicsigSignature)  {
-        self.address = try! lsig.toAddress();
+    public init(lsig:LogicsigSignature) throws  {
+        self.address = try lsig.toAddress();
         self.program = lsig.logic!;
     }
     
@@ -63,7 +63,7 @@ public class ContractTemplate {
         for i in 0..<updatedProgram.count{
             updatedProgramByteArray[i]=updatedProgram[i]
         }
-        return ContractTemplate(prog: updatedProgramByteArray)
+        return try ContractTemplate(prog: updatedProgramByteArray)
 
     }
     
@@ -84,7 +84,7 @@ public class ContractTemplate {
         private var offset:Int
         private var value:[Int8];
 
-        public init ( offset:Int, value:[Int8]) {
+        public init ( offset:Int, value:[Int8]) throws {
             self.value = value;
             self.offset = offset;
         }
@@ -103,25 +103,25 @@ public class ContractTemplate {
 
     
     public  class BytesParameterValue : ContractTemplate.ParameterValue {
-        public convenience init(offset:Int, value:String) {
-            self.init(offset:offset,value: CustomEncoder.convertToInt8Array(input:CustomEncoder.convertBase64ToByteArray(data1: value)));
+        public convenience init(offset:Int, value:String) throws {
+            try self.init(offset:offset,value: CustomEncoder.convertToInt8Array(input:CustomEncoder.convertBase64ToByteArray(data1: value)));
         }
 
-        public  override init(offset:Int,value:[Int8]) {
-            super.init(offset:offset, value:
-                        Self.convertToBytes(value: value));
+        public  override init(offset:Int,value:[Int8]) throws {
+            try super.init(offset:offset, value:
+                       try Self.convertToBytes(value: value));
         }
 
-        public convenience init(offset:Int, value:Lease) {
-            self.init(offset:offset, value:value.getBytes());
+        public convenience init(offset:Int, value:Lease) throws {
+           try self.init(offset:offset, value:value.getBytes());
         }
         
         public override func placeholderSize() ->Int{
             return 2;
         }
 
-        private static func convertToBytes(value:[Int8]) ->[Int8]{
-            var len = try! AlgoLogic.putUVarint(value:value.count);
+        private static func convertToBytes(value:[Int8]) throws ->[Int8]{
+            var len = try AlgoLogic.putUVarint(value:value.count);
             var result:[Int8] = Array(repeating: 0, count: len.count + value.count)
                 
             for i in 0..<len.count{
@@ -141,18 +141,18 @@ public class ContractTemplate {
 
 
     public class AddressParameterValue : ContractTemplate.ParameterValue {
-        public convenience init(offset:Int,  value:String) {
-            self.init(offset:offset, value:(try! Address(value)).getBytes())
+        public convenience init(offset:Int,  value:String) throws {
+            try self.init(offset:offset, value:(try Address(value)).getBytes())
    
           
         }
 
-        public convenience init (offset:Int, address:Address) {
-            self.init(offset:offset,value: address.getBytes());
+        public convenience init (offset:Int, address:Address) throws {
+           try self.init(offset:offset,value: address.getBytes());
         }
 
-        public  override init(offset:Int, value:[Int8]) {
-            super.init(offset:offset, value:value);
+        public  override init(offset:Int, value:[Int8]) throws {
+           try super.init(offset:offset, value:value);
         }
 
         public override func placeholderSize() -> Int{
@@ -163,9 +163,9 @@ public class ContractTemplate {
 
     
     public  class IntParameterValue : ContractTemplate.ParameterValue {
-        public convenience init(offset:Int,value:Int) {
+        public convenience init(offset:Int,value:Int) throws {
             
-           try! self.init(offset:offset, value:AlgoLogic.putUVarint(value:value));
+           try self.init(offset:offset, value:AlgoLogic.putUVarint(value:value));
         }
 
         public override func placeholderSize()->Int {

@@ -33,22 +33,13 @@ public class AssetCreateTransactionBuilder: TransactionBuilder<AssetCreateTransa
     }
 
     override func applyTo(_ txn:Transaction) {
-        //        if (self.getClass() == AssetCreateTransactionBuilder.class) {
-        //            Objects.requireNonNull(self.sender, "sender is required.");
-        //            Objects.requireNonNull(self.firstValid, "firstValid is required.");
-        //            Objects.requireNonNull(self.lastValid, "lastValid is required.");
-        //            Objects.requireNonNull(self.genesisHash, "genesisHash is required.");
-        //            Objects.requireNonNull(self.assetTotal, "assetTotal is required.");
-        //            Objects.requireNonNull(self.assetDecimals, "assetDecimals is required.");
-//        }
-//Use a gard statement
-    
-    
-        var params = try!  AssetParams(assetTotal: self.assetTotal, assetDecimals: self.assetDecimals ?? 0, assetDefaultFrozen: self.defaultFrozen ?? false, assetUnitName: self.assetUnitName, assetName: self.assetName, url: self.url, metadataHash: self.metadataHash, assetManager: self.manager, assetReserve: self.reserve, assetFreeze: self.freeze, assetClawback: self.clawback);
+        guard let  params = try?  AssetParams(assetTotal: self.assetTotal, assetDecimals: self.assetDecimals ?? 0, assetDefaultFrozen: self.defaultFrozen ?? false, assetUnitName: self.assetUnitName, assetName: self.assetName, url: self.url, metadataHash: self.metadataHash, assetManager: self.manager, assetReserve: self.reserve, assetFreeze: self.freeze, assetClawback: self.clawback) else {
+            txn.assetParams = nil
+            return
+        }
         
         txn.assetParams = params;
-//        print(txn.assetParams?.assetDecimals)
-//        print("Assset ffrozen")
+
     }
 
     public func setAssetTotal(assetTotal:Int64) ->AssetCreateTransactionBuilder{
@@ -56,23 +47,6 @@ public class AssetCreateTransactionBuilder: TransactionBuilder<AssetCreateTransa
         return self;
     }
 
-//    public func setAssetTotal(assetTotal:Int64)throws ->AssetCreateTransactionBuilder {
-//        if (assetTotal < 0) {
-//            throw Errors.illegalArgumentError("assetTotal cannot be a negative value");
-//        } else {
-//            self.assetTotal = assetTotal;
-//            return self;
-//        }
-//    }
-//
-//    public func setAssetTotal(assetTotal:Int64) throws->AssetCreateTransactionBuilder{
-//        if assetTotal < 0{
-//            throw Errors.illegalArgumentError("assetTotal cannot be a negative value");
-//        } else {
-//            self.assetTotal = assetTotal;
-//            return self;
-//        }
-//    }
 
     public func setAssetDecimals(assetDecimals:Int64)->AssetCreateTransactionBuilder {
         self.assetDecimals = assetDecimals;
@@ -120,14 +94,19 @@ public class AssetCreateTransactionBuilder: TransactionBuilder<AssetCreateTransa
     }
 
     public func manager(manager:String)->AssetCreateTransactionBuilder {
-      
-        self.manager =  try! Address(manager);
+        guard let Umanager = try? Address(manager) else {
+            return self
+        }
+        self.manager = Umanager
             return self;
        
     }
 
     public func manager(manager:[Int8])->AssetCreateTransactionBuilder {
-        self.manager =  try! Address(manager);
+        guard let Umanager = try? Address(manager) else {
+            return self
+        }
+        self.manager = Umanager
         return self;
     }
 
@@ -138,13 +117,19 @@ public class AssetCreateTransactionBuilder: TransactionBuilder<AssetCreateTransa
 
     public func reserve(reserve:String)->AssetCreateTransactionBuilder {
        
-        self.reserve =  try! Address(reserve);
+        guard let UReserve = try? Address(reserve) else {
+            return self
+        }
+        self.reserve = UReserve
             return self;
         
     }
 
     public func reserve(reserve:[Int8])->AssetCreateTransactionBuilder {
-        self.reserve =  try! Address(reserve);
+        guard let UReserve = try? Address(reserve) else {
+            return self
+        }
+        self.reserve = UReserve
         return self;
     }
 
@@ -155,12 +140,18 @@ public class AssetCreateTransactionBuilder: TransactionBuilder<AssetCreateTransa
 
     public func freeze(freeze:String)->AssetCreateTransactionBuilder {
        
-        self.freeze =  try! Address(freeze);
+        guard let UFreeze = try? Address(freeze) else {
+            return self
+        }
+        self.freeze = UFreeze
             return self;
     }
 
     public func freeze(freeze:[Int8])->AssetCreateTransactionBuilder {
-        self.freeze =  try! Address(freeze);
+        guard let UFreeze = try? Address(freeze) else {
+            return self
+        }
+        self.freeze = UFreeze
         return self;
     }
 
@@ -171,12 +162,18 @@ public class AssetCreateTransactionBuilder: TransactionBuilder<AssetCreateTransa
 
     public func clawback(clawback:String)->AssetCreateTransactionBuilder {
     
-        self.clawback =  try! Address(clawback);
+        guard let UClawback = try? Address(clawback) else {
+            return self
+        }
+        self.clawback = UClawback
             return self;
     }
 
     public func clawback(clawback:[Int8])->AssetCreateTransactionBuilder {
-        self.clawback =  try! Address(clawback);
+        guard let UClawback = try? Address(clawback) else {
+            return self
+        }
+        self.clawback = UClawback
         return self;
     }
 }

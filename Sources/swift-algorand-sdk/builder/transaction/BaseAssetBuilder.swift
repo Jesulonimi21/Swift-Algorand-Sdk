@@ -34,154 +34,127 @@ public class  BaseAssetBuilder <T>: TransactionBuilder<BaseAssetBuilder> {
 //Use a gard statement to make sure sender,firstvalid,lastvalid,genesishash,assetTotal.assetDecimals have a value
     
     
-        var params = try! AssetParams(assetTotal: self.assetTotal, assetDecimals: self.assetDecimals ?? 0, assetDefaultFrozen: self.defaultFrozen ?? false, assetUnitName: self.assetUnitName, assetName: self.assetName, url: self.url, metadataHash: self.metadataHash, assetManager: self.manager, assetReserve: self.reserve, assetFreeze: self.freeze, assetClawback: self.clawback);
+        var params = try AssetParams(assetTotal: self.assetTotal, assetDecimals: self.assetDecimals ?? 0, assetDefaultFrozen: self.defaultFrozen ?? false, assetUnitName: self.assetUnitName, assetName: self.assetName, url: self.url, metadataHash: self.metadataHash, assetManager: self.manager, assetReserve: self.reserve, assetFreeze: self.freeze, assetClawback: self.clawback);
         
         txn.assetParams = params;
        
     }
 
-    public func setAssetTotal(assetTotal:Int64) ->T{
-        self.assetTotal = assetTotal;
-        return self as! T;
+    public func setAssetTotal(assetTotal:Int64) throws ->T?{
+        if (assetTotal < 0) {
+               throw Errors.illegalArgumentError("assetTotal cannot be a negative value");
+           } else {
+               self.assetTotal = assetTotal;
+               return self as? T;
+           }
     }
 
-//    public func setAssetTotal(assetTotal:Int64)throws ->T {
-//        if (assetTotal < 0) {
-//            throw Errors.illegalArgumentError("assetTotal cannot be a negative value");
-//        } else {
-//            self.assetTotal = assetTotal;
-//            return self as! T;
-//        }
-//    }
-//
-//    public func setAssetTotal(assetTotal:Int64) throws->T{
-//        if assetTotal < 0{
-//            throw Errors.illegalArgumentError("assetTotal cannot be a negative value");
-//        } else {
-//            self.assetTotal = assetTotal;
-//            return self as! T;
-//        }
-//    }
 
-    public func setAssetDecimals(assetDecimals:Int64)->T {
+
+    public func setAssetDecimals(assetDecimals:Int64) -> T? {
         self.assetDecimals = assetDecimals;
-        return self as! T;
+        return self as? T;
     }
 
-    public func defaultFrozen(defaultFrozen:Bool)->T {
+    public func defaultFrozen(defaultFrozen:Bool)->T? {
         self.defaultFrozen = defaultFrozen;
-        return self as! T;
+        return self as? T;
     }
 
-    public func assetUnitName(assetUnitName:String)->T {
+    public func assetUnitName(assetUnitName:String)->T? {
         self.assetUnitName = assetUnitName;
-        return self as! T;
+        return self as? T;
     }
 
-    public func assetName(assetName:String)->T {
+    public func assetName(assetName:String)->T? {
         self.assetName = assetName;
-        return self as! T;
+        return self as? T;
     }
 
-    public func url(url:String)->T {
+    public func url(url:String)->T? {
         self.url = url;
-        return self as! T;
+        return self as? T;
     }
 
-    public func metadataHash(metadataHash:[Int8])->T {
+    public func metadataHash(metadataHash:[Int8])->T? {
         self.metadataHash = metadataHash;
-        return self as! T;
+        return self as? T;
     }
 
-    public func metadataHashUTF8(metadataHash:String)->T {
+    public func metadataHashUTF8(metadataHash:String)->T? {
         self.metadataHash = CustomEncoder.convertToInt8Array(input: metadataHash.bytes);
-        return self as! T;
+        return self as? T;
     }
 
-    public func metadataHashB64(metadataHash:String)->T {
+    public func metadataHashB64(metadataHash:String)->T? {
         self.metadataHash = CustomEncoder.convertToInt8Array(input: Array(CustomEncoder.decodeFromBase64(metadataHash.bytes)))
-        return self as! T;
+        return self as? T;
     }
 
-    public func manager(manager:Address)->T {
+    public func manager(manager:Address)->T? {
         self.manager = manager;
-        return self as! T;
+        return self as? T;
     }
 
-    public func manager(manager:String)->T {
-      
-        self.manager =  try! Address(manager);
-            return self as! T;
+    public func manager(manager:String) throws ->  T? {
+        self.manager =  try Address(manager);
+            return self as? T;
        
     }
 
-    public func manager(manager:[Int8])->T {
-        self.manager =  try! Address(manager);
-        return self as! T;
+    public func manager(manager:[Int8]) throws ->T? {
+        self.manager =  try Address(manager);
+        return self as? T;
     }
 
-    public func reserve(reserve:Address)->T {
+    public func reserve(reserve:Address) throws ->T? {
         self.reserve = reserve;
-        return self as! T;
+        return self as? T;
     }
 
-    public func reserve(reserve:String)->T {
+    public func reserve(reserve:String) throws ->T? {
        
-        self.reserve =  try! Address(reserve);
-            return self as! T;
+        self.reserve =  try? Address(reserve);
+            return self as? T;
         
     }
 
-    public func reserve(reserve:[Int8])->T {
-        self.reserve =  try! Address(reserve);
-        return self as! T;
+    public func reserve(reserve:[Int8]) throws ->T? {
+        self.reserve =  try Address(reserve);
+        return self as? T;
     }
 
-    public func freeze(freeze:Address)->T {
+    public func freeze(freeze:Address) throws ->T? {
         self.freeze = freeze;
-        return self as! T;
+        return self as? T;
     }
 
-    public func freeze(freeze:String)->T {
+    public func freeze(freeze:String) throws ->T? {
        
-        self.freeze =  try! Address(freeze);
-            return self as! T;
+        self.freeze =  try Address(freeze);
+            return self as? T;
     }
 
-    public func freeze(freeze:[Int8])->T {
-        self.freeze =  try! Address(freeze);
-        return self as! T;
+    public func freeze(freeze:[Int8]) throws ->T? {
+        self.freeze =  try Address(freeze);
+        return self as? T;
     }
 
-    public func clawback(clawback:Address)->T {
+    public func clawback(clawback:Address) throws ->T? {
         self.clawback = clawback;
-        return self as! T;
+        return self as? T;
     }
 
-    public func clawback(clawback:String)->T {
+    public func clawback(clawback:String) throws ->T? {
     
-        self.clawback =  try! Address(clawback);
-            return self as! T;
+        self.clawback =  try Address(clawback);
+            return self as? T;
     }
 
-    public func clawback(clawback:[Int8])->T {
-        self.clawback =  try! Address(clawback);
+    public func clawback(clawback:[Int8])throws -> T? {
+        self.clawback =  try Address(clawback);
         
-        return self as! T;
+        return self as? T;
     }
     
-//    public  func  firstValid(_ firstValid:Int64) -> T{
-//        self.firstValid = firstValid;
-//        return self as! T;
-//    }
-//
-////
-//    public  func lastValid(_ lastValid:Int64)->T {
-//        self.lastValid = lastValid;
-//        return self as! T;
-//    }
-//    public func fee(_ fee:Int64)->T {
-//        self.fee = fee;
-//        return self as! T;
-//    }
 }

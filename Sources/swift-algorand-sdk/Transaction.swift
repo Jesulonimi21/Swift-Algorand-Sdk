@@ -182,7 +182,7 @@ public class Transaction: Codable, Equatable {
        case ApplicationCall="appl"
     }
         
-    public var type: String
+    public var type: String?
      
     var TX_SIGN_PREFIX: [Int8]=[84, 88]
   public  var assetParams: AssetParams?
@@ -315,8 +315,8 @@ public class Transaction: Codable, Equatable {
 
        }
 
-    public func bytesToSign() -> [Int8] {
-        var encodedTx: [Int8] = CustomEncoder.encodeToMsgPack(self)
+    public func bytesToSign() throws -> [Int8] {
+        var encodedTx: [Int8] = try CustomEncoder.encodeToMsgPack(self)
         var prefixEncodedTx: [Int8] = Array(repeating: 0, count: encodedTx.count+2)
         for i in 0..<TX_SIGN_PREFIX.count {
             prefixEncodedTx[i]=TX_SIGN_PREFIX[i]
@@ -468,19 +468,20 @@ public class Transaction: Codable, Equatable {
     }
     
     public required init(from decoder: Decoder) throws {
-           var container = try! decoder.container(keyedBy: CodingKeys.self)
-          
+        
+        if let container = try? decoder.container(keyedBy: CodingKeys.self){
+    
         self.assetParams = try? container.decode(AssetParams.self, forKey: .assetParams)
            
            var senderAddress = try? container.decode(Data.self, forKey: .sender)
 
         var groupId = try? container.decode(Data.self, forKey: .group)
         if let group = groupId {
-            self.group = try! Digest(CustomEncoder.convertToInt8Array(input: Array(group)))
+            self.group = try? Digest(CustomEncoder.convertToInt8Array(input: Array(group)))
         }
         self.assetSender = try? container.decode(Address.self, forKey: .assetSender)
         if let _ = senderAddress {
-            self.sender = try! Address(CustomEncoder.convertToInt8Array(input: Array(senderAddress!)))
+            self.sender = try? Address(CustomEncoder.convertToInt8Array(input: Array(senderAddress!)))
          
         }
          
@@ -509,7 +510,7 @@ public class Transaction: Codable, Equatable {
            var reciverAddress = try? container.decode(Data.self, forKey: .receiver)
         
         if let receiverAddr = reciverAddress {
-            self.receiver = try! Address(CustomEncoder.convertToInt8Array(input: Array(receiverAddr)))
+            self.receiver = try? Address(CustomEncoder.convertToInt8Array(input: Array(receiverAddr)))
         }
          
            var noteBytes = try? container.decode(Data.self, forKey: .note)
@@ -520,8 +521,8 @@ public class Transaction: Codable, Equatable {
            self.lastValid = try? container.decode(Int64.self, forKey: .lastValid)
            self.firstValid = try? container.decode(Int64.self, forKey: .firstValid)
            self.amount = try? container.decode(Int64.self, forKey: .amount)
-           self.type = try! container.decode(String.self, forKey: .type)
-           self.fee = try! container.decode(Int64.self, forKey: .fee)
+           self.type = try? container.decode(String.self, forKey: .type)
+           self.fee = try? container.decode(Int64.self, forKey: .fee)
         
      var genesisID   = try? container.decode(String.self, forKey: .genesisID)
         
@@ -530,7 +531,7 @@ public class Transaction: Codable, Equatable {
         }
         var genesisHash = try? container.decode(Data.self, forKey: .genesisHash)
         if let genHash = genesisHash {
-            self.genesisHash = try! Digest(CustomEncoder.convertToInt8Array(input: Array(genHash)))
+            self.genesisHash = try? Digest(CustomEncoder.convertToInt8Array(input: Array(genHash)))
         }
      
         var voteList = try? container.decode(Int64.self, forKey: .voteLast)
@@ -551,13 +552,13 @@ public class Transaction: Codable, Equatable {
         var voteKey = try? container.decode(Data.self, forKey: .votePK)
         
      if let vKey = voteKey {
-        self.votePK = try! ParticipationPublicKey(bytes:
+        self.votePK = try? ParticipationPublicKey(bytes:
                                                     CustomEncoder.convertToInt8Array(input: Array(vKey)))
      }
         var sellKey = try? container.decode(Data.self, forKey: .selectionPK)
      
         if let sKey = sellKey {
-           self.selectionPK = try! VRFPublicKey(bytes:
+           self.selectionPK = try? VRFPublicKey(bytes:
                                                        CustomEncoder.convertToInt8Array(input: Array(sKey)))
         }
         
@@ -573,6 +574,7 @@ public class Transaction: Codable, Equatable {
         var innerTxns = try? container.decode([PendingTransactionResponse].self, forKey: .innerTxns)
         if let UInnerTxns = innerTxns {
             self.innerTxns = UInnerTxns
+            }
         }
        }
     
@@ -580,22 +582,22 @@ public class Transaction: Codable, Equatable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         if let assetAmount=self.assetAmount {
-            try! container.encode(assetAmount, forKey: .assetAmount)
+            try? container.encode(assetAmount, forKey: .assetAmount)
         }
         
         if let assetCloseTo=self.assetCloseTo {
-            try!container.encode(Data(CustomEncoder.convertToUInt8Array(input: assetCloseTo.getBytes())), forKey: .assetCloseTo)
+            try?container.encode(Data(CustomEncoder.convertToUInt8Array(input: assetCloseTo.getBytes())), forKey: .assetCloseTo)
         }
         
         if let freezeState=self.freezeState {
             if freezeState {
-                try!container.encode(freezeState, forKey: .freezeState)
+                try? container.encode(freezeState, forKey: .freezeState)
             }
         }
         
         if let amount=self.amount {
             if amount != 0 {
-                try! container.encode(amount, forKey: .amount)
+                try? container.encode(amount, forKey: .amount)
             }
         }
     if let applicationArgs = self.applicationArgs {
@@ -612,125 +614,125 @@ public class Transaction: Codable, Equatable {
     if let  onCompletion = self.onCompletion {
         print(onCompletion)
         if onCompletion != Transaction.onCompletion.NoOpOC {
-            try! container.encode(onCompletion, forKey: .onCompletion)
+            try? container.encode(onCompletion, forKey: .onCompletion)
         }
        
     }
     
     if let approvalProgram = self.approvalProgram {
-        try! container.encode(approvalProgram, forKey: .approvalProgram)
+        try? container.encode(approvalProgram, forKey: .approvalProgram)
     }
     
         if let assetParams=self.assetParams {
-            try! container.encode(assetParams, forKey: .assetParams)
+            try? container.encode(assetParams, forKey: .assetParams)
         }
     if let globalStateSchema = self.globalStateSchema {
-        try! container.encode(globalStateSchema, forKey: .globalStateSchema)
+        try? container.encode(globalStateSchema, forKey: .globalStateSchema)
     }
     
     if let applicationId = self.applicationId {
-        try! container.encode(self.applicationId, forKey: .applicationId)
+        try? container.encode(self.applicationId, forKey: .applicationId)
     }
     
     if let localStateSchema = self.localStateSchema {
-        try! container.encode(localStateSchema, forKey: .localStateSchema)
+        try? container.encode(localStateSchema, forKey: .localStateSchema)
     }
     
     if let clearStateProgramn = self.clearStateProgram {
-        try! container.encode(clearStateProgram, forKey: .clearStateProgram)
+        try? container.encode(clearStateProgram, forKey: .clearStateProgram)
     }
     
         if let assetReceiver=self.assetReceiver {
-            try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: assetReceiver.getBytes())), forKey: .assetReceiver)
+            try? container.encode(Data(CustomEncoder.convertToUInt8Array(input: assetReceiver.getBytes())), forKey: .assetReceiver)
         }
     
     if let assetSender = self.assetSender {
-        try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: assetSender.getBytes())), forKey: .assetSender)
+        try? container.encode(Data(CustomEncoder.convertToUInt8Array(input: assetSender.getBytes())), forKey: .assetSender)
     }
     
         if let closeRemainderTo=self.closeRemainderTo {
-            try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: closeRemainderTo.getBytes())), forKey: .closeRemainderTo)
+            try? container.encode(Data(CustomEncoder.convertToUInt8Array(input: closeRemainderTo.getBytes())), forKey: .closeRemainderTo)
         }
         
         if let assetIndex=self.assetIndex {
-            try!container.encode(assetIndex, forKey: .assetIndex)
+            try?container.encode(assetIndex, forKey: .assetIndex)
         }
         
         if let freezeTarget=self.freezeTarget {
-            try!container.encode(Data(CustomEncoder.convertToUInt8Array(input: freezeTarget.getBytes())), forKey: .freezeTarget)
+            try?container.encode(Data(CustomEncoder.convertToUInt8Array(input: freezeTarget.getBytes())), forKey: .freezeTarget)
         }
         if let assetFreezeId=self.assetFreezeID {
-            try!container.encode(assetFreezeID, forKey: .assetFreezeID)
+            try?container.encode(assetFreezeID, forKey: .assetFreezeID)
         }
         if let fee=self.fee {
-            try! container.encode(fee, forKey: .fee)
+            try? container.encode(fee, forKey: .fee)
         }
         if let firstValid=self.firstValid {
             if firstValid != 0 {
-                try! container.encode(firstValid, forKey: .firstValid)
+                try? container.encode(firstValid, forKey: .firstValid)
             }
      
         }
         if let genesisId=self.genesisID {
-            try! container.encode(self.genesisID, forKey: .genesisID)
+            try? container.encode(self.genesisID, forKey: .genesisID)
         }
         if let genesisHash=self.genesisHash {
             if let genesisHashBytes=genesisHash.bytes {
     
-            try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: genesisHash.getBytes()!)), forKey: .genesisHash)
+            try? container.encode(Data(CustomEncoder.convertToUInt8Array(input: genesisHash.getBytes()!)), forKey: .genesisHash)
             }
         }
     
         if let group=self.group {
-            try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: group.getBytes()!)), forKey: .group)
+            try? container.encode(Data(CustomEncoder.convertToUInt8Array(input: group.getBytes()!)), forKey: .group)
         }
         if let lastValid=self.lastValid {
-            try! container.encode(lastValid, forKey: .lastValid)
+            try? container.encode(lastValid, forKey: .lastValid)
         }
     
     if let lease = self.lease {
-        try!  container.encode(Data(CustomEncoder.convertToUInt8Array(input: lease)), forKey: .lease)
+        try?  container.encode(Data(CustomEncoder.convertToUInt8Array(input: lease)), forKey: .lease)
     }
         if let note=self.note {
-            try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: note)), forKey: .note)
+            try? container.encode(Data(CustomEncoder.convertToUInt8Array(input: note)), forKey: .note)
         }
         if let receiver=self.receiver {
-            try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: receiver.getBytes())), forKey: .receiver)
+            try? container.encode(Data(CustomEncoder.convertToUInt8Array(input: receiver.getBytes())), forKey: .receiver)
         }
             
             if let rekeyTo = self.rekeyTo {
-                try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: rekeyTo.getBytes())), forKey: .rekeyTo)
+                try? container.encode(Data(CustomEncoder.convertToUInt8Array(input: rekeyTo.getBytes())), forKey: .rekeyTo)
             }
             
     if let selectionKey = self.selectionPK {
-        try!  container.encode(Data(CustomEncoder.convertToUInt8Array(input: selectionKey.bytes)), forKey: .selectionPK)
+        try?  container.encode(Data(CustomEncoder.convertToUInt8Array(input: selectionKey.bytes)), forKey: .selectionPK)
     }
         if let sender=self.sender {
-            try!  container.encode(Data(CustomEncoder.convertToUInt8Array(input: sender.getBytes())), forKey: .sender)
+            try?  container.encode(Data(CustomEncoder.convertToUInt8Array(input: sender.getBytes())), forKey: .sender)
         }
     
-    try! container.encode(self.type, forKey: .type)
+    try? container.encode(self.type, forKey: .type)
     
     if let voteKeyDilution = self.voteKeyDilution {
         if voteKeyDilution != 0 {
-            try! container.encode(voteKeyDilution, forKey: .voteKeyDilution)
+            try? container.encode(voteKeyDilution, forKey: .voteKeyDilution)
         }
  
     }
     
     if let votePk=self.votePK {
-        try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: votePk.bytes)), forKey: .votePK)
+        try? container.encode(Data(CustomEncoder.convertToUInt8Array(input: votePk.bytes)), forKey: .votePK)
     }
     
     if let voteLast = self.voteLast {
         if voteLast != 0 {
-            try! container.encode(voteLast, forKey: .voteLast)
+            try? container.encode(voteLast, forKey: .voteLast)
         }
  
     }
         
         if let xferasset=self.xferAsset {
-            try! container.encode(xferasset, forKey: .xferAsset)
+            try? container.encode(xferasset, forKey: .xferAsset)
         }
     if let logs = self.logs {
             var ULogs: [Data]=Array()
@@ -748,13 +750,13 @@ public class Transaction: Codable, Equatable {
         }
     }
     
-   public func   txID() -> String {
-        let digest=SHA512_256().hash(self.bytesToSign())
-        return CustomEncoder.encodeToBase32StripPad(digest)     
+   public func   txID() throws -> String {
+        let digest=SHA512_256().hash(try self.bytesToSign())
+        return try CustomEncoder.encodeToBase32StripPad(digest)
     }
     
-    public func rawTxID() -> Digest {
-        return Digest(SHA512_256().hash(self.bytesToSign()))
+    public func rawTxID() throws -> Digest {
+        return Digest(SHA512_256().hash(try self.bytesToSign()))
     }
     
     public func assignGroupID(gid: Digest) {

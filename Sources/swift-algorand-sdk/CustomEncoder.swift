@@ -22,24 +22,24 @@ extension Data {
 public class CustomEncoder{
     
     
-    public static func encodeToMsgPack <T: Encodable>(_ obj:T)-> [Int8]{
+    public static func encodeToMsgPack <T: Encodable>(_ obj:T) throws -> [Int8]{
         let encoder =  MessagePackEncoder()
-        let value = try! encoder.encode(obj)
+        let value = try encoder.encode(obj)
         let int8Val=value.map{
             uint8Val -> Int8 in
             return unsafeBitCast(uint8Val, to: Int8.self)
         }
         return int8Val
     }
-    public static func encodeToMsgPack <T: Encodable>(_ obj:T)-> [UInt8]{
+    public static func encodeToMsgPack <T: Encodable>(_ obj:T) throws -> [UInt8]{
         let encoder =  MessagePackEncoder()
-        let value = try! encoder.encode(obj)
+        let value = try encoder.encode(obj)
         return Array(value)
     }
     
     
-    public static func decodeFrmMessagePack<T: Decodable>(obj:T.Type,data:Data)->T{
-        let decoded = try! MessagePackDecoder().decode(obj, from: data)
+    public static func decodeFrmMessagePack<T: Decodable>(obj:T.Type,data:Data) throws ->T{
+        let decoded = try MessagePackDecoder().decode(obj, from: data)
         return decoded
     }
     public static func encodeToBase32StripPad(_ uBytes :[Int8])-> String{
@@ -120,7 +120,9 @@ public class CustomEncoder{
     
     public static func encodeToJson<T>(obj:T)->String where T : Encodable{
         
-        let jsonData = try! JSONEncoder().encode(obj)
+        guard let jsonData = try? JSONEncoder().encode(obj) else {
+            return ""
+        }
         let jsonString = String(data: jsonData, encoding: .utf8)!
         return jsonString
     }

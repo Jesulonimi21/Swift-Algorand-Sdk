@@ -17,9 +17,9 @@ public struct AssetData: Codable, Equatable {
         case params="params"
     }
     
-    public func toJson() -> String? {
+    public func toJson() throws -> String? {
         var jsonencoder=JSONEncoder()
-        var classData=try! jsonencoder.encode(self)
+        var classData=try jsonencoder.encode(self)
         var classString=String(data: classData, encoding: .utf8)
        return classString
     }
