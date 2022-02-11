@@ -123,7 +123,7 @@ indexerClient.lookUpBlocks(roundNumber: 12471917).execute(){response in
         }
     }
 
-indexerClient.searchForAccounts().assetId(assetId: 14077815).execute(){ response in
+indexerClient.searchForAccounts(assetId: 14077815).execute(){ response in
         if response.isSuccessful{
             print(response.data!.toJson()!)
         }else{
@@ -131,7 +131,7 @@ indexerClient.searchForAccounts().assetId(assetId: 14077815).execute(){ response
         }
     }
 
-     indexerClient.searchForTransactions().txid(txid:"HPS2AQU26NNVTFIJVBYYZN2P2T73AONKWCS7HPT5JUQEQMXFHMJA").execute(){ response in
+     indexerClient.searchForTransactions(txid:"HPS2AQU26NNVTFIJVBYYZN2P2T73AONKWCS7HPT5JUQEQMXFHMJA").execute(){ response in
         if response.isSuccessful{
             print(response.data!.toJson()!)
         }else{
@@ -154,7 +154,7 @@ indexerClient.searchForAccounts().assetId(assetId: 14077815).execute(){ response
         }
     }
 
-      indexerClient.searchForAssets().assetId(assetId:14077815).execute(){ response in
+      indexerClient.searchForAssets(assetId:14077815).execute(){ response in
         if response.isSuccessful{
             print(response.data!..toJson()!)
         }else{
