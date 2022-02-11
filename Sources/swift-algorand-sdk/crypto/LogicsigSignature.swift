@@ -40,7 +40,7 @@ public class LogicsigSignature:Codable,Equatable {
         }
        
         if let sig = self.sig{
-            try container.encode(Data(CustomEncoder.convertToUInt8Array(input: sig.bytes!)), forKey: .sig)
+            try container.encode(Data(CustomEncoder.convertToUInt8Array(input: sig.bytes ?? [0])), forKey: .sig)
         }
         if let msig = self.msig{
             try container.encode(msig, forKey: .msig)
@@ -64,7 +64,7 @@ public class LogicsigSignature:Codable,Equatable {
       
          let Uargs = try? container?.decode([Data].self, forKey: .args)
         if let uargs=Uargs{
-            for i in 0..<Uargs!.count{
+            for i in 0..<uargs.count{
 
 
                self.args!.append(CustomEncoder.convertToInt8Array(input: Array(Uargs![i])))

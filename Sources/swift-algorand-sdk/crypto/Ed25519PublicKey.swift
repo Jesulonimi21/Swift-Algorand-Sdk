@@ -30,7 +30,7 @@ public class Ed25519PublicKey : Codable,Equatable {
         var container = try decoder.singleValueContainer()
         var bytesData = try? container.decode(Data.self)
         if let bData = bytesData {
-            self.bytes = CustomEncoder.convertToInt8Array(input: Array(bytesData!))
+            self.bytes = CustomEncoder.convertToInt8Array(input: Array(bData))
         }
     }
    
