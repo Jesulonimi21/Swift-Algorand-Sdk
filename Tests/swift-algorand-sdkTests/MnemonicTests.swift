@@ -9,12 +9,12 @@ import Foundation
 import swift_algorand_sdk
 import XCTest
 public class MnemonicTests:XCTestCase{
-    func testZeroVector(){
+    func testZeroVector() throws {
         var zeroKeys:[Int8] = Array(repeating: 0, count: 32)
         var expectedMn = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon invest"
-        var mn = try! Mnemonic.fromKey(zeroKeys)
+        var mn = try Mnemonic.fromKey(zeroKeys)
         XCTAssertEqual(mn, expectedMn)
-        var goBack = try! Mnemonic.toKey(mn)
+        var goBack = try Mnemonic.toKey(mn)
         XCTAssertEqual(goBack, zeroKeys)
     }
     
@@ -43,19 +43,19 @@ public class MnemonicTests:XCTestCase{
     }
    
 
-    func testGenerateAndRecovery(){
+    func testGenerateAndRecovery() throws {
         for i in 0...1000{
             var randKey =  generateRandomBytes()
-            var mn = try! Mnemonic.fromKey(randKey!)
-            var regenKey = try! Mnemonic.toKey(mn)
+            var mn = try Mnemonic.fromKey(randKey!)
+            var regenKey = try Mnemonic.toKey(mn)
             XCTAssertEqual(regenKey, randKey)
         }
     }
     
-    func testCorruptedChecksum(){
+    func testCorruptedChecksum() throws {
         for i in 0...1000{
             var randKey = generateRandomBytes()!
-            var mn = try! Mnemonic.fromKey(randKey)
+            var mn = try Mnemonic.fromKey(randKey)
             var words = mn.components(separatedBy: " ")
             var oldWord:String = words[words.count-1]
             var newWord:String = oldWord

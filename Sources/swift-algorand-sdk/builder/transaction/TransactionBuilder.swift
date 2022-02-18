@@ -49,14 +49,14 @@ public  class TransactionBuilder<T>{
         }
 
         var txn =  Transaction()
-        txn.type = self.type!
+        txn.type = self.type ?? "pay"
       try  self.applyTo(txn);
         if (self.sender != nil) {
             txn.sender = self.sender!;
         }
 
         if (self.firstValid != nil) {
-            txn.firstValid = self.firstValid!;
+            txn.firstValid = self.firstValid ?? 0;
         }
 
         if (self.lastValid != nil) {
@@ -84,14 +84,14 @@ public  class TransactionBuilder<T>{
         }
 
         if (self.lease != nil && self.lease!.count != 0) {
-            txn.setLease(lease: try Lease(lease: self.lease!));
+            txn.setLease(lease: try Lease(lease: self.lease ?? [0]));
         }
 
         if (self.fee != nil && self.flatFee != nil) {
             throw Errors.illegalArgumentError("Cannot set both fee and flatFee.")
         } else {
             if (self.fee != nil) {
-               try! Account.setFeeByFeePerByte(tx: txn, suggestedFeePerByte: fee!)
+               try Account.setFeeByFeePerByte(tx: txn, suggestedFeePerByte: fee!)
             }
 
             if (self.flatFee != nil) {

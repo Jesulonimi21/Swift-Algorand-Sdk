@@ -29,7 +29,7 @@ public class TxGroup : Encodable {
             arrayOfData[i]=Data(CustomEncoder.convertToUInt8Array(input:self.txGroupHashes![i].getBytes()!))
         }
         
-        try! container.encode(arrayOfData, forKey: .txGroupHashes)
+        try container.encode(arrayOfData, forKey: .txGroupHashes)
     }
     
 
@@ -42,11 +42,11 @@ public class TxGroup : Encodable {
                 var txIDs:[Digest] = Array(repeating: Digest(), count: txns.count);
 
                 for i in 0..<txns.count {
-                    txIDs[i] = txns[i].rawTxID();
+                    txIDs[i] = try  txns[i].rawTxID();
                 }
                 var txgroup:TxGroup = TxGroup(txGroupHashes: txIDs);
 
-                var gid:[Int8] = try! SHA512_256().hash(txgroup.bytesToSign())
+                var gid:[Int8] = try SHA512_256().hash(txgroup.bytesToSign())
                 
                     return  Digest(gid);
             
@@ -58,17 +58,17 @@ public class TxGroup : Encodable {
     }
 
     public static func assignGroupID(txns:[Transaction]) throws -> [Transaction]  {
-    return try! assignGroupID(txns, nil);
+    return try assignGroupID(txns, nil);
     
     }
 
     public static func assignGroupID(_ address:Address, _ txns:[Transaction]) throws -> [Transaction] {
-        return try!  assignGroupID(txns, address);
+        return try  assignGroupID(txns, address);
     }
 
 
     public static func assignGroupID(_ txns:[Transaction], _ address:Address?) throws -> [Transaction] {
-        var gid:Digest = try! self.computeGroupID(txns:txns);
+        var gid:Digest = try self.computeGroupID(txns:txns);
         var result:[Transaction] = Array();
         var var4 = txns;
         var var5 = txns.count;
@@ -84,7 +84,7 @@ public class TxGroup : Encodable {
     }
 
     private  func  bytesToSign() throws  ->[Int8]{
-    var encodedTx:[Int8] = CustomEncoder.encodeToMsgPack(self);
+    var encodedTx:[Int8] = try CustomEncoder.encodeToMsgPack(self);
 //        print("Digest hash")
 //        print(encodedTx)
 //        var total:Int64=0//Int64(encodedTx.reduce(0, +))

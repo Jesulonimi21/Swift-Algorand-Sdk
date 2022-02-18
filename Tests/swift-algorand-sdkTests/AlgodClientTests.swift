@@ -145,9 +145,9 @@ public class AlgodClientTests: XCTestCase {
         assertErrorResponse(for: request)
     }
     
-    func testTealDryRun() {
+    func testTealDryRun() throws {
         let object = DryrunResponse(txns: [])
-        let request = TealDryRun(client: client, request: DryrunRequest())
+        let request = try TealDryRun(client: client, request: DryrunRequest())
         assertSuccessfulResponse(for: request, with: object)
         assertErrorResponse(for: request)
     }

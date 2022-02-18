@@ -60,8 +60,8 @@ public class PaymentTransactionBuilder : TransactionBuilder<PaymentTransactionBu
     }
 
 
-        public func receiver(_ receiver:[Int8]) -> PaymentTransactionBuilder{
-        self.receiver =  try! Address(receiver);
+        public func receiver(_ receiver:[Int8]) throws -> PaymentTransactionBuilder{
+        self.receiver =  try Address(receiver);
         return self;
     }
 
@@ -71,8 +71,8 @@ public class PaymentTransactionBuilder : TransactionBuilder<PaymentTransactionBu
     }
 
 
-     func closeRemainderTo (_ closeRemainderTo:[Int8]) -> PaymentTransactionBuilder{
-        self.closeRemainderTo = try!  Address(closeRemainderTo);
+     func closeRemainderTo (_ closeRemainderTo:[Int8]) throws -> PaymentTransactionBuilder{
+        self.closeRemainderTo = try  Address(closeRemainderTo);
         return self;
     }
 }

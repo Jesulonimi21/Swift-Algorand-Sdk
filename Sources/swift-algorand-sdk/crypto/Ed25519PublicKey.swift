@@ -22,15 +22,15 @@ public class Ed25519PublicKey : Codable,Equatable {
     }
     
     public func encode(to encoder: Encoder) throws {
-        var container = try! encoder.singleValueContainer()
-        try! container.encode(Data(CustomEncoder.convertToUInt8Array(input: self.bytes)))
+        var container = try encoder.singleValueContainer()
+        try container.encode(Data(CustomEncoder.convertToUInt8Array(input: self.bytes)))
     }
 
     public required init(from decoder: Decoder) throws {
         var container = try decoder.singleValueContainer()
         var bytesData = try? container.decode(Data.self)
         if let bData = bytesData {
-            self.bytes = CustomEncoder.convertToInt8Array(input: Array(bytesData!))
+            self.bytes = CustomEncoder.convertToInt8Array(input: Array(bData))
         }
     }
    

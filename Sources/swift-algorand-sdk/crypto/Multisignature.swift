@@ -56,7 +56,7 @@ public    var subsigs:[MultisigSubsig]?=[MultisigSubsig]();
         self.subsigs=[MultisigSubsig]();
     }
     
-    public func verify(message:[Int8])->Bool{
+    public func verify(message:[Int8]) throws ->Bool{
         if self.version==1 && self.threshold! > 0 && self.subsigs?.count != 0 {
             if(self.threshold!>self.subsigs!.count){
                 return false
@@ -66,10 +66,10 @@ public    var subsigs:[MultisigSubsig]?=[MultisigSubsig]();
                 for i in 0..<self.subsigs!.count{
                     var subsig:MultisigSubsig = self.subsigs![i]
                     if(subsig.sig?.bytes != nil){
-                        let publicKey = try! PublicKey(CustomEncoder.convertToUInt8Array(input: (subsig.key?.getBytes())!))
+                        let publicKey = try PublicKey(CustomEncoder.convertToUInt8Array(input: (subsig.key?.getBytes())!))
                      
                        
-                        var isVerified = try! publicKey.verify(signature: CustomEncoder.convertToUInt8Array(input: subsig.sig!.bytes!), message: CustomEncoder.convertToUInt8Array(input: message))
+                        var isVerified = try publicKey.verify(signature: CustomEncoder.convertToUInt8Array(input: subsig.sig!.bytes!), message: CustomEncoder.convertToUInt8Array(input: message))
                         if isVerified{
                             verifiedCount = verifiedCount + 1
                             

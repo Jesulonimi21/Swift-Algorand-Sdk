@@ -24,20 +24,20 @@ public struct BlockResponse: Codable {
     }
     
     public init(from decoder: Decoder) throws {
-        var container = try! decoder.container(keyedBy: CodingKeys.self)
+        var container = try decoder.container(keyedBy: CodingKeys.self)
         self.block=try? container.decode([String: Any].self, forKey: .block)
         self.cert=try? container.decode([String: Any].self, forKey: .cert)
     }
     
     public func encode(to encoder: Encoder) throws {
-        var container = try! encoder.container(keyedBy: CodingKeys.self)
+        var container = try encoder.container(keyedBy: CodingKeys.self)
         try? container.encode(self.block?.description, forKey: .block)
         try? container.encode(self.cert?.description, forKey: .cert)
         
     }
-    public func toJson() -> String? {
+    public func toJson() throws -> String? {
         var jsonencoder=JSONEncoder()
-        var classData=try! jsonencoder.encode(self)
+        var classData = try jsonencoder.encode(self)
         var classString=String(data: classData, encoding: .utf8)
        return classString
     }

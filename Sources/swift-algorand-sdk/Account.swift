@@ -11,7 +11,7 @@ import Foundation
 
 
 public struct Account {
-    public var address:Address
+   public var address:Address
    public var keyPair:KeyPair
    public var seed:Seed?
     var PROGDATA_SIGN_PREFIX:[Int8]=[80, 114, 111, 103, 68, 97, 116, 97, ]
@@ -28,13 +28,13 @@ public struct Account {
         }else{
             seed = try Seed()
         }
-       
+         
         self.keyPair = KeyPair(seed: seed!)
       
         let ed25519PubKey = keyPair.publicKey.bytes.map{(UInt8bytes) -> Int8 in
             return unsafeBitCast(UInt8bytes, to: Int8.self)
         }
-        self.address=try! Address(ed25519PubKey)
+        self.address=try Address(ed25519PubKey)
     }
     public   init( _ mnemonic:String) throws{
       try  self.init(Mnemonic.toKey(mnemonic))
@@ -46,23 +46,23 @@ public struct Account {
         return self.address
     }
     
-  public  func toMnemonic() ->String{
+  public  func toMnemonic() throws ->String{
         if let Useed=seed{
             var int8Bytes=Useed.bytes.map{(uint8Byts) in
                 return unsafeBitCast(uint8Byts, to: Int8.self)}
-            return try! Mnemonic.fromKey(int8Bytes)
+            return try Mnemonic.fromKey(int8Bytes)
         }
         return "An error occurred"
       
     }
     
-  public  func signTransaction(tx:Transaction) -> SignedTransaction{
-        var txBytes = tx.bytesToSign()
+  public  func signTransaction(tx:Transaction) throws -> SignedTransaction{
+        var txBytes = try tx.bytesToSign()
         var signedBytes = keyPair.sign(CustomEncoder.convertToUInt8Array(input: txBytes))
         var retValue = CustomEncoder.convertToInt8Array(input: signedBytes)
-        let signature = try!Signature(retValue)
+        let signature = try Signature(retValue)
   
-    var signedTransaction=SignedTransaction(tx: tx, sig: signature,txId: tx.txID())
+    var signedTransaction=SignedTransaction(tx: tx, sig: signature,txId: try tx.txID())
     if(tx.sender != self.address){
         signedTransaction.authAddress = self.address
     }
@@ -70,7 +70,7 @@ public struct Account {
     }
     
     public func signMultisigTransaction(from:MultisigAddress,  tx:Transaction) throws -> SignedTransaction {
-           if !(tx.sender!.description == from.toString()) {
+           if !( try tx.sender!.description == from.toString()) {
             throw Errors.illegalArgumentError("Transaction sender does not match multisig account");
            } else {
             var myPK:Ed25519PublicKey = Ed25519PublicKey(bytes: CustomEncoder.convertToInt8Array(input: self.keyPair.publicKey.bytes));
@@ -80,7 +80,7 @@ public struct Account {
                if (myI == -1) {
                 throw  Errors.illegalArgumentError("Multisig account does not contain this secret key");
                } else {
-                var txSig:SignedTransaction = self.signTransaction(tx: tx);
+                var txSig:SignedTransaction = try self.signTransaction(tx: tx);
                 var mSig:MultisigSignature =  MultisigSignature(version: from.version, threshold: from.threshold);
 
                 for i in 0..<from.publicKeys.count {
@@ -91,7 +91,7 @@ public struct Account {
                        }
                    }
 
-                return  SignedTransaction(tx: tx, mSig: mSig, txId: tx.txID());
+                return  SignedTransaction(tx: tx, mSig: mSig, txId:try  tx.txID());
                }
            }
        }
@@ -130,8 +130,8 @@ public struct Account {
       }
 
     public func appendMultisigTransaction(from:MultisigAddress, signedTx:SignedTransaction) throws ->SignedTransaction {
-        var sTx:SignedTransaction = try! self.signMultisigTransaction(from: from, tx: signedTx.tx!);
-        return try! Account.mergeMultisigTransactions(txs:[sTx, signedTx]);
+        var sTx:SignedTransaction = try self.signMultisigTransaction(from: from, tx: signedTx.tx!);
+        return try Account.mergeMultisigTransactions(txs:[sTx, signedTx]);
       }
     
     
@@ -139,21 +139,21 @@ public struct Account {
         var sig:Signature
         var bytesToSign:[Int8]=lsig.bytesToSign()
         var sigBytes=keyPair.sign(CustomEncoder.convertToUInt8Array(input: bytesToSign))
-        sig = try! Signature(CustomEncoder.convertToInt8Array(input: sigBytes))
+        sig = try Signature(CustomEncoder.convertToInt8Array(input: sigBytes))
         lsig.sig = sig;
         return lsig;
         }
     
     
-    public func rawSignBytes(bytes:[Int8])->Signature{
+    public func rawSignBytes(bytes:[Int8]) throws ->Signature{
         var signedBytes = keyPair.sign(CustomEncoder.convertToUInt8Array(input: bytes))
-        return try! Signature(CustomEncoder.convertToInt8Array(input: signedBytes) )
+        return try Signature(CustomEncoder.convertToInt8Array(input: signedBytes) )
     }
     
     
     public static func estimatedEncodedSize(tx:Transaction) throws ->Int64 {
-        var signedTrans = SignedTransaction(tx:tx,sig: try Account().rawSignBytes(bytes: tx.bytesToSign()), txId:tx.txID())
-        var msgPack:[Int8] = CustomEncoder.encodeToMsgPack(signedTrans)
+        var signedTrans = SignedTransaction(tx:tx,sig: try Account().rawSignBytes(bytes: tx.bytesToSign()), txId: try tx.txID())
+        var msgPack:[Int8] = try CustomEncoder.encodeToMsgPack(signedTrans)
         return Int64(msgPack.count)
        }
     
@@ -174,42 +174,42 @@ public struct Account {
         }
     
     
-    public func signMultisigTransactionBytes(from:MultisigAddress,tx:Transaction)->[Int8]{
-        var signed  = try! self.signMultisigTransaction(from: from, tx: tx)
-        return CustomEncoder.encodeToMsgPack(signed)
+    public func signMultisigTransactionBytes(from:MultisigAddress,tx:Transaction)throws ->[Int8]{
+        var signed  = try self.signMultisigTransaction(from: from, tx: tx)
+        return try CustomEncoder.encodeToMsgPack(signed)
     }
     
-    public func appendMultisigTransactionBytes(from:MultisigAddress,txBytes:[Int8]) ->[Int8]{
-        var inTx = CustomEncoder.decodeFrmMessagePack(obj: SignedTransaction.self, data: Data(CustomEncoder.convertToUInt8Array(input: txBytes)))
-        var y:[Int8]=CustomEncoder.encodeToMsgPack(inTx)
-        var appended = try! self.appendMultisigTransaction(from: from, signedTx: inTx)
-        return CustomEncoder.encodeToMsgPack(appended)
+    public func appendMultisigTransactionBytes(from:MultisigAddress,txBytes:[Int8]) throws  ->[Int8]{
+        var inTx = try CustomEncoder.decodeFrmMessagePack(obj: SignedTransaction.self, data: Data(CustomEncoder.convertToUInt8Array(input: txBytes)))
+        var y:[Int8]=try CustomEncoder.encodeToMsgPack(inTx)
+        var appended = try self.appendMultisigTransaction(from: from, signedTx: inTx)
+        return try CustomEncoder.encodeToMsgPack(appended)
     }
     
     
-    public static func mergeMultisigTransactionBytes(txsBytes:[[Int8]])->[Int8]{
+    public static func mergeMultisigTransactionBytes(txsBytes:[[Int8]]) throws ->[Int8]{
         var stxs = Array(repeating: SignedTransaction(),count: txsBytes.count)
         for i in 0..<txsBytes.count{
-            stxs[i]=CustomEncoder.decodeFrmMessagePack(obj: SignedTransaction.self, data: Data(CustomEncoder.convertToUInt8Array(input:txsBytes[i] )))
+            stxs[i] = try CustomEncoder.decodeFrmMessagePack(obj: SignedTransaction.self, data: Data(CustomEncoder.convertToUInt8Array(input:txsBytes[i] )))
             
         }
-        var merged = try! self.mergeMultisigTransactions(txs:stxs)
-        return CustomEncoder.encodeToMsgPack(merged)
+        var merged = try self.mergeMultisigTransactions(txs:stxs)
+        return try CustomEncoder.encodeToMsgPack(merged)
     }
 
-    public static func signLogicsigTransaction(lsig:LogicsigSignature,tx:Transaction) -> SignedTransaction{
-        return SignedTransaction(tx:tx,lSig:lsig,txId:tx.txID())
+    public static func signLogicsigTransaction(lsig:LogicsigSignature,tx:Transaction) throws -> SignedTransaction{
+        return SignedTransaction(tx:tx,lSig:lsig,txId:try tx.txID())
     }
 
-    public func tealSign(data:[Int8],contractAddress:Address)->Signature{
+    public func tealSign(data:[Int8],contractAddress:Address) throws->Signature{
         var rawAddress = contractAddress.bytes
         var rawData = PROGDATA_SIGN_PREFIX + rawAddress!+data
-      return  self.rawSignBytes(bytes: rawData)
+      return try self.rawSignBytes(bytes: rawData)
     }
     
-    public func tealSignFromProgram( data:[Int8],  program:[Int8])->Signature {
-        var lsig = try! LogicsigSignature(logicsig: program);
-        return  try! self.tealSign(data: data, contractAddress: lsig.toAddress());
+    public func tealSignFromProgram( data:[Int8],  program:[Int8]) throws ->Signature {
+        var lsig = try LogicsigSignature(logicsig: program);
+        return  try self.tealSign(data: data, contractAddress: lsig.toAddress());
        }
     
     
@@ -219,7 +219,7 @@ public struct Account {
         if let _ = index{
             var sig:Signature
             var bytesToSign = lsig.bytesToSign()
-            sig = self.rawSignBytes(bytes: bytesToSign)
+            sig = try self.rawSignBytes(bytes: bytesToSign)
             
             var mSig = MultisigSignature(version: ma.version, threshold: ma.threshold)
             for i in 0..<ma.publicKeys.count{
@@ -250,7 +250,7 @@ public struct Account {
         
         if  myIndex != -1{
             var bytesToSign = lsig.bytesToSign()
-            var sig = self.rawSignBytes(bytes: bytesToSign)
+            var sig = try self.rawSignBytes(bytes: bytesToSign)
             lsig.msig?.subsigs?.insert(MultisigSubsig(key: myPK, sig: sig), at: myIndex)
             
             return lsig

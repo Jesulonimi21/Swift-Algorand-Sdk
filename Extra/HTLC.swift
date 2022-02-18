@@ -44,7 +44,7 @@ public class HTLC {
     
     
     public static func  GetHTLCTransaction(contract:ContractTemplate,preImage:String,firstValid:Int64, lastValid:Int64, genesisHash:Digest, feePerByte:Int64) throws -> SignedTransaction {
-        var data:AlgoLogic.ProgramData = try! ContractTemplate.readAndVerifyContract(program: contract.program, numInts: 4, numByteArrays: 3);
+        var data:AlgoLogic.ProgramData = try ContractTemplate.readAndVerifyContract(program: contract.program, numInts: 4, numByteArrays: 3);
         
             var maxFee = data.intBlock[0];
         var receiver =  try Address(data.byteBlock[0]);
@@ -83,7 +83,7 @@ public class HTLC {
                 }
             }
    
-        var txn:Transaction = try! Transaction.paymentTransactionBuilder().setSender(contract.address).fee(0).firstValid(firstValid).lastValid(lastValid).genesisHash(genesisHash.bytes!).closeRemainderTo(receiver).build()
+        var txn:Transaction = try Transaction.paymentTransactionBuilder().setSender(contract.address).fee(0).firstValid(firstValid).lastValid(lastValid).genesisHash(genesisHash.bytes!).closeRemainderTo(receiver).build()
         
       txn =  try Account.setFeeByFeePerByte(tx: txn, suggestedFeePerByte: feePerByte);
         if (txn.fee! > maxFee) {
@@ -91,7 +91,7 @@ public class HTLC {
             } else {
 
                 var args = [CustomEncoder.convertToInt8Array(input: CustomEncoder.decodeByteFromBase64(string: preImage))]
-                var lsig = try! LogicsigSignature(logicsig: contract.program, args: args)
+                var lsig = try LogicsigSignature(logicsig: contract.program, args: args)
                 return  SignedTransaction(tx: txn, lsig: lsig);
             }
         }

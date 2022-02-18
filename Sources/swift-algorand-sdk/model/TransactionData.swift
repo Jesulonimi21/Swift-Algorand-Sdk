@@ -98,10 +98,4 @@ public var txType: TxType?
         case assetFreezeTransaction="asset-freeze-transaction"
         
     }
-//
-//    public required init(from decoder: Decoder) throws {
-//        var container = try! decoder.container(keyedBy: CodinngKeys.self)
-//        self.confirmedRound =  try! container.decode(Int64.self, forKey: .confirmedRound)
-//     }
-    
 }
