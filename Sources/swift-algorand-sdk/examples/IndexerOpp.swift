@@ -6,6 +6,20 @@
 //
 
 import Foundation
+
+
+func initializeIndexer(host: String, port: String, token: String) -> IndexerClient {
+    var  indexerClient=IndexerClient(host: host, port: port, token: token);
+    return indexerClient
+}
+
+
+func initializeIndexerWithCustomKey(host: String, port: String, key: String, token: String) -> IndexerClient {
+    var  indexerClient=IndexerClient(host: host, port: port, apiKey: key, token: token);
+    return indexerClient
+}
+
+
 func lookUpHealthInfo(indexerClient: IndexerClient) {
     indexerClient.makeHealthCheck().execute(){
         response in
