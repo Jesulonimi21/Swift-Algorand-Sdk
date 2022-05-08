@@ -3,7 +3,18 @@
 This is a swift sdk that allows interaction with the algorand blockchain. It also supports interecting with the V2 indexer and Algo Apis
 
 ## 1 How To Install
+
+### Swift Package Manager
 In Xcode go to File > Swift Packages > Add Package Dependency and paste the git url of this package, make sure to choose the `main` branch and proceed
+
+### Cocoapods
+
+Add
+```ruby
+pod "swift-algorand-sdk"
+```
+
+to your Podfile and run `pod install`
 
 
 ## 2 Quickstart
