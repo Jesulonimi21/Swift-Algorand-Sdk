@@ -21,6 +21,7 @@ extension Array where Element: Comparable {
 public class Address: Codable,Equatable{
     
     static var APP_ID_PREFIX: [Int8] = [97, 112, 112, 73, 68]
+    static var LEN_BYTES = 32
     public var bytes:[Int8]?=Array(repeating:0,count:32)
 //    enum CodingKeys:CodingKey{
 //        case bytes

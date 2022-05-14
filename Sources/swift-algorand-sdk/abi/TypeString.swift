@@ -6,3 +6,16 @@
 //
 
 import Foundation
+public struct TypeString: ABIType{
+    init(){
+        
+    }
+    
+    public  func isDynamic() -> Bool{
+        return true
+    }
+    
+    public  func byteLen() throws -> UInt64{
+        throw Errors.runtimeError("Dynamic type cannot precompute byte length")
+    }
+}

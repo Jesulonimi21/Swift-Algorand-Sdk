@@ -6,3 +6,15 @@
 //
 
 import Foundation
+public struct TypeByte: ABIType{
+    init() {
+
+    }
+    public func isDynamic() -> Bool{
+        return false
+    }
+    
+    public func byteLen() throws -> UInt64{
+        return 1
+    }
+}

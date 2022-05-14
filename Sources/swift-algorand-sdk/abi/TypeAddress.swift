@@ -6,3 +6,13 @@
 //
 
 import Foundation
+public struct TypeAddress: ABIType{
+    
+    public func isDynamic() -> Bool{
+        return false
+    }
+    
+    public func byteLen() throws -> UInt64{
+        return UInt64(Address.LEN_BYTES)
+    }
+}
