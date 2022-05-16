@@ -12,7 +12,7 @@ public struct TypeArrayDynamic: ABIType{
     public var elemType: ABIType
     
     
-    init(elemType: ABIType, length: UInt64) throws {
+    init(elemType: ABIType) throws {
         self.elemType = elemType
  
     }
