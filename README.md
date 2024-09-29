@@ -2,8 +2,12 @@
 
 This is a swift sdk that allows interaction with the algorand blockchain. It also supports interecting with the V2 indexer and Algo Apis
 
-## 1 How To Install
-In Xcode go to File > Swift Packages > Add Package Dependency and paste the git url of this package, make sure to choose the `main` branch and proceed
+## 1. How to Install
+To install the SDK in your Xcode project:
+
+1. Navigate to **File > Swift Packages > Add Package Dependency**.
+2. Paste the Git URL of this package.
+3. Select the `main` branch and proceed.
 
 
 ## 2 Quickstart
@@ -39,64 +43,58 @@ Please do note that you can always change the APi key for the Header of either A
 algodClient.set(key: "X-API-Key")
 ```
 
-Lets try a complete example of a payment transaction with purestake
+Payment Transaction Example (with Purestake)
 ```swift
-var PURESTAKE_ALGOD_API_TESTNET_ADDRESS="https://testnet-algorand.api.purestake.io/ps2";
-var PURESTAKE_API_KEY="YOUR-PURESTAKE-API-KEY";
-var PURESTAKE_API_PORT="443";
-var algodClient=AlgodClient(host: PURESTAKE_ALGOD_API_TESTNET_ADDRESS, port: PURESTAKE_API_PORT, token: PURESTAKE_API_KEY)
+let PURESTAKE_ALGOD_API_TESTNET_ADDRESS = "https://testnet-algorand.api.purestake.io/ps2"
+let PURESTAKE_API_KEY = "YOUR-PURESTAKE-API-KEY"
+let PURESTAKE_API_PORT = "443"
 
-var mnemonic="cactus check vocal shuffle remember regret vanish spice problem property diesel success easily napkin deposit gesture forum bag talent mechanic reunion enroll buddy about attract"
+var algodClient = AlgodClient(host: PURESTAKE_ALGOD_API_TESTNET_ADDRESS, port: PURESTAKE_API_PORT, token: PURESTAKE_API_KEY)
 
- var account =  try Account(mnemonic)
-    var senderAddress = account.getAddress()
-    var receiverAddress = try! Address("FMBQKMGDE7LYNDHCSUPJBXNMMT3HC2TXMIFAJKGBYJQDZN4R3M554N4QTY")
+let mnemonic = "cactus check vocal shuffle ..."
+let account = try Account(mnemonic)
+let senderAddress = account.getAddress()
+let receiverAddress = try! Address("FMBQKMGDE7LYNDHCSUPJBXNMMT3HC2TXMIFAJKGBYJQDZN4R3M554N4QTY")
 
-
-        var trans =  algodClient.transactionParams().execute(){ paramResponse in
-            if(!(paramResponse.isSuccessful)){
-            print(paramResponse.errorDescription);
-            return;
-        }
-
-    var tx = try! Transaction.paymentTransactionBuilder().setSender(senderAddress)
-                .amount(10)
-                .receiver(receiverAddress)
-               .note("Swift Algo sdk is cool".bytes)
-                .suggestedParams(params: paramResponse.data!)
-                .build()
-
-           
-            var signedTransaction=account.signTransaction(tx: tx)
-        
-            var encodedTrans:[Int8]=CustomEncoder.encodeToMsgPack(signedTransaction)
-           
-
-
-            algodClient.rawTransaction().rawtxn(rawtaxn: encodedTrans).execute(){
-               response in
-                if(response.isSuccessful){
-                    print(response.data!.txId)
-                }else{
-                    print(response.errorDescription)
-                    print("Failed")
-                }
-
-            }
+algodClient.transactionParams().execute { paramResponse in
+    if !paramResponse.isSuccessful {
+        print(paramResponse.errorDescription)
+        return
     }
-```
-you can further query the pending transaction by doing the below
-```swift
 
+    let tx = try! Transaction.paymentTransactionBuilder()
+        .setSender(senderAddress)
+        .amount(10)
+        .receiver(receiverAddress)
+        .note("Swift Algorand SDK is cool".bytes)
+        .suggestedParams(params: paramResponse.data!)
+        .build()
 
-algodClient.pendingTransactionInformation(txId: "PENDING-TRANSACTION-ID").execute(){ pendingTransactionResponse in
-        if(pendingTransactionResponse.isSuccessful){
-            print(pendingTransactionResponse.data!.confirmedRound)
-        }else{
-            print(pendingTransactionResponse.errorDescription!)
-            print("Error")
+    let signedTransaction = account.signTransaction(tx: tx)
+    let encodedTrans: [Int8] = CustomEncoder.encodeToMsgPack(signedTransaction)
+
+    algodClient.rawTransaction().rawtxn(rawtaxn: encodedTrans).execute { response in
+        if response.isSuccessful {
+            print(response.data!.txId)
+        } else {
+            print(response.errorDescription)
+            print("Failed")
         }
+    }
 }
+
+```
+you can further query the pending transaction with
+```swift
+algodClient.pendingTransactionInformation(txId: "PENDING-TRANSACTION-ID").execute { pendingTransactionResponse in
+    if pendingTransactionResponse.isSuccessful {
+        print(pendingTransactionResponse.data!.confirmedRound)
+    } else {
+        print(pendingTransactionResponse.errorDescription)
+        print("Error")
+    }
+}
+
 ```
 
 ## Quickstart For Indexer
