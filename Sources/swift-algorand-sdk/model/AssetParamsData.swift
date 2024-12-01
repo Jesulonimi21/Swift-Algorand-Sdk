@@ -14,7 +14,11 @@ public struct AssetParamsData: Codable, Equatable {
     public var defaultFrozen: Bool?
     public var freeze: String?
     public var manager: String?
-    public var metadataHash: [Int8]?
+    private var metadataHashString: BinaryData?
+    public var metadataHash: [Int8]? {
+        get { metadataHashString?.value }
+        set { metadataHashString = .init(newValue) }
+    }
     public var name: String?
     public var reserve: String?
     // Possibily breaking change if anyone have based their local implementations around Int64. However, this is leading some JSON decoding to failures due to really big amounts (overflowing Int64)
@@ -26,6 +30,7 @@ public struct AssetParamsData: Codable, Equatable {
         case clawback
         case creator
         case decimals
+        case metadataHashString = "metadata-hash"
         case defaultFrozen = "default-frozen"
         case freeze
         case manager
